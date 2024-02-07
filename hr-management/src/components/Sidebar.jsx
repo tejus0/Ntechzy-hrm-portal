@@ -60,7 +60,7 @@
 // export default Sidebar
 
 import * as React from 'react';
-
+import Logo from "../assets/careerkick_logo.png";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -87,7 +87,9 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 
-const drawerWidth = 240;
+
+const drawerWidth = 250;
+
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -174,8 +176,8 @@ export default function EmployeeAttend() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
+      <AppBar position="fixed" open={open} >
+        <Toolbar sx={{ bgcolor: "green" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -184,24 +186,27 @@ export default function EmployeeAttend() {
             sx={{
               marginRight: 5,
               ...(open && { display: 'none' }),
+              
             }}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+           Header
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={handleDrawerClose} >
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
+         
         </DrawerHeader>
         <Divider />
         <List>
             <ListItem disablePadding sx={{ display: 'block' }}  component={Link} to="/payroll">
+            <img src={Logo}></img>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -218,7 +223,7 @@ export default function EmployeeAttend() {
                 >
                    <MailIcon />
                 </ListItemIcon>
-                <ListItemText primary="Payroll" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="PAYROLL" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/leave-management" onClick={handleIsCollapse}>
@@ -238,7 +243,7 @@ export default function EmployeeAttend() {
                 >
                    <MailIcon />
                 </ListItemIcon>
-                <ListItemText primary="Leaves" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/">
@@ -258,7 +263,7 @@ export default function EmployeeAttend() {
                 >
                    <MailIcon />
                 </ListItemIcon>
-                <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="DASHBOARD" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
@@ -278,7 +283,7 @@ export default function EmployeeAttend() {
                 >
                    <MailIcon />
                 </ListItemIcon>
-                <ListItemText primary="Others" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="SALES ANALYTICS" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
         </List>
@@ -301,7 +306,7 @@ export default function EmployeeAttend() {
                 >
                    <MailIcon />
                 </ListItemIcon>
-                <ListItemText primary="Others" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="DEPARTMENTS" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
@@ -321,7 +326,7 @@ export default function EmployeeAttend() {
                 >
                    <MailIcon />
                 </ListItemIcon>
-                <ListItemText primary="Others" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="OTHERS" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
@@ -341,7 +346,7 @@ export default function EmployeeAttend() {
                 >
                    <MailIcon />
                 </ListItemIcon>
-                <ListItemText primary="Others" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="TRAINING SESSIONS" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
 
@@ -350,16 +355,16 @@ export default function EmployeeAttend() {
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
-        <ListItemText primary="Inbox" />
+        <ListItemText primary="EMPLOYEES" />
         {isCollapse ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List  disablePadding component={Link} to="/employee-details" onClick={handleIsCollapse}>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Starred" />
+            <ListItemText primary="DETAILS" />
           </ListItemButton>
         </List>
       </Collapse>

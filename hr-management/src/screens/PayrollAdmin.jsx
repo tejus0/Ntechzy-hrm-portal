@@ -16,7 +16,6 @@ function PayrollAdmin() {
   };
   return (
     <Box container sx={{display:"flex"}}>
-      <Header OpenSidebar={OpenSidebar} />
       <Sidebar
         openSidebarToggle={openSidebarToggle}
         OpenSidebar={OpenSidebar}
@@ -43,9 +42,12 @@ function PayrollAdmin() {
             justifyContent: "center",
             width: "100%",
             paddingTop: "5%",
+            textDecoration:"underline",
+            fontSize:"30px"
           }}
         >
-          React MUI 5 Text Align Center Using Inline CSS
+         SALARY SLIP
+         <hr />
         </Typography>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid container item xs={6} direction="column">
@@ -65,26 +67,32 @@ function PayrollAdmin() {
             <div>Bonus Name : </div>
             <TextField id="filled-basic" label="Filled" variant="filled" />
             <div>Amount : </div>
+            <TextField
+              id="standard-basic"
+              label="Standard"
+              variant="standard"
+            />
           </Grid>
           <Grid container item xs={6} direction="column">
+          <div>Attendence Deduction : </div>
             <TextField
-              id="standard-basic"
-              label="Standard"
-              variant="standard"
+              id="outlined-basic"
+              label="Outlined"
+              variant="outlined"
             />
-            <div>Attendence Deduction : </div>
+           <div>Total Amount : </div>
             <TextField
-              id="standard-basic"
-              label="Standard"
-              variant="standard"
-            />
-            <div>Total Amount : </div>
-            <TextField
-              id="standard-basic"
-              label="Standard"
-              variant="standard"
+              id="outlined-basic"
+              label="Outlined"
+              variant="outlined"
             />
             <div>Date : </div>
+            <TextField
+              id="outlined-basic"
+              label="Outlined"
+              variant="outlined"
+            />
+            <div>XYZ : </div>
             <TextField
               id="standard-basic"
               label="Standard"
