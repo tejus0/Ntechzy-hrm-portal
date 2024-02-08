@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose"
 const userSchema =new  mongoose.Schema({
     name:{
         type:String,
@@ -22,7 +22,8 @@ const userSchema =new  mongoose.Schema({
     },
     is_admin:{
         type:Number,
-        required:true
+        required:true,
+        default:0
     },
     is_verified:{
         type:Number,
@@ -34,6 +35,4 @@ const userSchema =new  mongoose.Schema({
     }
 });
 
-const Employee= mongoose.model('User',userSchema);
-
-module.exports= Employee;
+export default  mongoose.model('User',userSchema);

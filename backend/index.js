@@ -15,27 +15,27 @@
 
 import express from "express";
 import mongoose from "mongoose";
-import bodyParser from "body-parser"
+import bodyParser from "body-parser";
 import cors from "cors";
-// import route from "./routes/userRoute.js";
+import user_route from "./routes/userRoute.js";
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-
 const PORT = 7000;
-const URL = "mongodb+srv://tejuschaturvedi0:Kunal100@cluster0.hm2tbut.mongodb.net/?retryWrites=true&w=majority";
+const URL =
+  "mongodb+srv://tejuschaturvedi0:Kunal100@cluster0.hm2tbut.mongodb.net/HRM?retryWrites=true&w=majority";
 
-mongoose.connect(URL).then(()=>{
-
+mongoose
+  .connect(URL)
+  .then(() => {
     console.log("DB connected successfully");
 
-    app.listen(PORT, ()=>{
-        console.log(`Server is running on port: ${PORT}`);
-    })
+    app.listen(PORT, () => {
+      console.log(`Server is running on port: ${PORT}`);
+    });
+  })
+  .catch((error) => console.log(error));
 
-}).catch(error => console.log(error));
-
-
-// app.use("/api", route);
+app.use("/api", user_route);
