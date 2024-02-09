@@ -6,6 +6,7 @@ import EmployeeLeave from './screens/EmployeeLeave.jsx';
 import {BrowserRouter as Router, Routes,Route } from "react-router-dom";
 import EmployeeAttend from './screens/EmployeeAttend.jsx';
 import EmployeeDetails from './screens/EmployeeDetails.jsx';
+
 function App() {
  return (
       <Router>
@@ -16,6 +17,7 @@ function App() {
             <Route exact path="/leave-management" element={<EmployeeLeave />} />
             <Route exact path="/attendance-management" element={<EmployeeAttend />} />
             <Route exact path="/employee-details" element={<EmployeeDetails />} />
+          
           </Routes>
       </Router>
   );

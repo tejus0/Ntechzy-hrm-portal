@@ -9,7 +9,6 @@ logs
 **/*.back.*
 
 node_modules
-backend
 src/assets
 bower_components
 

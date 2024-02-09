@@ -29,7 +29,7 @@
 //             </li>
 //             <li className='sidebar-list-item' onClick={()=>{navigate('/login')}}>
 //                 <div href="">
-//                     <BsFillGrid3X3GapFill className='icon'/> Categories
+//        git             <BsFillGrid3X3GapFill className='icon'/> Categories
 //                 </div>
 //             </li>
 //             <li className='sidebar-list-item' onClick={()=>{navigate('/leave-management')}}>
@@ -86,8 +86,11 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
-
-
+import search from "../assets/Search.png"
+import setting from "../assets/setting.png"
+import user from "../assets/user-rectangle-solid-24.png"
+import logout from "../assets/log-out-regular-24.png"
+import { Grid } from '@mui/material';
 const drawerWidth = 250;
 
 
@@ -191,9 +194,23 @@ export default function EmployeeAttend() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-           Header
+          <Typography variant="h6" noWrap component="div"  >
+      ADMIN
           </Typography>
+          <Grid container sx={{display:"flex",justifyContent:"flex-end"}}>
+            <div>
+          <img src={search}></img>
+          </div>
+          <div>
+          <img src={setting}></img>
+          </div>
+          <div>
+          <img src={user}></img>
+          </div>
+          <div>
+          <img src={logout}></img>
+          </div>
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open} >
