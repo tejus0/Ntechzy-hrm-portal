@@ -42,22 +42,24 @@ function EmployeeDetails() {
         autoComplete="off"
       >
         <Typography
-          variant="h5"
+          variant="h2"
           style={{
             textAlign: "center",
             justifyContent: "center",
             width: "100%",
-            paddingTop: "5%",
+            paddingTop: "2%",
             textDecoration:"underline",
-            fontSize:"30px",
+            fontSize:"23px",
           
           }}
         >
-         EMPLOYEE DETAILS
+         PERSONAL DETAILS
          <hr />
         </Typography>
+
         <form noValidate autoComplete="off">
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 4 }}>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 4 }} sx={{margin:"10px"}}>
+
           <Grid container item xs={4} direction="column">
             <div>Employee Name : </div>
             <TextField onChange={(e)=>setTitle(e.target.value)}
@@ -90,14 +92,7 @@ function EmployeeDetails() {
               label="Outlined"
               variant="outlined"
             />
-            <Button
-          variant="contained"
-          href="#contained-buttons"
-          color="success"
-          sx={{ margin: "5% auto", width: "20%" }}
-        >
-          Submit
-        </Button>
+         
           </Grid>
           <Grid container item xs={4} direction="column">
           <div>Employee No. : </div>
@@ -134,14 +129,7 @@ function EmployeeDetails() {
               label="Outlined"
               variant="outlined"
             />
-             <Button
-          variant="contained"
-          href="#contained-buttons"
-          color="error"
-          sx={{ margin: "5% auto", width: "20%" }}
-        >
-          Reset
-        </Button>
+            
           </Grid>
           <Grid container item xs={4} direction="column" sx={{alignItems:"center"}}>
           <Box
@@ -168,9 +156,246 @@ function EmployeeDetails() {
         </Grid>
         
         </Grid>
+
+        <Typography
+          variant="h5"
+          style={{
+            textAlign: "center",
+            justifyContent: "center",
+            width: "100%",
+            paddingTop: "3%",
+            textDecoration:"underline",
+            fontSize:"30px",
+          
+          }}
+        >
+         EDUCATIONAL DETAILS
+         <hr />
+        </Typography>
+        <Typography
+          variant="h2"
+          style={{
+            textAlign: "center",
+            justifyContent: "center",
+            width: "100%",
+            paddingTop: "2%",
+            textDecoration:"underline",
+            fontSize:"23px",
+          
+          }}
+        >
+         Xth DETAILS
+        </Typography>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 4}} sx={{margin:"10px", }}>
+        <Grid container item xs={4} direction="column">
+            <div>  Passing Year : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           <Grid container item xs={4} direction="column">
+            <div>  School Name : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           <Grid container item xs={4} direction="column">
+            <div>  Percentage/CGPA : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+
+          </Grid>
+          <Typography
+          variant="h2"
+          style={{
+            textAlign: "center",
+            justifyContent: "center",
+            width: "100%",
+            paddingTop: "2%",
+            textDecoration:"underline",
+            fontSize:"23px",
+          
+          }}
+        >
+         XIIth / DIPLOMA DETAILS
+        </Typography>
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 4}} sx={{margin:"10px"}}>
+          
+          <Grid container item xs={4} direction="column">
+            <div>  Passing Year : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           <Grid container item xs={4} direction="column">
+            <div>  School Name : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           <Grid container item xs={4} direction="column">
+            <div>  Percentage : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           
+          </Grid>
+          <Typography
+          variant="h2"
+          style={{
+            textAlign: "center",
+            justifyContent: "center",
+            width: "100%",
+            paddingTop: "2%",
+            textDecoration:"underline",
+            fontSize:"23px",
+          
+          }}
+        >
+         GRADUATION DETAILS
+        </Typography>
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 4}} sx={{margin:"10px", justifyContent:"space-between"}}>
+          
+          <Grid container item xs={4} direction="column">
+            <div>  Passing Year : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           <Grid container item xs={4} direction="column">
+            <div>  University Name : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           <Grid container item xs={4} direction="column">
+            <div> Degree : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+          </Grid>
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 4}} sx={{margin:"10px",}}>
+           <Grid container item xs={4} direction="column">
+            <div> Branch : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           <Grid container item xs={4} direction="column">
+            <div> CGPA : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+          </Grid>
+          <Typography
+          variant="h5"
+          style={{
+            textAlign: "center",
+            justifyContent: "center",
+            width: "100%",
+            paddingTop: "3%",
+            textDecoration:"underline",
+            fontSize:"30px",
+          
+          }}
+        >
+         PROFESSIONAL DETAILS
+         <hr />
+        </Typography>
+        
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 4}} sx={{margin:"10px", }}>
+        <Grid container item xs={4} direction="column">
+            <div>  Previous Company : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           <Grid container item xs={4} direction="column">
+            <div>  Role : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+           <Grid container item xs={4} direction="column">
+            <div>  Experience : </div>
+            <TextField
+             
+              required
+              id="outlined-required"
+              label="Required"
+            />
+           </Grid>
+
+          </Grid>
+          <Button
+          variant="contained"
+          href="#contained-buttons"
+          color="success"
+          sx={{ margin: "5% auto", width: "20%" }}
+        >
+          Submit
+        </Button>
+
+        <Button
+          variant="contained"
+          href="#contained-buttons"
+          color="error"
+          sx={{ margin: "5% auto", width: "20%" }}
+        >
+          Reset
+        </Button>
         </form>
+       
         </Box>
+        
+        
     </Box>
+    
+    
   );
 }
 

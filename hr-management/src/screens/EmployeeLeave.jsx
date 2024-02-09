@@ -144,9 +144,7 @@ function EmployeeLeave() {
           label="Required"
         
         />
-         </Grid>
-          {/* Buttons at bottom */}
-          <Grid container spacing={1} align="center" direction="row">
+        <Grid container spacing={1} align="center" direction="row">
             <Grid item sx={{ margin: "5px" }}>
               <Button variant="contained" color="success">
                 Apply
@@ -158,7 +156,8 @@ function EmployeeLeave() {
               </Button>
             </Grid>
           </Grid>
-        
+         </Grid>
+         
         
          </Grid> 
          </Box>
