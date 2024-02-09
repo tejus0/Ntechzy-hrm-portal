@@ -370,12 +370,12 @@ export default function EmployeeAttend() {
       </Collapse>
       <Divider />
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List disablePadding component={Link} to="/employee-list" onClick={handleIsCollapse}>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Starred" />
+            <ListItemText primary="All Employee" />
           </ListItemButton>
         </List>
       </Collapse>
@@ -386,7 +386,7 @@ export default function EmployeeAttend() {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Starred" />
+            <ListItemText primary="" />
           </ListItemButton>
         </List>
       </Collapse>

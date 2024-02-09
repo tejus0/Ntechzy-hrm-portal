@@ -9,6 +9,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 function EmployeeDetails() {
+    const [title, setTitle] = useState('')
+    const [details, setDetails] = useState('')
+
+
+
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
   const OpenSidebar = () => {
@@ -51,31 +56,36 @@ function EmployeeDetails() {
          EMPLOYEE DETAILS
          <hr />
         </Typography>
+        <form noValidate autoComplete="off">
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 4 }}>
           <Grid container item xs={4} direction="column">
             <div>Employee Name : </div>
-            <TextField
+            <TextField onChange={(e)=>setTitle(e.target.value)}
               fullWidth
               required
+              name="name"
               id="outlined-required"
               label="Required"
             />
             <div>Father Name : </div>
             <TextField
+            name="father-name"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
             />
             <div>Gender : </div>
-            <TextField id="filled-basic" label="Filled" variant="filled" />
+            <TextField name="gender" id="filled-basic" label="Filled" variant="filled" />
             <div>Mobile : </div>
             <TextField
+            name="mobile"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
             />
            <div>Designation : </div>
             <TextField
+            name="designation"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -98,24 +108,28 @@ function EmployeeDetails() {
             />
            <div>Date Of Birth : </div>
             <TextField
+            name="dob"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
             />
             <div>Address : </div>
             <TextField
+            name="address"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
             />
             <div>Date Of Joining : </div>
             <TextField
+            name="doj"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
             />
             <div>Status : </div>
             <TextField
+            name=""
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -154,6 +168,7 @@ function EmployeeDetails() {
         </Grid>
         
         </Grid>
+        </form>
         </Box>
     </Box>
   );

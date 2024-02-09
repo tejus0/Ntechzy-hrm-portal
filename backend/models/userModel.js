@@ -4,6 +4,34 @@ const userSchema =new  mongoose.Schema({
         type:String,
         required:true
     },
+    father_name:{
+        type:String,
+        default:''
+    },
+    gender:{
+        type:String,
+        required:true
+    },
+    designation:{
+        type:String,
+        required:true
+    },
+    employeeNo:{
+        type:String,
+        required:true
+    },
+    dob:{
+        type:String,
+        required:true
+    },
+    address:{
+        type:String,
+        required:true
+    },
+    date_of_join:{
+        type:String,
+        required:true
+    },
     email:{
         type:String,
         required:true
@@ -16,6 +44,72 @@ const userSchema =new  mongoose.Schema({
         type:String,
         required:true
     },
+    EducationDetails:[new mongoose.Schema({
+        XthDetails:new mongoose.Schema({
+            passingYear:{
+                type:String,
+        required:true
+            },
+            schoolName:{
+                type:String,
+        required:true
+            },
+            grade:{
+                type:String,
+        required:true
+            }
+        }),
+        XIIthDetails:new mongoose.Schema({
+            passingYear:{
+                type:String,
+        required:true
+            },
+            schoolName:{
+                type:String,
+        required:true
+            },
+            grade:{
+                type:String,
+        required:true
+            }
+        }),
+        Graduation:new mongoose.Schema({
+            passingYear:{
+                type:String,
+        required:true
+            },
+            CollegeName:{
+                type:String,
+        required:true
+            },
+            degree:{
+                type:String,
+                required:true
+            },
+            branch:{
+                type:String,
+                required:true
+            },
+            grade:{
+                type:String,
+        required:true
+            }
+        }),
+    })],
+    PastCompany:new mongoose.Schema({
+        name:{
+            type:String,
+            required:true
+        },
+        role:{
+            type:String,
+            required:true
+        },
+        experience:{
+            type:String,
+            required:true
+        }
+    }),
     password:{
         type:String,
         required:true
