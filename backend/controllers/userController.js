@@ -1,4 +1,6 @@
 import User from "../models/userModel.js";
+import Event from "../models/events.js";
+import moment from "moment";
 
 export const create = async(req, res)=>{
     try {
@@ -81,4 +83,20 @@ export const deleteUser = async(req, res) =>{
     } catch (error) {
         res.status(500).json({error: error});
     }
+}
+
+export const get_events = async(req,res)=>{
+    const events = await Event.find({start: {$gte: moment(req.query.start).toDate()}, end: {$lte: moment(req.query.end).toDate()},
+});
+    res.send(events);
+}
+
+export const create_event = async (req,res) => {
+   try {
+    const event = Event(req.body);
+    await event.save();
+    await res.sendStatus(201);
+   } catch (error) {
+    console.log(error);
+   } 
 }

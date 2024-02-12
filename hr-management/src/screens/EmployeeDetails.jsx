@@ -81,7 +81,9 @@ function EmployeeDetails() {
               variant="outlined"
             />
             <div>Gender : </div>
-            <TextField id="filled-basic" label="Filled" variant="filled" />
+            <TextField id="outlined-basic"
+              label="Outlined"
+              variant="outlined" />
             <div>Mobile : </div>
             <TextField
               id="outlined-basic"
@@ -121,7 +123,7 @@ function EmployeeDetails() {
               label="Outlined"
               variant="outlined"
             />
-            <div>Status : </div>
+            <div>Email : </div>
             <TextField
               id="outlined-basic"
               label="Outlined"

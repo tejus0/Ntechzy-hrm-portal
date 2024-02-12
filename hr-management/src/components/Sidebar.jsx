@@ -326,7 +326,7 @@ export default function EmployeeAttend() {
                 <ListItemText primary="DEPARTMENTS" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
+            <ListItem disablePadding sx={{ display: 'block' }}  component={Link} to="/calendar">
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -343,7 +343,7 @@ export default function EmployeeAttend() {
                 >
                    <MailIcon />
                 </ListItemIcon>
-                <ListItemText primary="OTHERS" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="CALENDAR" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
