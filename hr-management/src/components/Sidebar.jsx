@@ -407,7 +407,27 @@ export default function EmployeeAttend() {
           </ListItemButton>
         </List>
       </Collapse>
-
+                
+      <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/leave-management" onClick={handleIsCollapse}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                   <MailIcon />
+                </ListItemIcon>
+                <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
 
         </List>
       </Drawer>

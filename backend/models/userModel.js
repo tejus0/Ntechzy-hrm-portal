@@ -1,132 +1,132 @@
-import mongoose from "mongoose"
-const userSchema =new  mongoose.Schema({
-    name:{
-        type:String,
-        required:true
+import mongoose from "mongoose";
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  father_name: {
+    type: String,
+    default: "",
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
+  designation: {
+    type: String,
+    required: true,
+  },
+  employeeNo: {
+    type: String,
+    required: true,
+  },
+  dob: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  date_of_join: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  mobile: {
+    type: Number,
+    required: true,
+  },
+  profileImage: {
+    type: String,
+    required:true
+  },
+  EducationDetails: {
+    XthDetails: {
+      passingYear: {
+        type: String,
+        default: "",
+      },
+      schoolName: {
+        type: String,
+        default: "",
+      },
+      grade: {
+        type: String,
+        default: "",
+      },
     },
-    father_name:{
-        type:String,
-        default:''
+    XIIthDetails: {
+      passingYear: {
+        type: String,
+        default: "",
+      },
+      schoolName: {
+        type: String,
+        default: "",
+      },
+      grade: {
+        type: String,
+        default: "",
+      },
     },
-    gender:{
-        type:String,
-        required:true
+    Graduation: {
+      passingYear: {
+        type: String,
+        default: "",
+      },
+      CollegeName: {
+        type: String,
+        default: "",
+      },
+      degree: {
+        type: String,
+        default: "",
+      },
+      branch: {
+        type: String,
+        default: "",
+      },
+      grade: {
+        type: String,
+        default: "",
+      },
     },
-    designation:{
-        type:String,
-        required:true
+  },
+  PastCompany: new mongoose.Schema({
+    name: {
+      type: String,
+      default: "",
     },
-    employeeNo:{
-        type:String,
-        required:true
+    role: {
+      type: String,
+      default: "",
     },
-    dob:{
-        type:String,
-        required:true
+    experience: {
+      type: String,
+      default: "",
     },
-    address:{
-        type:String,
-        required:true
-    },
-    date_of_join:{
-        type:String,
-        required:true
-    },
-    email:{
-        type:String,
-        required:true
-    },
-    mobile:{
-        type:Number,
-        required:true
-    },
-    image:{
-        type:String,
-        required:true
-    },
-    EducationDetails:[new mongoose.Schema({
-        XthDetails:new mongoose.Schema({
-            passingYear:{
-                type:String,
-        required:true
-            },
-            schoolName:{
-                type:String,
-        required:true
-            },
-            grade:{
-                type:String,
-        required:true
-            }
-        }),
-        XIIthDetails:new mongoose.Schema({
-            passingYear:{
-                type:String,
-        required:true
-            },
-            schoolName:{
-                type:String,
-        required:true
-            },
-            grade:{
-                type:String,
-        required:true
-            }
-        }),
-        Graduation:new mongoose.Schema({
-            passingYear:{
-                type:String,
-        required:true
-            },
-            CollegeName:{
-                type:String,
-        required:true
-            },
-            degree:{
-                type:String,
-                required:true
-            },
-            branch:{
-                type:String,
-                required:true
-            },
-            grade:{
-                type:String,
-        required:true
-            }
-        }),
-    })],
-    PastCompany:new mongoose.Schema({
-        name:{
-            type:String,
-            required:true
-        },
-        role:{
-            type:String,
-            required:true
-        },
-        experience:{
-            type:String,
-            required:true
-        }
-    }),
-    password:{
-        type:String,
-        required:true
-    },
-    is_admin:{
-        type:Number,
-        required:true,
-        default:0
-    },
-    is_verified:{
-        type:Number,
-        default:0
-    },
-    token:{
-        type:String,
-        default:''
-    }
+  }),
+  password: {
+    type: String,
+    default: "",
+  },
+  is_admin: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  is_verified: {
+    type: Number,
+    default: 0,
+  },
+  token: {
+    type: String,
+    default: "",
+  },
 });
 
-export default  mongoose.model('User',userSchema);
+export default mongoose.model("User", userSchema);

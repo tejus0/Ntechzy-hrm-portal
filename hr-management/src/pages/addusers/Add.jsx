@@ -13,7 +13,21 @@ const Add = () => {
     designation:"",
     dob:"",
     address:"",
-    
+    doj:"",
+    passingYearX:"",
+    schoolNameX:"",
+    gradeX:"",
+    passingYearXII:"",
+    schoolNameXII:"",
+    gradeXII:"",
+    passingYearCollege:"",
+    university:"",
+    degree:"",
+    branch:"",
+    gradeUniversity:"",
+    company:"",
+    role:"",
+    experience:"",
     email:"",
     password:""
   }
