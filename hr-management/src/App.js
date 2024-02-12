@@ -8,7 +8,9 @@ import EmployeeAttend from './screens/EmployeeAttend.jsx';
 import EmployeeDetails from './screens/EmployeeDetails.jsx';
 import Users from './pages/getusers/Users.jsx';
 import UpdateEmployee from './pages/updateEmployees/UpdateEmployee.jsx';
-
+import Calendar from './screens/Calendar.jsx';
+import Modal from 'react-modal';
+Modal.setAppElement('#root')
 
 function App() {
  return (
@@ -23,6 +25,8 @@ function App() {
             <Route exact path="/employee-list" element={<Users />} />
             <Route exact path="/update-employee" element={<UpdateEmployee />} />
             {/* <Route exact path="/add" element={<Add />} /> */}
+            <Route exact path="/calendar" element={<Calendar />} />
+          
           </Routes>
       </Router>
   );
