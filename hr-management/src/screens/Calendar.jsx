@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import Sidebar from "../components/Sidebar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import AddEventModal from "./AddEventModal";
+import AddEventModal from "../pages/addevent/AddEventModal";
 import axios from "axios";
 import moment from "moment";
 
@@ -58,8 +58,8 @@ export default function () {
         container
         sx={{
           p: 5,
-          m: 7,
-          width: "80%",
+          m:7,
+          width:"80%",
           borderRadius: 1,
         }}
       >
@@ -71,7 +71,7 @@ export default function () {
         >
           Add Event
         </Button>
-        <div style={{ position: "relative", zIndex: 0 }}>
+        <div style={{position:'relative', zIndex: 0 }}>
           <FullCalendar
             ref={calendarRef}
             events={events}

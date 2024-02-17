@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Modal from "react-modal";
 import Datetime from 'react-datetime';
+import { Box } from "@mui/material";
 export default function({isOpen, onClose ,onEventAdded})
 {
     const [title,setTitle] = useState("");
@@ -18,8 +19,9 @@ export default function({isOpen, onClose ,onEventAdded})
         })
      onClose();
         }
+
     return(
-        <Modal isOpen={isOpen} onRequestClose={onClose}>
+        <Modal  isOpen={isOpen} onRequestClose={onClose}>
             <form onSubmit={onSubmit}>
                   <input placeholder="filled" value={title} onChange={e => setTitle(e.target.value)} />
                  <div>
