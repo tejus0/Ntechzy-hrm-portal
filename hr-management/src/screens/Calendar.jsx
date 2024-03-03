@@ -30,9 +30,11 @@ export default function () {
 
   async function handleEventAdd(data) {
     console.log("here");
-    await axios.post("http://localhost:7000/api/calendar/create-event", data.event).catch((error)=>{
-      console.log(error.response.data);
-    });
+    await axios
+      .post("http://localhost:7000/api/calendar/create-event", data.event)
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   }
   async function handleDatesSet(data) {
     await axios
@@ -43,8 +45,9 @@ export default function () {
           moment(data.end).toISOString()
       )
       .then((response) => {
-        setEvents(response.data)
-      }).catch((error)=>{
+        setEvents(response.data);
+      })
+      .catch((error) => {
         console.log(error.response.data);
       });
   }
@@ -58,8 +61,8 @@ export default function () {
         container
         sx={{
           p: 5,
-          m:7,
-          width:"80%",
+          m: 7,
+          width: "80%",
           borderRadius: 1,
         }}
       >
@@ -71,7 +74,7 @@ export default function () {
         >
           Add Event
         </Button>
-        <div style={{position:'relative', zIndex: 0 }}>
+        <div style={{ position: "relative", zIndex: 0 }}>
           <FullCalendar
             ref={calendarRef}
             events={events}
