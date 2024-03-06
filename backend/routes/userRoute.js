@@ -42,7 +42,7 @@ route.post("/register", insertUser);
 
 route.get("/verify", verifyMail);
 
-// route.get("/", isLogout, loginLoad);
+route.get("/", isLogout, loginLoad);
 // route.get("/login", isLogout, loginLoad);
 
 route.post("/login", verifyLogin);

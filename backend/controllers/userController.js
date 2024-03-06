@@ -143,7 +143,7 @@ export const verifyMail = async (req, res) => {
 //login user method
 export const loginLoad = async (req, res) => {
   try {
-    res.render("login");
+    res.json("this is working")
   } catch (error) {
     console.log(error.message);
   }
