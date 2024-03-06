@@ -179,7 +179,7 @@ const Registration = () => {
     if (otpVerified) {
       console.log("axios");
       await axios
-        .post("http://localhost:7000/api/register", {
+        .post(`${process.env.REACT_APP_BASE_URL}/register`, {
           employee_id,
           username,
           email,

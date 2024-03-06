@@ -92,7 +92,7 @@ function Home() {
     const fetchData = async () => {
       try {
         
-         axios.get("http://localhost:7000/api/getUserCount").then(users=> setuserCount(users.data)).catch(err=> console.log(err));
+         axios.get(`${process.env.REACT_APP_BASE_URL}/getUserCount`).then(users=> setuserCount(users.data)).catch(err=> console.log(err));
         // axios
         //   .get("http://localhost:7000/api/getLeaveCount")
         //   .then((leaves) => setleaveCount(leaves.data))

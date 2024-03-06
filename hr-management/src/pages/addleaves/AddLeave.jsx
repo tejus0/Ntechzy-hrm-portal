@@ -65,7 +65,7 @@ function EmployeeLeave() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:7000/api/generate-leave", {
+      .post(`${process.env.REACT_APP_BASE_URL}/generate-leave`, {
         name: name,
         employeeNo: empId,
         leaveType: type,

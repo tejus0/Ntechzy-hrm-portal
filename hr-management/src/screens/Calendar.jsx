@@ -31,7 +31,7 @@ export default function () {
   async function handleEventAdd(data) {
     console.log("here");
     await axios
-      .post("http://localhost:7000/api/calendar/create-event", data.event)
+      .post(`${process.env.REACT_APP_BASE_URL}/calendar/create-event`, data.event)
       .catch((error) => {
         console.log(error.response.data);
       });
@@ -39,7 +39,7 @@ export default function () {
   async function handleDatesSet(data) {
     await axios
       .get(
-        "http://localhost:7000/api/calendar/get-events?start=" +
+        `${process.env.REACT_APP_BASE_URL}/calendar/get-events?start=` +
           moment(data.start).toISOString() +
           "&end=" +
           moment(data.end).toISOString()

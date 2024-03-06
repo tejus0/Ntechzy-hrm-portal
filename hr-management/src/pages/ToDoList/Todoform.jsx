@@ -7,7 +7,7 @@ const TodoForm=({ addTodo  })=>{
     const [text,setText]= useState("")
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        await axios.post("http://localhost:7000/api/createTodos", text)
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/createTodos`, text)
     .then((response)=>{
        toast.success("task added successfully !", {position:"top-right"})
       

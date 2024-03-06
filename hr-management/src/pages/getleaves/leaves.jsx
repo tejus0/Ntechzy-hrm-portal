@@ -20,7 +20,7 @@ const Leave = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:7000/api/getallleave");
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/getallleave`);
       setUsers(response.data);
     };
 
@@ -29,7 +29,7 @@ const Leave = () => {
 
   const deleteUser = async (leaveId) => {
     await axios
-      .delete(`http://localhost:7000/api/leaves/reject/${leaveId}`)
+      .delete(`${process.env.REACT_APP_BASE_URL}/leaves/reject/${leaveId}`)
       .then((respones) => {
         setUsers((prevUser) =>
           prevUser.filter((leave) => leave._id !== leaveId)
@@ -43,7 +43,7 @@ const Leave = () => {
 
   const approveUser = async (leaveId) => {
     await axios
-      .get(`http://localhost:7000/api/leaves/update/${leaveId}`)
+      .get(`${process.env.REACT_APP_BASE_URL}/leaves/update/${leaveId}`)
       .then((response) => {
         setUsers((prevUser) =>
         prevUser.filter((leave) => leave._id !== leaveId)

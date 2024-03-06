@@ -124,7 +124,7 @@ function Login() {
 
     // Proceed to use the information passed
         // console.log("axios");
-        await axios.post("http://localhost:7000/api/login",{employee_id:employee_id,email:emailInput,password:password}).then((response) => {
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/login`,{employee_id:employee_id,email:emailInput,password:password}).then((response) => {
           // response.json()
           console.log(response.data,"userData");
           if(response.data.status=='ok'){

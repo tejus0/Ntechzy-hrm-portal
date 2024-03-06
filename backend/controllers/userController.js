@@ -143,7 +143,7 @@ export const verifyMail = async (req, res) => {
 //login user method
 export const loginLoad = async (req, res) => {
   try {
-    res.json("this is working")
+    res.json("this is working");
   } catch (error) {
     console.log(error.message);
   }
@@ -177,10 +177,10 @@ export const verifyLogin = async (req, res) => {
         } else {
           const token = jwt.sign(
             { employee_id: userData.employee_id }, //error maybe
-            process.env.SECRET_KEY,
-            {
-              expiresIn: 10,
-            }
+            process.env.SECRET_KEY
+            // {
+            //   expiresIn: 10,
+            // }
           );
           console.log(token, "token in verify");
           if (res.status(201)) {
@@ -206,12 +206,16 @@ export const loadHome = async (req, res) => {
   const { token } = req.body;
 
   try {
-    const user = jwt.verify(token, process.env.SECRET_KEY, (err, res) => {
-      if (err) {
-        return "token expired !";
-      }
-      return res;
-    });
+    const user = jwt.verify(
+      token,
+      process.env.SECRET_KEY
+      //   , (err, res) => {
+      //   if (err) {
+      //     return "token expired !";
+      //   }
+      //   return res;
+      // }
+    );
     // console.log(token,"token is not commng");
     console.log(user, "here is user");
     if (user == "token expired !") {
