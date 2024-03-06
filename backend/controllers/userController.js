@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import Registeration from "../models/registerModel.js";
 import Leave from "../models/leavesModel.js";
+import Todo from "../models/adminToDoModel.js";
 import Event from "../models/events.js";
 import moment from "moment";
 import bcrypt from "bcrypt";
@@ -153,7 +154,7 @@ export const verifyLogin = async (req, res) => {
     const employee_id = req.body.employee_id;
     const password = req.body.password;
     const email = req.body.email;
-    console.log(email);
+    // console.log(email,"email is here");
 
     const userData = await Registeration.findOne({
       employee_id: employee_id,
@@ -175,9 +176,13 @@ export const verifyLogin = async (req, res) => {
           return res.json({ error: "Email not verified !" });
         } else {
           const token = jwt.sign(
-            { employee_id: userData.employee_id },
-            process.env.SECRET_KEY
+            { employee_id: userData.employee_id }, //error maybe
+            process.env.SECRET_KEY,
+            {
+              expiresIn: 10,
+            }
           );
+          console.log(token, "token in verify");
           if (res.status(201)) {
             return res.json({ status: "ok", data: token });
           } else {
@@ -201,9 +206,19 @@ export const loadHome = async (req, res) => {
   const { token } = req.body;
 
   try {
-    const user = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(user);
-    Registeration.findOne({ email: user.email })
+    const user = jwt.verify(token, process.env.SECRET_KEY, (err, res) => {
+      if (err) {
+        return "token expired !";
+      }
+      return res;
+    });
+    // console.log(token,"token is not commng");
+    console.log(user, "here is user");
+    if (user == "token expired !") {
+      return res.send({ status: "error", data: "token expired" });
+    }
+    console.log(user.email, "email is here");
+    Registeration.findOne({ employee_id: user.employee_id })
       .then((data) => {
         res.send({ status: "ok", data: data });
       })
@@ -494,4 +509,22 @@ export const getLeaveCount = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error });
   }
+};
+
+export const getTodos = async (req, res) => {
+  //    const todos = await Todo.find();
+  try {
+    const todos = await Todo.find();
+    if (!todos) {
+      return res.status(404).json({ msg: "User data not found" });
+    }
+    res.status(200).json(todos);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const createTodos = async (req, res) => {
+  const todo = await Todo.create(req.body);
+  res.json(todo);
 };

@@ -184,6 +184,10 @@ export default function EmployeeAttend() {
     setIsCollapse(!isCollapse);
   };
 
+  const handleLogout=()=>{
+    window.localStorage.clear();
+    window.location.href= "./"
+  }
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -214,7 +218,7 @@ export default function EmployeeAttend() {
             </div>
             <div>
               <Tooltip title="Delete">
-                <IconButton>
+                <IconButton onClick={handleLogout}>
                   <LogoutIcon />
                 </IconButton>
               </Tooltip>
@@ -239,7 +243,7 @@ export default function EmployeeAttend() {
             disablePadding
             sx={{ display: "block" }}
             component={Link}
-            to="/payroll"
+            to="/todo"
           >
             <img src={Logo}></img>
             <ListItemButton
@@ -258,7 +262,7 @@ export default function EmployeeAttend() {
               >
                 <MailIcon />
               </ListItemIcon>
-              <ListItemText primary="PAYROLL" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="ToDo" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
           <ListItem

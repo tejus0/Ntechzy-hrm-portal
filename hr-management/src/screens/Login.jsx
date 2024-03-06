@@ -1,7 +1,7 @@
 import { useState } from "react";
 import React from "react";
 // import Header from "../components/Header";
-// import Sidebar from "../components/Sidebar";
+// import Sidebar from "../components/Sidebar"; 
 import { Box } from "@mui/material";
 import axios from "axios";
 
@@ -76,7 +76,7 @@ function Login() {
 
   // // Validation for onBlur Email
   const handleEmail = () => {
-    console.log(isEmail(emailInput));
+    // console.log(isEmail(emailInput));
     if (!isEmail(emailInput)) {
       setEmailError(true);
       return;
@@ -130,6 +130,7 @@ function Login() {
           if(response.data.status=='ok'){
             alert("login successfull !")
             window.localStorage.setItem("token",response.data.data);
+            window.localStorage.setItem("loggedIn",true)
             window.location.href="./admin-page"
           }
         //   // toast.success(response.data.msg, { position: "top-right" });

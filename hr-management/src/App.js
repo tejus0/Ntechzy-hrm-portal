@@ -13,16 +13,18 @@ import Modal from 'react-modal';
 import Forget from './screens/Forget.jsx';
 import Registration from './screens/Registration.jsx';
 import Leave from './pages/getleaves/leaves.jsx';
+import ToDoList from "./pages/ToDoList/getToDo/ToDoList.jsx"
 Modal.setAppElement('#root')
 
 function App() {
+  const isLoggedIn= window.localStorage.getItem("loggedIn");
  return (
       <Router>
           <Routes>
             <Route  exact path='/admin-page' element={<LandingLayout/>}/>
             <Route exact path="/payroll" element={<PayrollAdmin />} />
             <Route exact path="/register" element={<Registration />} />
-            <Route exact path="/" element={<Login />} />
+            <Route exact path="/" element={isLoggedIn=="true" ? <LandingLayout/> : <Login />} />
             <Route exact path="/leave-management" element={<EmployeeLeave />} />
             <Route exact path="/attendance-management" element={<EmployeeAttend />} />
             <Route exact path="/employee-details" element={<EmployeeDetails />} />
@@ -32,6 +34,7 @@ function App() {
             <Route exact path="/calendar" element={<Calendar />} />
             <Route exact path="/forget-pass" element={<Forget />} />
             <Route exact path="/leaves-list" element={<Leave />} />
+            <Route exact path="/todo" element={<ToDoList />} />
           
           </Routes>
       </Router>

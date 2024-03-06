@@ -93,10 +93,10 @@ function Home() {
       try {
         
          axios.get("http://localhost:7000/api/getUserCount").then(users=> setuserCount(users.data)).catch(err=> console.log(err));
-        axios
-          .get("http://localhost:7000/api/getLeaveCount")
-          .then((leaves) => setleaveCount(leaves.data))
-          .catch((err) => console.log(err));
+        // axios
+        //   .get("http://localhost:7000/api/getLeaveCount")
+        //   .then((leaves) => setleaveCount(leaves.data))
+        //   .catch((err) => console.log(err));
       } catch (error) {
         console.log(error);
       }

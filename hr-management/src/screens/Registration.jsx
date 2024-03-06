@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
+import firebase from "../components/firebase_config";
+import {
+  getAuth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
 
 import {
   TextField,
@@ -33,12 +39,18 @@ const sayHello = () => {
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
+const auth = getAuth(firebase);
+
 const Registration = () => {
   const [employee_id, setEId] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setPhone] = useState("");
   const [password, setPass] = useState("");
+  const [verifyButton, setverifyButton] = useState(false);
+  const [verifyOtp, setverifyOtp] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [otpVerified, setOtpVerified] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   // // Inputs Errors
@@ -79,27 +91,114 @@ const Registration = () => {
 
   const navigate = useNavigate();
 
+  const onCaptchaVerify = () => {
+    window.recaptchaVerifier = new RecaptchaVerifier(
+      auth,
+      "recaptcha-container",
+      {
+        size: "invisible",
+        callback: (response) => {
+          onSignInSubmit();
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+          // ...
+        },
+      }
+    );
+  };
+
+  const onSignInSubmit = () => {
+    onCaptchaVerify();
+    const phoneNumber = "+91" + mobile;
+    const appVerifier = window.recaptchaVerifier;
+
+    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+      .then((confirmationResult) => {
+        // SMS sent. Prompt user to type the code from the message, then sign the
+        // user in with confirmationResult.confirm(code).
+        window.confirmationResult = confirmationResult;
+        alert("OTP Sent Successfully !");
+        setverifyOtp(true);
+        // ...
+      })
+      .catch((error) => {
+        console.log(error);
+        // alert("OTP sent failed ")
+        // Error; SMS not sent
+        // ...
+      });
+  };
+
+  const verifyCode = () => {
+    window.confirmationResult
+      .confirm(otp)
+      .then((result) => {
+        // User signed in successfully.
+        const user = result.user;
+        console.log(user);
+        alert("Verification DOne !");
+        setOtpVerified(true);
+        setverifyOtp(false);
+        // ...
+      })
+      .catch((error) => {
+        alert("Invalid OTP !");
+        // User couldn't sign in (bad verification code?)
+        // ...
+      });
+  };
+
+  const changeMobile = (e) => {
+    setPhone(e.target.value);
+    if (mobile.length == 9) {
+      setverifyButton(true);
+    } else {
+      console.log(mobile.length);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("axios");
-    await axios
-      .post("http://localhost:7000/api/register", {
-        employee_id,
-        username,
-        email,
-        mobile,
-        password,
-      })
-      .then((response) => {
-        console.log(response);
-        // toast.success(response.data.msg, { position: "top-right" });
-        // navigate("/");
-        if (response.status == 200) {
-          alert("Registration successfull !");
-          window.location.href = "./";
-        }
-      })
-      .catch((error) => console.log(error.message));
+    setSuccess(null);
+    //First of all Check for Errors
+
+    // If Email error is true
+    if (emailError || !email) {
+      setFormValid("Email is Invalid. Please Re-Enter");
+      return;
+    }
+
+    // If Password error is true
+    if (passwordError || !password) {
+      setFormValid(
+        "Password is set btw 5 - 20 characters long. Please Re-Enter"
+      );
+      return;
+    }
+    setFormValid(null);
+    setSuccess("Form Submitted Successfully");
+    if (otpVerified) {
+      console.log("axios");
+      await axios
+        .post("http://localhost:7000/api/register", {
+          employee_id,
+          username,
+          email,
+          mobile,
+          password,
+        })
+        .then((response) => {
+          console.log(response);
+          // toast.success(response.data.msg, { position: "top-right" });
+          // navigate("/");
+          if (response.status == 200) {
+            alert("Registration successfull !");
+            window.location.href = "./";
+          }
+        })
+        .catch((error) => console.log(error.message));
+    } else {
+      alert("Please Verify MObile First !");
+    }
   };
 
   return (
@@ -133,7 +232,7 @@ const Registration = () => {
             size="small"
           />
         </div>
-
+        <div id="recaptcha-container"></div>
         <div style={{ marginTop: "5px" }}>
           <TextField
             type="text"
@@ -175,7 +274,7 @@ const Registration = () => {
             type="text"
             name="mno"
             value={mobile}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => changeMobile(e)}
             label="Enter mobile number"
             fullWidth
             id="standard-basic"
@@ -184,7 +283,44 @@ const Registration = () => {
             InputProps={{}}
             size="small"
           />
+          {verifyButton ? (
+            <Button
+              onClick={onSignInSubmit}
+              type="button"
+              variant="contained"
+              fullWidth
+              startIcon={<LoginIcon />}
+            >
+              {otpVerified ? "Verified" : "Verify"}
+            </Button>
+          ) : null}
         </div>
+        {verifyOtp ? (
+          <div style={{ marginTop: "5px" }}>
+            <TextField
+              type="text"
+              name="otp"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              label="Enter OTP"
+              fullWidth
+              id="standard-basic"
+              variant="standard"
+              sx={{ width: "100%" }}
+              InputProps={{}}
+              size="small"
+            />
+            <Button
+              onClick={verifyCode}
+              type="button"
+              variant="contained"
+              fullWidth
+              startIcon={<LoginIcon />}
+            >
+              OTP
+            </Button>
+          </div>
+        ) : null}
 
         <div style={{ marginTop: "5px" }}>
           <FormControl sx={{ width: "100%" }} variant="standard">

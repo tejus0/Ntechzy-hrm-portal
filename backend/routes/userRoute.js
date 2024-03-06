@@ -27,8 +27,9 @@ import {
   getAllLeaves,
   rejectLeave,
   updateLeave,
-  getLeaveCount
-  
+  getLeaveCount,
+  getTodos,
+  createTodos
 } from "../controllers/userController.js";
 
 const route = express.Router();
@@ -76,4 +77,8 @@ route.delete("/leaves/reject/:id", rejectLeave);
 route.get("/leaves/update/:id", updateLeave);
 
 route.get("/getLeaveCount", getLeaveCount);
+
+route.get("/getTodos",getTodos);
+
+route.post("/createTodos",createTodos);
 export default route;
