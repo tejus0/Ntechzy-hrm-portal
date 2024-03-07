@@ -166,14 +166,6 @@ const Registration = () => {
       setFormValid("Email is Invalid. Please Re-Enter");
       return;
     }
-
-    // If Password error is true
-    if (passwordError || !password) {
-      setFormValid(
-        "Password is set btw 5 - 20 characters long. Please Re-Enter"
-      );
-      return;
-    }
     setFormValid(null);
     setSuccess("Form Submitted Successfully");
     if (otpVerified) {
@@ -188,11 +180,13 @@ const Registration = () => {
         })
         .then((response) => {
           console.log(response);
-          // toast.success(response.data.msg, { position: "top-right" });
-          // navigate("/");
           if (response.status == 200) {
+            if(response.data.error=="User Exists !"){
+              alert("UserId exists.")
+            }else{
             alert("Registration successfull !");
             window.location.href = "./";
+            }
           }
         })
         .catch((error) => console.log(error.message));

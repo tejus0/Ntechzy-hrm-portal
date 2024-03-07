@@ -1,9 +1,20 @@
-import { useState } from "react";
 import React from "react";
-// import Header from "../components/Header";
-// import Sidebar from "../components/Sidebar"; 
-import { Box } from "@mui/material";
 import axios from "axios";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import bg from "../pages/bg/signin.svg";
+import bgimg from "../pages/bg/backimg.jpg";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { useState, forwardRef } from "react";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import Slide from "@mui/material/Slide";
+import { useNavigate } from "react-router-dom";
 
 import {
   TextField,
@@ -14,7 +25,7 @@ import {
   Button,
   Input,
   Checkbox,
-  Alert,
+  // Alert,
   Stack,
 } from "@mui/material";
 
@@ -27,28 +38,36 @@ import LoginIcon from "@mui/icons-material/Login";
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+const boxstyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "75%",
+  height: "70%",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+};
+
+const center = {
+  position: "relative",
+  top: "50%",
+  left: "37%",
+};
+
 function Login() {
   const [employee_id, setEId] = useState("");
   const [password, setPass] = useState("");
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   // console.log("axios");
-  //   await axios
-  //     .post("http://localhost:7000/api/login", { employee_id, password })
-  //     .then((response) => {
-  //       // response.json()
-  //       console.log(response.data, "userData");
-  //       if (response.data.status == "ok") {
-  //         alert("login successfull !");
-  //         window.localStorage.setItem("token", response.data.data);
-  //         window.location.href = "./admin-page";
-  //       }
-  //       //   // toast.success(response.data.msg, { position: "top-right" });
-  //       // navigate("/admin-page");
-  //     });
-  //   // .catch((error) => console.log(error.message));
-  // };
 
   // export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -65,14 +84,17 @@ function Login() {
   const [formValid, setFormValid] = useState();
   const [success, setSuccess] = useState();
 
+  const [open, setOpen] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const vertical = "top";
+  const horizontal = "right";
+  const navigate = useNavigate();
+
   // // Handles Display and Hide Password
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
-  // // Label for Checkbox
-  // const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   // // Validation for onBlur Email
   const handleEmail = () => {
@@ -101,7 +123,8 @@ function Login() {
   };
 
   // //handle Submittion
-  const handleSubmit =async  (e) => {
+  const handleSubmit = async (e) => {
+    setOpen(true);
     e.preventDefault();
     setSuccess(null);
     //First of all Check for Errors
@@ -123,265 +146,315 @@ function Login() {
     setSuccess("Form Submitted Successfully");
 
     // Proceed to use the information passed
-        // console.log("axios");
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/login`,{employee_id:employee_id,email:emailInput,password:password}).then((response) => {
-          // response.json()
-          console.log(response.data,"userData");
-          if(response.data.status=='ok'){
-            alert("login successfull !")
-            window.localStorage.setItem("token",response.data.data);
-            window.localStorage.setItem("loggedIn",true)
-            window.location.href="./admin-page"
-          }
-        //   // toast.success(response.data.msg, { position: "top-right" });
-          // navigate("/admin-page");
-        })
-  .catch((error) => console.log(error.message));
+    // console.log("axios");
+    await axios
+      .post(`${process.env.REACT_APP_BASE_URL}/login`, {
+        employee_id: employee_id,
+        email: emailInput,
+        password: password,
+      })
+      .then((response) => {
+        // response.json()
+        console.log(response.data, "userData");
+        if (response.data.status == "ok") {
+          alert("login successfull !");
+          window.localStorage.setItem("token", response.data.data);
+          window.localStorage.setItem("loggedIn", true);
+          window.location.href = "./admin-page";
+        }
+        else{
+          alert(response.data.error)
+        }
+      })
+      .catch((error) => console.log(error.message));
 
-  // Show Successfull Submittion
+    // Show Successfull Submittion
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  function TransitionLeft(props) {
+    return <Slide {...props} direction="left" />;
+  }
+
   return (
-    <Box
-      container
-      sx={{
-        p: 15,
-        m: "auto",
-        marginTop:"3em",
-        alignItems: "center",
-        bgcolor:"grey",
-        width: "40%",
-        borderRadius: 5,
-      }}
-    >
-      <form onSubmit={handleSubmit} action="" method="">
-        <div style={{ marginTop: "5px" }}>
-          <TextField
+    <>
+      <div
+        style={{
+          backgroundImage: `url(${bgimg})`,
+          backgroundSize: "cover",
+          height: "100vh",
+          color: "#f5f5f5",
+        }}
+      >
+        <Box sx={boxstyle}>
+          <Grid container>
+            <Grid item xs={12} sm={12} lg={6}>
+              <Box
+                style={{
+                  backgroundImage: `url(${bg})`,
+                  backgroundSize: "cover",
+                  marginTop: "40px",
+                  marginLeft: "15px",
+                  marginRight: "15px",
+                  height: "63vh",
+                  color: "#f5f5f5",
+                }}
+              ></Box>
+            </Grid>
+            <Grid item xs={12} sm={12} lg={6}>
+              <Box
+                style={{
+                  backgroundSize: "cover",
+                  height: "70vh",
+                  minHeight: "500px",
+                  backgroundColor: "#3b33d5",
+                }}
+              >
+                <ThemeProvider theme={darkTheme}>
+                  <Container>
+                    <Box height={35} />
+                    <Box sx={center}>
+                      <Avatar
+                        sx={{ ml: "35px", mb: "4px", bgcolor: "#ffffff" }}
+                      >
+                        <LockOutlinedIcon />
+                      </Avatar>
+                      <Typography component="h1" variant="h4">
+                        Sign In
+                      </Typography>
+                    </Box>
+                    <Box
+                      component="form"
+                      noValidate
+                      onSubmit={handleSubmit}
+                      sx={{ mt: 2 }}
+                    >
+                      <Grid container spacing={1}>
+                        <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
+                        <div style={{ marginTop: "5px" }}>
+           <TextField
+           required
             label="Employee ID"
             fullWidth
             id="standard-basic"
-            variant="standard"
+            // variant="standard"
             sx={{ width: "100%" }}
             value={employee_id}
             onChange={(e) => setEId(e.target.value)}
-            InputProps={{}}
-            size="small"
+            // InputProps={{}}
+            // size="small"
           />
         </div>
-
+        </Grid>
+        <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
         <div style={{ marginTop: "5px" }}>
-          <TextField
+         <TextField
             label="Email Address"
             fullWidth
             error={emailError}
             id="standard-basic"
-            variant="standard"
+            // variant="standard"
             sx={{ width: "100%" }}
             value={emailInput}
-            InputProps={{}}
-            size="small"
+            // InputProps={{}}
+            // size="small"
             onBlur={handleEmail}
+            autoComplete="email"
             onChange={(event) => {
               setEmailInput(event.target.value);
             }}
           />
         </div>
-        <div style={{ marginTop: "5px" }}>
-          <FormControl sx={{ width: "100%" }} variant="standard">
-            <InputLabel
-              error={passwordError}
-              htmlFor="standard-adornment-password"
-            >
-              Password
-            </InputLabel>
-            <Input
+        </Grid>
+            <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
+            <TextField
+            sx={{ width: "100%" }}
               error={passwordError}
               value={password}
+              label="Password"
               name="password"
               onBlur={handlePassword}
               id="standard-adornment-password"
               type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
               onChange={(event) => {
                 setPass(event.target.value);
               }}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </div>
-
-        <div style={{ marginTop: "10px" }}>
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            startIcon={<LoginIcon />}
-          >
-            LOGIN
-          </Button>
-        </div>
-        {/* <input
-          type="number"
-          name="eid"
-          required
-          value={employee_id}
-          onChange={(e) => setEId(e.target.value)}
-          placeholder="Enter Employee-Id"
-        />
-        <br /> */}
-        {/* <input type="name" name="name" required placeholder="Enter Name" /> */}
-        {/* <br /> */}
-        {/* <input type="email" name="email" required placeholder="Enter email" />
-        <br />
-        <br /> */}
-        {/* <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPass(e.target.value)}
-          required
-          placeholder="Enter password"
-        />
-        <br />
-        <br />
-        <button type="submit" value="Login">
-          Submit
-        </button> */}
-      </form>
-
-      <a href="/forget-pass">Forgot Password</a>
-
-      <a href="/register">Register</a>
-    </Box>
-
-    // <div>
-    //      <Box
+              InputProps={{
+                endAdornment:
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                
+              }}
+              />
+            </Grid>                  
+                        <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
+                          <Stack direction="row" spacing={2}>
+                            <Typography
+                              variant="body1"
+                              component="span"
+                              onClick={() => {
+                                navigate("/reset-password");
+                              }}
+                              style={{ marginTop: "10px", cursor: "pointer" }}
+                            >
+                              Forgot password?
+                            </Typography>
+                          </Stack>
+                        </Grid>
+                        <Grid item xs={12} sx={{ ml: "5em", mr: "5em" }}>
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            fullWidth="true"
+                            size="large"
+                            sx={{
+                              mt: "10px",
+                              mr: "20px",
+                              borderRadius: 28,
+                              color: "#ffffff",
+                              minWidth: "170px",
+                              backgroundColor: "#FF9A01",
+                            }}
+                          >
+                            Sign in
+                          </Button>
+                        </Grid>
+                        <Grid item xs={12} sx={{ ml: "3em", mr: "3em" }}>
+                          <Stack direction="row" spacing={2}>
+                            <Typography
+                              variant="body1"
+                              component="span"
+                              style={{ marginTop: "10px" }}
+                            >
+                              Not registered yet?{" "}
+                              <span
+                                style={{ color: "#beb4fb", cursor: "pointer" }}
+                                onClick={() => {
+                                  navigate("/register");
+                                }}
+                              >
+                                Create an Account
+                              </span>
+                            </Typography>
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </Container>
+                </ThemeProvider>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+      </div>
+    </>
+    // <Box
     //   container
     //   sx={{
-    //     p: 5,
+    //     p: 15,
     //     m: "auto",
-    //     // bgcolor:"black",
-    //     alignItems:"center",
-
-    //     width: "60%",
-    //     borderRadius: 1,
+    //     marginTop:"3em",
+    //     alignItems: "center",
+    //     bgcolor:"grey",
+    //     width: "40%",
+    //     borderRadius: 5,
     //   }}
     // >
-    //    <form onSubmit={handleSubmit} action="" method="">
-    //    <div style={{ marginTop: "5px" }}>
-    //     <TextField
-    //       label="Employee ID"
-    //       fullWidth
-    //       id="standard-basic"
-    //       variant="standard"
-    //       sx={{ width: "100%" }}
-    //       value={employee_id}
-    //       InputProps={{}}
-    //       size="small"
-    //       onChange={(event) => {
-    //         setEId(event.target.value);
-    //       }}
-    //     />
-    //   </div>
-    //   <div style={{ marginTop: "5px" }}>
-    //     <TextField
-    //       label="Email Address"
-    //       fullWidth
-    //       error={emailError}
-    //       id="standard-basic"
-    //       variant="standard"
-    //       sx={{ width: "100%" }}
-    //       value={emailInput}
-    //       InputProps={{}}
-    //       size="small"
-    //       onBlur={handleEmail}
-    //       onChange={(event) => {
-    //         setEmailInput(event.target.value);
-    //       }}
-    //     />
-    //   </div>
-    //   <div style={{ marginTop: "5px" }}>
-    //     <FormControl sx={{ width: "100%" }} variant="standard">
-    //       <InputLabel
-    //         error={passwordError}
-    //         htmlFor="standard-adornment-password"
-    //       >
-    //         Password
-    //       </InputLabel>
-    //       <Input
-    //         error={passwordError}
-    //         value={passwordInput}
-    //         onBlur={handlePassword}
-    //         id="standard-adornment-password"
-    //         type={showPassword ? "text" : "password"}
-    //         onChange={(event) => {
-    //           setPasswordInput(event.target.value);
-    //         }}
-    //         endAdornment={
-    //           <InputAdornment position="end">
-    //             <IconButton
-    //               aria-label="toggle password visibility"
-    //               onClick={handleClickShowPassword}
-    //               onMouseDown={handleMouseDownPassword}
-    //             >
-    //               {showPassword ? <VisibilityOff /> : <Visibility />}
-    //             </IconButton>
-    //           </InputAdornment>
-    //         }
+    //   <form onSubmit={handleSubmit} action="" method="">
+    //     <div style={{ marginTop: "5px" }}>
+    //       <TextField
+    //         label="Employee ID"
+    //         fullWidth
+    //         id="standard-basic"
+    //         variant="standard"
+    //         sx={{ width: "100%" }}
+    //         value={employee_id}
+    //         onChange={(e) => setEId(e.target.value)}
+    //         InputProps={{}}
+    //         size="small"
     //       />
-    //     </FormControl>
-    //   </div>
-
-    //   <div style={{ marginTop: "10px" }}>
-    //     <Button
-    //       variant="contained"
-    //       fullWidth
-    //       startIcon={<LoginIcon />}
-    //     >
-    //       LOGIN
-    //     </Button>
-    //   </div>
-
-    //   {/* Show Form Error if any */}
-    //   {formValid && (
-    //     <Stack sx={{ width: "100%", paddingTop: "10px" }} spacing={2}>
-    //       <Alert severity="error" size="small">
-    //         {formValid}
-    //       </Alert>
-    //     </Stack>
-    //   )}
-
-    //   {/* Show Success if no issues */}
-    //   {success && (
-    //     <Stack sx={{ width: "100%", paddingTop: "10px" }} spacing={2}>
-    //       <Alert severity="success" size="small">
-    //         {success}
-    //       </Alert>
-    //     </Stack>
-    //   )}
-
-    //   <div style={{ marginTop: "2em", fontSize: "1rem" }} margin="left">
-    //     <a>Forgot Password</a>
-    //     <br />
-    //     <br />
-    //     Don't have an account ?{" "}
-    //     <div style={{ textDecoration: "underline", color: "blue" }}>
-    //       Sign Up
     //     </div>
-    //   </div>
-    //   </form>
-    //   </Box>
 
-    // </div>
+    //     <div style={{ marginTop: "5px" }}>
+    //       <TextField
+    //         label="Email Address"
+    //         fullWidth
+    //         error={emailError}
+    //         id="standard-basic"
+    //         variant="standard"
+    //         sx={{ width: "100%" }}
+    //         value={emailInput}
+    //         InputProps={{}}
+    //         size="small"
+    //         onBlur={handleEmail}
+    //         onChange={(event) => {
+    //           setEmailInput(event.target.value);
+    //         }}
+    //       />
+    //     </div>
+    //     <div style={{ marginTop: "5px" }}>
+    //       <FormControl sx={{ width: "100%" }} variant="standard">
+    //         <InputLabel
+    //           error={passwordError}
+    //           htmlFor="standard-adornment-password"
+    //         >
+    //           Password
+    //         </InputLabel>
+    //         <Input
+    //           error={passwordError}
+    //           value={password}
+    //           name="password"
+    //           onBlur={handlePassword}
+    //           id="standard-adornment-password"
+    //           type={showPassword ? "text" : "password"}
+    //           onChange={(event) => {
+    //             setPass(event.target.value);
+    //           }}
+    //           endAdornment={
+    //             <InputAdornment position="end">
+    //               <IconButton
+    //                 aria-label="toggle password visibility"
+    //                 onClick={handleClickShowPassword}
+    //                 onMouseDown={handleMouseDownPassword}
+    //               >
+    //                 {showPassword ? <VisibilityOff /> : <Visibility />}
+    //               </IconButton>
+    //             </InputAdornment>
+    //           }
+    //         />
+    //       </FormControl>
+    //     </div>
+
+    //     <div style={{ marginTop: "10px" }}>
+    //       <Button
+    //         type="submit"
+    //         variant="contained"
+    //         fullWidth
+    //         startIcon={<LoginIcon />}
+    //       >
+    //         LOGIN
+    //       </Button>
+    //     </div>
+    //   </form>
+
+    //   <a href="/forget-pass">Forgot Password</a>
+
+    //   <a href="/register">Register</a>
+    // </Box>
   );
 }
 
