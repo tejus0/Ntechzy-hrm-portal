@@ -194,8 +194,8 @@ export default function EmployeeAttend() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div"  >
-      ADMIN
+          <Typography variant="h6" noWrap component="div">
+            ADMIN
           </Typography>
           <Grid container sx={{display:"flex",justifyContent:"flex-end"}}>
             <div>

@@ -1,7 +1,7 @@
 import Dropdown from "../components/Dropdown";
 import { useState } from "react";
 import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import Usersidebar from "../components/Usersidebar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -100,7 +100,7 @@ function EmployeeDetails() {
   };
   return (
     <Box container sx={{ display: "flex" }}>
-      <Sidebar
+      <Usersidebar
         openSidebarToggle={openSidebarToggle}
         OpenSidebar={OpenSidebar}
       />
