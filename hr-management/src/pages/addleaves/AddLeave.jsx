@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import Sidebar from "../../components/Sidebar";
 import { Box, ThemeProvider } from "@mui/system";
 import toast from "react-hot-toast";
@@ -10,6 +10,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import axios from "axios";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { UserContext } from "../../screens/contexts/userContext";
 
 function EmployeeLeave() {
   const [name, setName] = useState("");
@@ -27,13 +29,18 @@ function EmployeeLeave() {
   const [endDate, setEndDate] = useState(null);
   const [BeforeRemLeaves, setBeforeRemLeaves] = useState(0);
   const [AfterRemLeaves, setAfterRemLeaves] = useState(BeforeRemLeaves);
+  const [dayDiff, setDayDiff] = useState(0)
 
-  useEffect(() => {
-    const time = Math.abs(endDate - startDate);
-    const days = Math.ceil(time / (1000 * 60 * 60 * 24));
-    setAfterRemLeaves(days);
-    console.log(days);
-  }, [endDate]);
+  // const emp_id = useContext(UserContext)
+
+  const [user_id, setUser_id] = useState(0);
+
+  // useEffect(() => {
+  //   const time = Math.abs(endDate - startDate);
+  //   const days = Math.ceil(time / (1000 * 60 * 60 * 24));
+  //   setAfterRemLeaves(days);
+  //   console.log(days);
+  // }, [endDate]);
 
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
@@ -67,18 +74,20 @@ function EmployeeLeave() {
     await axios
       .post(`${process.env.REACT_APP_BASE_URL}/generate-leave`, {
         name: name,
-        employeeNo: empId,
+        employeeNo: user_id,
         leaveType: type,
         Day: day,
-        From: inputBox ? from:"",
-        To: inputBox ?  to: "",
+        From: inputBox ? from : "",
+        To: inputBox ? to : "",
         Days: daycount,
         RemLeaves: remLeaves,
         Description: desc,
       })
       .then((response) => {
         console.log(response);
-        toast.success("Application submitted successfully !", { position: "top-right" });
+        toast.success("Application submitted successfully !", {
+          position: "top-right",
+        });
 
         // navigate("/");
       })
@@ -101,11 +110,65 @@ function EmployeeLeave() {
   const handleDay = (value) => {
     if (value === "Full Day") {
       setInputBox(true);
-    }
-    else{
-        setInputBox(false);
+    } else {
+      setInputBox(false);
     }
   };
+
+  const timeCalc = (newValue) => {
+    console.log(newValue);
+    const format = "YYYY-MM-DD";
+    var start = moment(startDate,format);
+    var end = moment(endDate,format);
+    let duration = moment(end, format).diff(moment(start, format));
+    // console.log(start.days()-end.days());
+    // console.log(start, end);
+    // console.log(duration);
+    // var dayDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    // // console.log(dayDiff);
+    // console.log(moment.duration(end.diff(start,true)));
+    console.log(end.diff(start, "days", true) + ' hours');
+  };
+
+  const totalCasual = 10;
+
+  useEffect(() => {
+    const Id = JSON.parse(localStorage.getItem("Id-data"), function (k, v) {
+      return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
+    });
+    console.log(Id, typeof Id);
+    if (Id) {
+      console.log("id not setting");
+      setUser_id(Id);
+      console.log(user_id, "this is not working");
+    }
+  }, []);
+
+  const hasPageBeenRendered = useRef(false);
+
+  useEffect(() => {
+    if (hasPageBeenRendered.current) {
+      const fetchData = async () => {
+        await axios
+          .get(
+            `http://localhost:7000/api/remainingLeaves?employeeNo=${user_id}&leaveType=${type}`
+          )
+          .then((response) => {
+            if (!response) {
+              setBeforeRemLeaves(totalCasual);
+            } else setBeforeRemLeaves(totalCasual - response.data);
+            console.log(response);
+            // toast.success(response, {position:"top-right"})
+          })
+          .catch((error) => console.log(error));
+        // console.log(response);
+        // setBeforeRemLeaves(response.data);
+      };
+
+      fetchData();
+    }
+    hasPageBeenRendered.current = true;
+  }, [type]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -115,7 +178,7 @@ function EmployeeLeave() {
           OpenSidebar={OpenSidebar}
         />
         <Box
-        //   component="form"
+          //   component="form"
           sx={{
             display: "flex",
             flexGrow: 1,
@@ -128,190 +191,173 @@ function EmployeeLeave() {
           noValidate
           autoComplete="off"
         >
-            <form onSubmit={handleSubmit}>
-          <Typography
-            variant="h5"
-            style={{
-              textAlign: "center",
-              justifyContent: "center",
-              width: "100%",
-              paddingTop: "5%",
-              textDecoration: "underline",
-              fontSize: "30px",
-            }}
-          >
-            APPLY LEAVES
-            <hr />
-          </Typography>
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid container item xs={6} direction="column">
-              <div>Employee Name </div>
-              <TextField
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-                // disabled
-                // value={AfterRemLeaves}
-                id="filled-disabled"
-                defaultValue=""
-                variant="filled"
-                fullWidth
-              />
+          <form onSubmit={handleSubmit}>
+            <Typography
+              variant="h5"
+              style={{
+                textAlign: "center",
+                justifyContent: "center",
+                width: "100%",
+                paddingTop: "5%",
+                textDecoration: "underline",
+                fontSize: "30px",
+              }}
+            >
+              APPLY LEAVES
+              <hr />
+            </Typography>
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid container item xs={6} direction="column">
+                <div>Employee Id </div>
+                <TextField
+                  defaultValue
+                  // onChange={(e) => {
+                  //   setName(e.target.value);
+                  // }}
+                  disabled
+                  value={user_id}
+                  // value={AfterRemLeaves}
+                  id="filled-disabled"
+                  // defaultValue=""
+                  variant="filled"
+                  fullWidth
+                />
 
-              <div> Leave Type * : </div>
-              <TextField
-                id="outlined-select-currency"
-                onChange={(e) => {
-                  setType(e.target.value);
-                }}
-                select
-                label="Select"
-                helperText="Please select your currency"
-                fullWidth
-              >
-                {leaveType.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.value}
-                  </MenuItem>
-                ))}
-                {/* {currencies.map((option) => (
+                <div> Leave Type * : </div>
+                <TextField
+                  id="outlined-select-currency"
+                  onChange={(e) => {
+                    setType(e.target.value);
+                  }}
+                  select
+                  label="Select"
+                  helperText="half Day"
+                  fullWidth
+                >
+                  {leaveType.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.value}
+                    </MenuItem>
+                  ))}
+                  {/* {currencies.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
           ))} */}
-              </TextField>
-              {inputBox ? (
-                <>
-                  <div>From</div>
-                  <DatePicker
-                    disablePast
-                    label="Start Date"
-                    value={startDate}
-                    onChange={(newValue) => {
-                      setFrom(newValue);
-                      setStartDate(newValue);
-                    }}
-                  />
-                </>
-              ) : null}
+                </TextField>
+                {inputBox ? (
+                  <>
+                    <div>From</div>
+                    <DatePicker
+                      disablePast
+                      label="Start Date"
+                      format="YYYY-MM-DD"
+                      value={startDate}
+                      onChange={(newValue) => {
+                        setFrom(newValue);
+                        setStartDate(newValue);
+                      }}
+                    />
+                  </>
+                ) : null}
+              </Grid>
+              <Grid container item xs={6} direction="column">
+                <div> Day</div>
+                <TextField
+                  id="outlined-select-currency"
+                  required
+                  select
+                  onChange={(e) => {
+                    setDay(e.target.value);
+                    {
+                      handleDay(e.target.value);
+                    }
+                  }}
+                  label="Select"
+                  helperText="Please select your currency"
+                  fullWidth
+                >
+                  {dayType.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.value}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <div>Remaining Leaves *</div>
 
-              <div>Remaining Leaves *</div>
-
-              <TextField
-                value={BeforeRemLeaves}
-                defaultValue="10"
-                variant="filled"
-                fullWidth
-              />
-            </Grid>
-            <Grid container item xs={6} direction="column">
-              <div>Employee ID </div>
-              <TextField
-                // disabled
-                onChange={(e) => {
-                  setEmpId(e.target.value);
-                }}
-                // value={AferRemLeaves}
-                id="filled-disabled"
-                defaultValue=""
-                variant="filled"
-                fullWidth
-              />
-              <div> Day</div>
-              <TextField
-                id="outlined-select-currency"
-                select
-                onChange={(e) => {
-                  setDay(e.target.value);
-                  {
-                    handleDay(e.target.value);
-                  }
-                }}
-                label="Select"
-                helperText="Please select your currency"
-                fullWidth
+                <TextField
+                  value={BeforeRemLeaves}
+                  // defaultValue="10"
+                  variant="filled"
+                  disabled
+                  fullWidth
+                />
+                {inputBox ? (
+                  <>
+                    <div>To *</div>
+                    <DatePicker
+                      label="End Date"
+                      format="YYYY-MM-DD"
+                      value={endDate}
+                      minDate={startDate}
+                      onChange={(newValue) => {
+                        setTo(newValue);
+                        setEndDate(newValue);
+                        timeCalc(newValue);
+                      }}
+                    />
+                  </>
+                ) : null}
+              </Grid>
+              <Grid
+                container
+                item
+                spacing={1}
+                align="center"
+                direction="row"
+                sx={{ marginTop: "10px" }}
               >
-                {dayType.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.value}
-                  </MenuItem>
-                ))}
-              </TextField>
-              {inputBox ? (
-                <>
-                  <div>To *</div>
-                  <DatePicker
-                    label="End Date"
-                    value={endDate}
-                    minDate={startDate}
-                    onChange={(newValue) => {
-                      setTo(newValue);
-                      setEndDate(newValue);
-                    }}
-                  />
-                </>
-              ) : null}
-              <div>Remaining Leaves</div>
-
-              <TextField
-                // disabled
-                // value={AfterRemLeaves}
-                id="filled-disabled"
-                label="Disabled"
-                defaultValue="10"
-                variant="filled"
-                fullWidth
-              />
-            </Grid>
-            <Grid
-              container
-              item
-              spacing={1}
-              align="center"
-              direction="row"
-              sx={{ marginTop: "10px" }}
-            >
-              <div>Reason Of Leave</div>
-              <TextField
-                required
-                multiline
-                onChange={(e) => {
-                  setDesc(e.target.value);
-                }}
-                rows={4}
-                fullWidth
-                id="outlined-required"
-                label="Required"
-              />
-              <Grid container spacing={1} align="center" direction="row">
-                <Grid item sx={{ margin: "5px" }}>
-                  <Button
-                    // onClick={handleSubmit}
-                    type="submit"
-                    variant="contained"
-                    color="success"
-                  >
-                    Apply
-                  </Button>
-                </Grid>
-                <Grid item sx={{ margin: "5px" }}>
-                  <Button
-                  type="button"
-                    variant="contained"
-                    color="error"
-                    onClick={ resetForm}
-                  >
-                    Reset
-                  </Button>
+                <div>Reason Of Leave</div>
+                <TextField
+                  required
+                  multiline
+                  onChange={(e) => {
+                    setDesc(e.target.value);
+                  }}
+                  rows={4}
+                  fullWidth
+                  id="outlined-required"
+                  label="Required"
+                />
+                <Grid container spacing={1} align="center" direction="row">
+                  <Grid item sx={{ margin: "5px" }}>
+                    <Button
+                      // onClick={handleSubmit}
+                      type="submit"
+                      variant="contained"
+                      color="success"
+                    >
+                      Apply
+                    </Button>
+                  </Grid>
+                  <Grid item sx={{ margin: "5px" }}>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="error"
+                      onClick={resetForm}
+                    >
+                      Reset
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </form>
+          </form>
         </Box>
       </Box>
     </LocalizationProvider>

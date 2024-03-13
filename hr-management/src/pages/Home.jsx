@@ -70,8 +70,8 @@ function Home() {
     },
   ];
 
-  const [userCount, setuserCount] = useState([]);
-  const [leaveCount, setleaveCount] = useState([]);
+  const [userCount, setuserCount] = useState();
+  const [leaveCount, setleaveCount] = useState();
 
   // const fetchData = () => {
   //   const userAPI = axios.get("http://localhost:7000/api/getUserCount");
@@ -88,22 +88,47 @@ function Home() {
   //   );
   // };
 
+  const [resp, setRespData] = useState({ users: null, leaves: null });
+
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        
-         axios.get(`${process.env.REACT_APP_BASE_URL}/getUserCount`).then(users=> setuserCount(users.data)).catch(err=> console.log(err));
-        // axios
-        //   .get("http://localhost:7000/api/getLeaveCount")
-        //   .then((leaves) => setleaveCount(leaves.data))
-        //   .catch((err) => console.log(err));
-      } catch (error) {
-        console.log(error);
-      }
+      const usersCount = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/getUserCount`
+      ).then((response) => {
+        // response.json();
+        console.log(response, "token is sent");
+        setuserCount(response.data)
+      })
+      .catch((error) => console.log(error.message));
+
+      const leaveCount = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/getLeaveCount`
+      ).then((response)=>{
+        console.log(response,"leaves set");
+        setleaveCount(response.data)
+      }) .catch((error) => console.log(error.message));
+
     };
 
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+        
+  //        axios.get(`${process.env.REACT_APP_BASE_URL}/getUserCount`).then(users=> setuserCount(users.data)).catch(err=> console.log(err));
+  //       // axios
+  //       //   .get("http://localhost:7000/api/getLeaveCount")
+  //       //   .then((leaves) => setleaveCount(leaves.data))
+  //       //   .catch((err) => console.log(err));
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   return (
     <div style={{ width: "90%" }}>
@@ -127,7 +152,8 @@ function Home() {
             <h3>CUSTOMERS</h3>
             <BsPeopleFill className="card_icon" />
           </div>
-          <h1>{userCount}</h1>
+          <h1>
+          {userCount}</h1>
         </div>
         <div className="card">
           <div className="card-inner">

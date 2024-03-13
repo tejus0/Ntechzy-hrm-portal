@@ -29,7 +29,8 @@ import {
   updateLeave,
   getLeaveCount,
   getTodos,
-  createTodos
+  createTodos,
+  remainingLeaves,
 } from "../controllers/userController.js";
 
 const route = express.Router();
@@ -78,7 +79,11 @@ route.get("/leaves/update/:id", updateLeave);
 
 route.get("/getLeaveCount", getLeaveCount);
 
-route.get("/getTodos",getTodos);
+route.get("/getTodos", getTodos);
 
-route.post("/createTodos",createTodos);
+route.post("/createTodos", createTodos);
+
+route.get("/remainingLeaves", remainingLeaves);
+
+// route.get("/getUserName",getUserName)
 export default route;

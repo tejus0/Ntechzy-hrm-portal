@@ -14,12 +14,14 @@ import Forget from './screens/Forget.jsx';
 import Registration from './screens/Registration.jsx';
 import Leave from './pages/getleaves/leaves.jsx';
 import ToDoList from "./pages/ToDoList/getToDo/ToDoList.jsx"
+import {UserContext} from '../src/screens/contexts/userContext.js'
 Modal.setAppElement('#root')
 
 function App() {
   const isLoggedIn= window.localStorage.getItem("loggedIn");
  return (
       <Router>
+            <UserContext.Provider value= "he;llo i am contet ">
           <Routes>
             <Route  exact path='/admin-page' element={<LandingLayout/>}/>
             <Route exact path="/payroll" element={<PayrollAdmin />} />
@@ -35,8 +37,8 @@ function App() {
             <Route exact path="/forget-pass" element={<Forget />} />
             <Route exact path="/leaves-list" element={<Leave />} />
             <Route exact path="/todo" element={<ToDoList />} />
-          
           </Routes>
+            </UserContext.Provider>
       </Router>
   );
   

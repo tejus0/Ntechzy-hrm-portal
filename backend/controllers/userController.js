@@ -203,7 +203,7 @@ export const verifyLogin = async (req, res) => {
 };
 
 export const loadHome = async (req, res) => {
-  const { token } = req.body;
+  const { token, id } = req.body;
 
   try {
     const user = jwt.verify(
@@ -224,6 +224,7 @@ export const loadHome = async (req, res) => {
     console.log(user.email, "email is here");
     Registeration.findOne({ employee_id: user.employee_id })
       .then((data) => {
+        // JSON.parse(window.localStorage.getItem("data"));
         res.send({ status: "ok", data: data });
       })
       .catch((error) => {
@@ -531,4 +532,39 @@ export const getTodos = async (req, res) => {
 export const createTodos = async (req, res) => {
   const todo = await Todo.create(req.body);
   res.json(todo);
+};
+
+export const getUserName = async (req, res) => {
+  try {
+    const users = await Registeration.find({});
+    if (!users) {
+      return res.status(404).json({ msg: "User data not found" });
+    }
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const remainingLeaves = async (req, res) => {
+  // console.log("object");
+  // return res.status("successful");
+  console.log("reacher leaves");
+  try {
+    const id = req.query.employeeNo;
+    const type = req.query.leaveType;
+    console.log(id, type);
+    // console.log(id, "here");
+    const users = await Leave.find({
+      employeeNo: id,
+      leaveType: type,
+    }).countDocuments();
+    console.log(users);
+    // if (!users) {
+    //   return 0;
+    // }
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: "error" });
+  }
 };

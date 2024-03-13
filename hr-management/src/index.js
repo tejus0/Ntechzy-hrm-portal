@@ -5,13 +5,18 @@ import './index.css';
 import "react-datetime/css/react-datetime.css";
 import App from './App';
 import { Toaster } from "react-hot-toast";
+import { Provider } from 'react-redux';
+import store from './Store';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
     <App />
     <Toaster />
-  </React.StrictMode>
+    </Provider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

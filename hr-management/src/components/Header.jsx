@@ -7,6 +7,7 @@ import {
   BsJustify,
 } from "react-icons/bs";
 
+
 function Header({ OpenSidebar }) {
   return (
     <header className="header">

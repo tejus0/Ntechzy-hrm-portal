@@ -18,6 +18,7 @@ function LandingLayout() {
       await axios
         .post(`${process.env.REACT_APP_BASE_URL}/admin-page`, {
           token: window.localStorage.getItem("token"),
+          data:window.localStorage.getItem("Id-data")
         })
         .then((response) => {
           // response.json();

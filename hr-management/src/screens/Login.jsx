@@ -15,6 +15,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import {
   TextField,
@@ -33,6 +34,7 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginIcon from "@mui/icons-material/Login";
+import { loginUser } from "../Store/UserSlice";
 
 // Email Validation
 const isEmail = (email) =>
@@ -89,6 +91,8 @@ function Login() {
   const vertical = "top";
   const horizontal = "right";
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   // // Handles Display and Hide Password
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -158,8 +162,11 @@ function Login() {
         console.log(response.data, "userData");
         if (response.data.status == "ok") {
           alert("login successfull !");
+          let userCredentials= {employee_id}
+          dispatch(loginUser(userCredentials))
           window.localStorage.setItem("token", response.data.data);
           window.localStorage.setItem("loggedIn", true);
+          window.localStorage.setItem("Id-data", JSON.stringify(employee_id));
           window.location.href = "./admin-page";
         }
         else{
