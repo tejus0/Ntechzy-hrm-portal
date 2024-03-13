@@ -12,6 +12,10 @@ node_modules
 src/assets
 bower_components
 
+backend/.env
+
+hr-management/.env
+
 *.sublime*
 
 psd

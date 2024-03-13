@@ -387,12 +387,12 @@ export default function EmployeeAttend() {
       </Collapse>
       <Divider />
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List disablePadding component={Link} to="/employee-list" onClick={handleIsCollapse}>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Starred" />
+            <ListItemText primary="All Employee" />
           </ListItemButton>
         </List>
       </Collapse>
@@ -403,11 +403,31 @@ export default function EmployeeAttend() {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="Starred" />
+            <ListItemText primary="" />
           </ListItemButton>
         </List>
       </Collapse>
-
+                
+      <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/leave-management" onClick={handleIsCollapse}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                   <MailIcon />
+                </ListItemIcon>
+                <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
 
         </List>
       </Drawer>
