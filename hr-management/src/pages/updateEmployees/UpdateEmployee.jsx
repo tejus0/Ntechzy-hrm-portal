@@ -3,8 +3,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import "../addusers/add.css";
 import toast from 'react-hot-toast';
-import Dropdown from "../../components/Dropdown";
-import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";

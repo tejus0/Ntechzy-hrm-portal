@@ -17,7 +17,7 @@ const User = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:7000/api/getall");
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/getall`);
       setUsers(response.data);
     };
 
@@ -26,7 +26,7 @@ const User = () => {
 
   const deleteUser = async (userId) => {
     await axios
-      .delete(`http://localhost:7000/api/delete/${userId}`)
+      .delete(`${process.env.REACT_APP_BASE_URL}/delete/${userId}`)
       .then((respones) => {
         setUsers((prevUser) => prevUser.filter((user) => user._id !== userId));
         toast.success(respones.data.msg, { position: "top-right" });

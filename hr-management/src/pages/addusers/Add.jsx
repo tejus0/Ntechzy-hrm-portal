@@ -42,7 +42,7 @@ const Add = () => {
 
   const submitForm = async(e) =>{
     e.preventDefault();
-    await axios.post("http://localhost:8000/api/create", user)
+    await axios.post(`${process.env.REACT_APP_BASE_URL}/create`, user)
     .then((response)=>{
        toast.success(response.data.msg, {position:"top-right"})
        navigate("/")

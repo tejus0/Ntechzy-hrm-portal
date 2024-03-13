@@ -1,9 +1,4 @@
-const sessionSecret = "TejusChaturvediisHere";
-const emailUser= "tejuschaturvedi0@gmail.com";
-const emailPass= "kwyjqqhpflucvmez";
 
-module.exports={
-    sessionSecret,
-    emailUser,
-    emailPass
-}
+ export const sessionSecret = "TejusChaturvediisHere";
+export const emailUser= "tejuschaturvedi0@gmail.com";
+export const emailPass= "kwyjqqhpflucvmez";
