@@ -1,7 +1,7 @@
 import Dropdown from "../components/Dropdown";
 import { useState } from "react";
 import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import Usersidebar from "../components/Usersidebar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -84,7 +84,7 @@ function EmployeeDetails() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .post(`${process.env.REACT_APP_BASE_URL}/create`, user)
+      .post("http://localhost:7000/api/create", user)
       .then((response) => {
         console.log(response);
         toast.success(response.data.msg, { position: "top-right" });
@@ -100,7 +100,7 @@ function EmployeeDetails() {
   };
   return (
     <Box container sx={{ display: "flex" }}>
-      <Sidebar
+      <Usersidebar
         openSidebarToggle={openSidebarToggle}
         OpenSidebar={OpenSidebar}
       />
