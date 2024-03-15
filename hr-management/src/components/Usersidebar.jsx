@@ -202,7 +202,7 @@ export default function EmployeeAttend() {
                 <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
+            <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/userdashboard" onClick={handleIsCollapse}>
               <ListItemButton
                 sx={{
                   minHeight: 48,

@@ -19,30 +19,28 @@ import Userleave from './screens/UserLeave.jsx';
 import Userdetails from './screens/UserDetails.jsx';
 import UserLandingLayout from './pages/UserLandingLayout.jsx';
 import Usersales from './screens/UserSalesAnalytics.jsx';
+import Userdashboard from './pages/UserDashboard.jsx';
 Modal.setAppElement('#root')
-
 function App() {
   const isLoggedIn= window.localStorage.getItem("loggedIn");
  return (
       <Router>
           <Routes>
-            <Route  exact path='/admin-page' element={<LandingLayout/>}/>
+            <Route  exact path='/admin-page' element={<UserLandingLayout/>}/>
             <Route exact path="/payroll" element={<PayrollAdmin />} />
             <Route exact path="/register" element={<Registration />} />
-            <Route exact path="/" element={isLoggedIn=="true" ? <LandingLayout/> : <Login />} />
+            <Route exact path="/" element={isLoggedIn=="true" ? <UserLandingLayout/> : <Login />} />
             <Route exact path="/leave-management" element={<EmployeeLeave />} />
             <Route exact path="/attendance-management" element={<EmployeeAttend />} />
             <Route exact path="/employee-details" element={<EmployeeDetails />} />
             <Route exact path="/employee-list" element={<Users />} />
             <Route exact path="/update-employee" element={<UpdateEmployee />} />
             <Route exact path="/calendar" element={<Calendar />} />
-
-            <Route exact path="/todo" element={<Todo />} /> 
              <Route  exact path='/user' element={<UserLandingLayout/>}/>
             <Route exact path="/userleave" element={<Userleave />} />
             <Route exact path="/userdetails" element={<Userdetails />} />
             <Route exact path="/usersales" element={<Usersales />} />
-
+            <Route  exact path='/userdashboard' element={<Userdashboard/>}/>
             <Route exact path="/forget-pass" element={<Forget />} />
             <Route exact path="/leaves-list" element={<Leave />} />
             {/* <Route exact path="/todo" element={<ToDoList />} /> */}
