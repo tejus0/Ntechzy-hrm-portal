@@ -2,12 +2,13 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../../components/Sidebar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import AddEventModal from "../pages/addevent/AddEventModal";
+import AddEventModal from "../../pages/admin/addevent/AddEventModal";
 import axios from "axios";
 import moment from "moment";
+import UserSideBar from "../../components/UserSideBar";
 
 export default function () {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -31,7 +32,10 @@ export default function () {
   async function handleEventAdd(data) {
     console.log("here");
     await axios
-      .post(`${process.env.REACT_APP_BASE_URL}/calendar/create-event`, data.event)
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/calendar/create-event`,
+        data.event
+      )
       .catch((error) => {
         console.log(error.response.data);
       });
@@ -53,10 +57,11 @@ export default function () {
   }
   return (
     <Box container sx={{ display: "flex" }}>
-      <Sidebar
-        openSidebarToggle={openSidebarToggle}
-        OpenSidebar={OpenSidebar}
-      />
+      {window.localStorage.getItem("user-type")=='user' ? <UserSideBar openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}/> : <Sidebar
+          openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}
+        />}
       <Box
         container
         sx={{

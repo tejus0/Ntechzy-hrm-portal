@@ -3,12 +3,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import "../addusers/add.css";
 import toast from 'react-hot-toast';
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../../components/Sidebar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import UserSideBar from '../../../components/UserSideBar';
 
 const UpdateEmployee = () => {
 

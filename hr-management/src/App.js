@@ -1,26 +1,26 @@
 import "./App.css";
 import Login from "./screens/Login";
-import PayrollAdmin from "./screens/PayrollAdmin";
-import LandingLayout from "./pages/LandingLayout.jsx";
-import EmployeeLeave from "./pages/addleaves/AddLeave.jsx";
+import PayrollAdmin from "./pages/admin/PayrollAdmin.jsx";
+import LandingLayout from "./pages/admin/LandingLayout.jsx";
+import EmployeeLeave from "./pages/admin/addleaves/AddLeave.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import EmployeeAttend from "./screens/EmployeeAttend.jsx";
-import EmployeeDetails from "./screens/EmployeeDetails.jsx";
-import Users from "./pages/getusers/Users.jsx";
-import UpdateEmployee from "./pages/updateEmployees/UpdateEmployee.jsx";
-import Calendar from "./screens/Calendar.jsx";
+import EmployeeAttend from "./pages/admin/EmployeeAttend.jsx";
+import EmployeeDetails from "./pages/admin/EmployeeDetails.jsx";
+import Users from "./pages/admin/getusers/Users.jsx";
+import UpdateEmployee from "./pages/admin/updateEmployees/UpdateEmployee.jsx";
+import Calendar from "./pages/admin/Calendar.jsx";
 import Modal from "react-modal";
-import Forget from "./screens/Forget.jsx";
+// import wForget from "./screens/Forget.jsx";
+import Reset from "./screens/resetPassword/Reset.jsx";
 import Registration from "./screens/Registration.jsx";
-import Leave from "./pages/getleaves/leaves.jsx";
+import Leave from "./pages/admin/getleaves/leaves.jsx";
 import ToDoList from "./pages/ToDoList/getToDo/ToDoList.jsx";
 import { UserContext } from "../src/screens/contexts/userContext.js";
 
-import Todo from "./screens/Todo.jsx";
-import Userleave from "./screens/UserLeave.jsx";
-import Userdetails from "./screens/UserDetails.jsx";
-import UserLandingLayout from "./pages/UserLandingLayout.jsx";
-import Usersales from "./screens/UserSalesAnalytics.jsx";
+import Userleave from "./pages/users/UserLeave.jsx";
+import Userdetails from "./pages/users/UserDetails.jsx";
+import UserLandingLayout from "./pages/users/UserLandingLayout.jsx";
+import Usersales from "./pages/users/UserSalesAnalytics.jsx";
 
 Modal.setAppElement("#root");
 
@@ -49,13 +49,13 @@ function App() {
           <Route exact path="/update-employee" element={<UpdateEmployee />} />
           <Route exact path="/calendar" element={<Calendar />} />
 
-          <Route exact path="/todo" element={<Todo />} />
-          <Route exact path="/user" element={<UserLandingLayout />} />
+          <Route exact path="/todo" element={<ToDoList />} />
+          <Route exact path="/user-page" element={<UserLandingLayout />} />
           <Route exact path="/userleave" element={<Userleave />} />
           <Route exact path="/userdetails" element={<Userdetails />} />
           <Route exact path="/usersales" element={<Usersales />} />
 
-          <Route exact path="/forget-pass" element={<Forget />} />
+          <Route exact path="/forget-pass" element={<Reset />} />
           <Route exact path="/leaves-list" element={<Leave />} />
           {/* <Route exact path="/todo" element={<ToDoList />} /> */}
         </Routes>

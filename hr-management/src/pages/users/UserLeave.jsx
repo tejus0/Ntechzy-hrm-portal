@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Header from "../components/Header";
-import Usersidebar from "../components/Usersidebar";
+import Header from "../../components/Header";
+import Usersidebar from "../../components/UserSideBar";
 import { Box, ThemeProvider } from "@mui/system";
 import { Button, Grid, IconButton, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -8,23 +8,20 @@ import MenuItem from "@mui/material/MenuItem";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import moment from 'moment';
+import moment from "moment";
 
 function EmployeeLeave() {
-  
-  
   const [disable, setDisable] = useState(true);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [BeforeRemLeaves, setBeforeRemLeaves] = useState(0)
-  const [AfterRemLeaves, setAfterRemLeaves] = useState(BeforeRemLeaves)
-  
+  const [BeforeRemLeaves, setBeforeRemLeaves] = useState(0);
+  const [AfterRemLeaves, setAfterRemLeaves] = useState(BeforeRemLeaves);
+
   useEffect(() => {
-    const time = Math.abs(endDate-startDate);
-    const days= Math.ceil(time/(1000*60*60*24));
+    const time = Math.abs(endDate - startDate);
+    const days = Math.ceil(time / (1000 * 60 * 60 * 24));
     setAfterRemLeaves(days);
-  }, [endDate])
-  
+  }, [endDate]);
 
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
@@ -114,19 +111,20 @@ function EmployeeLeave() {
           ))} */}
               </TextField>
               <div>From</div>
-              <DatePicker  disablePast label="Start Date"
-        value={startDate}
-        onChange={(newValue) => {
-          setStartDate(newValue);
-        }}
-        />
+              <DatePicker
+                disablePast
+                label="Start Date"
+                value={startDate}
+                onChange={(newValue) => {
+                  setStartDate(newValue);
+                }}
+              />
 
               <div>Remaining Leaves *</div>
 
               <TextField
-                
                 // value={BeforeRemLeaves}
-                
+
                 defaultValue="10"
                 variant="filled"
                 fullWidth
@@ -149,13 +147,14 @@ function EmployeeLeave() {
                 ))}
               </TextField>
               <div>To *</div>
-              <DatePicker label="End Date"
-        value={endDate}
-        minDate={startDate}
-        onChange={(newValue) => {
-          setEndDate(newValue);
-        }}
-        />
+              <DatePicker
+                label="End Date"
+                value={endDate}
+                minDate={startDate}
+                onChange={(newValue) => {
+                  setEndDate(newValue);
+                }}
+              />
               <div>Remaining Leaves</div>
 
               <TextField

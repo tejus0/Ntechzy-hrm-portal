@@ -31,6 +31,7 @@ import {
   getTodos,
   createTodos,
   remainingLeaves,
+  createSales
 } from "../controllers/userController.js";
 
 const route = express.Router();
@@ -50,15 +51,17 @@ route.post("/login", verifyLogin);
 
 route.post("/admin-page", loadHome);
 
+// route.post("/user-page",loadUser)
+
 route.get("/logout", isLogin, userLogout);
 
 route.get("/forget", isLogout, forgetLoad);
 
-route.post("/forget", resetPassVerify);
+route.post("/forgot-password", resetPassVerify);
 
-route.get("/forget-password", isLogout, forgetPassLoad);
+route.get("/reset-password/:id/:token", forgetPassLoad);
 
-route.post("/forget-password", resetPassword);
+route.post("/reset-password/:id/:token", resetPassword);
 
 route.post("/generate-leave", generateLeave);
 
@@ -84,6 +87,8 @@ route.get("/getTodos", getTodos);
 route.post("/createTodos", createTodos);
 
 route.get("/remainingLeaves", remainingLeaves);
+
+route.post("/create-sales",createSales);
 
 // route.get("/getUserName",getUserName)
 export default route;

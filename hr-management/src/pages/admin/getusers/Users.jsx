@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "./user.css";
 import { Link } from "react-router-dom";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../../components/Sidebar";
 import Box from "@mui/material/Box";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

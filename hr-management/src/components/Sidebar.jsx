@@ -91,7 +91,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Tooltip from "@mui/material/Tooltip";
 import { useEffect } from "react";
-import Popover from '@mui/material/Popover';
+import Popover from "@mui/material/Popover";
 
 const drawerWidth = 250;
 
@@ -228,39 +228,46 @@ export default function EmployeeAttend() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            ADMIN
-          </Typography>
+          
           <Grid container sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <div >
+            <Typography variant="h6" component="div">
+             {window.localStorage.getItem("user-type")}
+          </Typography>
+            </div>
             <div>
-              <Tooltip 
+              <Tooltip
               // title={userId}
               >
                 <IconButton>
-                  <AccountBoxIcon aria-owns={openId ? 'mouse-over-popover' : undefined}
-        aria-haspopup="true"
-        onMouseEnter={handlePopoverOpen}
-        onMouseLeave={handlePopoverClose} />
-        <Popover
-        id="mouse-over-popover"
-        sx={{
-          pointerEvents: 'none',
-        }}
-        open={openId}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        onClose={handlePopoverClose}
-        disableRestoreFocus
-      >
-        <Typography sx={{ p: 1 }}>Welcome UserId - {userId}</Typography>
-      </Popover>
+                  <AccountBoxIcon
+                    aria-owns={openId ? "mouse-over-popover" : undefined}
+                    aria-haspopup="true"
+                    onMouseEnter={handlePopoverOpen}
+                    onMouseLeave={handlePopoverClose}
+                  />
+                  <Popover
+                    id="mouse-over-popover"
+                    sx={{
+                      pointerEvents: "none",
+                    }}
+                    open={openId}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "left",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    onClose={handlePopoverClose}
+                    disableRestoreFocus
+                  >
+                    <Typography sx={{ p: 1 }}>
+                      Welcome UserId - {userId}
+                    </Typography>
+                  </Popover>
                 </IconButton>
               </Tooltip>
             </div>
@@ -313,7 +320,7 @@ export default function EmployeeAttend() {
               <ListItemText primary="ToDo" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
-          <ListItem
+          {/* <ListItem
             disablePadding
             sx={{ display: "block" }}
             component={Link}
@@ -338,7 +345,7 @@ export default function EmployeeAttend() {
               </ListItemIcon>
               <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
           <ListItem
             disablePadding
             sx={{ display: "block" }}

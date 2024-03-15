@@ -10,7 +10,7 @@ const todolist=({todos,checkTodo, deleteTodo})=>{
             <Todo key={todo.id}  title={todo.title} checkTodo={checkTodo} id={todo.id} isCompleted={todo.isCompleted} deleteTodo={deleteTodo}/>
             ))
             }
-        <Todo />
+        {/* <Todo /> */}
         </div>
     );
 };

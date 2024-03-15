@@ -6,28 +6,7 @@ import { useState } from "react";
 Modal.setAppElement("#root");
 
 export default function ToDoList() {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      title: "Play",
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "Play Cricket",
-      isCompleted: true,
-    },
-    {
-      id: 3,
-      title: "Play Cricket",
-      isCompleted: true,
-    },
-    {
-      id: 4,
-      title: "Play Cricket",
-      isCompleted: true,
-    },
-  ]);
+  const [todos, setTodos] = useState([]);
   const checkTodo = (id) => {
     console.log(id);
     setTodos(

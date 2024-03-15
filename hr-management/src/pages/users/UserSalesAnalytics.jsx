@@ -1,7 +1,7 @@
-import Dropdown from "../components/Dropdown";
-import { useState } from "react";
-import Header from "../components/Header";
-import Usersidebar from "../components/Usersidebar";
+import Dropdown from "../../components/Dropdown";
+import { useState, useEffect } from "react";
+import Header from "../../components/Header";
+import Usersidebar from "../../components/UserSideBar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 // import FileBase64 from "react-file-base64";
 // import { ThreeDots } from "react-loader-spinner";
 import { LinearProgress } from "@mui/material";
-function EmployeeDetails() {
+function SalesAnalytics() {
   const [img, setImg] = useState();
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -22,32 +22,23 @@ function EmployeeDetails() {
 
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  const [user_id, setUser_id] = useState(0);
+
   const users = {
-    name: "",
-    fatherName: "",
-    mobile: "",
-    profileImage: "",
-    designation: "",
-    employeeNo: "",
-    dob: "",
-    address: "",
-    date_of_join: "",
-    passingYearX: "",
-    schoolNameX: "",
-    gradeX: "",
-    passingYearXII: "",
-    schoolNameXII: "",
-    gradeXII: "",
-    passingYearCollege: "",
-    university: "",
-    degree: "",
-    branch: "",
-    gradeUniversity: "",
-    company: "",
-    role: "",
-    experience: "",
-    email: "",
-    password: "",
+    employee_id: user_id,
+    client_name: "",
+    client_no: "",
+    client_state: "",
+    course: "",
+    paid_fee: "",
+    rem_fee: "",
+    assoc_college: "",
+    registration_amount: "",
+    services_amount: "",
+    enroll_date: "",
+    status: "",
+    bonus_status: "",
+    incentives: "",
   };
   const [user, setUser] = useState(users);
   const navigate = useNavigate();
@@ -57,38 +48,32 @@ function EmployeeDetails() {
     setUser({ ...user, [name]: value });
   };
 
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "images_preset");
-
-    try {
-      let cloudName = process.env.REACT_APP_COUDINARY_CLOUD_NAME;
-      let api = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-      console.log(api);
-      const res = await axios.post(api, formData);
-      // .then((res) => setImg(res.data.secure_url))
-      // .catch((error) => console.log(error));
-      const { secure_url } = res.data;
-      setImg(secure_url);
-      console.log(secure_url);
-      setLink(secure_url);
-      setIsDisabled(true);
-      // return secure_url;
-    } catch (error) {
-      console.log(error.response.data);
-    }
+  const resetForm = () => {
+    setUser({
+      client_no: "",
+      client_state: "",
+      course: "",
+      paid_fee: "",
+      rem_fee: "",
+      assoc_college: "",
+      registration_amount: "",
+      services_amount: "",
+      enroll_date: "",
+      status: "",
+      bonus_status: "",
+      incentives: "",
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:7000/api/create", user)
+      .post("http://localhost:7000/api/create-sales", user)
       .then((response) => {
         console.log(response);
         toast.success(response.data.msg, { position: "top-right" });
-        navigate("/");
+        // navigate("/");
+        resetForm();
       })
       .catch((error) => console.log(error.response.data));
   };
@@ -98,6 +83,19 @@ function EmployeeDetails() {
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
   };
+
+  useEffect(() => {
+    const Id = JSON.parse(localStorage.getItem("Id-data"), function (k, v) {
+      return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
+    });
+    console.log(Id, typeof Id);
+    if (Id) {
+      console.log("id not setting");
+      setUser_id(Id);
+      console.log(user_id, "this is not working");
+    }
+  }, []);
+
   return (
     <Box container sx={{ display: "flex" }}>
       <Usersidebar
@@ -131,7 +129,7 @@ function EmployeeDetails() {
             fontSize: "23px",
           }}
         >
-        SALES REPORT
+          SALES REPORT
           <hr />
         </Typography>
 
@@ -140,22 +138,42 @@ function EmployeeDetails() {
           container
           rowSpacing={1}
           columnSpacing={{ xs: 1, sm: 3, md: 4 }}
-          sx={{ margin: "10px", paddingLeft:"8%" }}
+          sx={{ margin: "10px", paddingLeft: "8%" }}
         >
-          <Grid container item xs={5} direction="column"  sx={{ margin: "20px" }}>
+          <Grid
+            container
+            item
+            xs={5}
+            direction="column"
+            sx={{ margin: "20px" }}
+          >
+            <div>Employee Id </div>
+            <TextField
+              defaultValue
+              // onChange={(e) => {
+              //   setName(e.target.value);
+              // }}
+              disabled
+              value={user_id}
+              // value={AfterRemLeaves}
+              id="filled-disabled"
+              // defaultValue=""
+              variant="filled"
+              fullWidth
+            />
             <div>Client's Name : </div>
             <TextField
               onChange={inputHandler}
               fullWidth
               required
-              name="name"
+              name="client_name"
               id="outlined-required"
               label="Required"
             />
             <div>Contact Number: </div>
             <TextField
               onChange={inputHandler}
-              name="fatherName"
+              name="client_no"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -165,30 +183,22 @@ function EmployeeDetails() {
               onChange={inputHandler}
               fullWidth
               required
-              name="name"
+              name="client_state"
               id="outlined-required"
               label="Required"
-            />
-            <div>Receipt Number : </div>
-            <TextField
-              onChange={inputHandler}
-              name="mobile"
-              id="outlined-basic"
-              label="Outlined"
-              variant="outlined"
             />
             <div>Course Enrolled For : </div>
             <TextField
               onChange={inputHandler}
-              name="designation"
+              name="course"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
             />
-             <div>Paid Fee : </div>
+            <div>Paid Fee : </div>
             <TextField
               onChange={inputHandler}
-              name="employeeNo"
+              name="paid_fee"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -196,18 +206,23 @@ function EmployeeDetails() {
             <div>Remaining Fee: </div>
             <TextField
               onChange={inputHandler}
-              name="dob"
+              name="rem_fee"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
             />
           </Grid>
-          <Grid container item xs={5} direction="column"  sx={{ margin: "20px" }}>
-           
+          <Grid
+            container
+            item
+            xs={5}
+            direction="column"
+            sx={{ margin: "20px" }}
+          >
             <div>Enrolled For Associate College: </div>
             <TextField
               onChange={inputHandler}
-              name="address"
+              name="assoc_college"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -215,7 +230,7 @@ function EmployeeDetails() {
             <div>Registration Amount : </div>
             <TextField
               onChange={inputHandler}
-              name="date_of_join"
+              name="registration_amount"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -223,7 +238,7 @@ function EmployeeDetails() {
             <div>Amount For Services : </div>
             <TextField
               onChange={inputHandler}
-              name="email"
+              name="services_amount"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -231,7 +246,8 @@ function EmployeeDetails() {
             <div>Date Of Enrollment : </div>
             <TextField
               onChange={inputHandler}
-              name="email"
+              value={users.enroll_date}
+              name="enroll_date"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -239,7 +255,7 @@ function EmployeeDetails() {
             <div>Admission Status : </div>
             <TextField
               onChange={inputHandler}
-              name="email"
+              name="status"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -247,7 +263,7 @@ function EmployeeDetails() {
             <div>Bonus Status : </div>
             <TextField
               onChange={inputHandler}
-              name="email"
+              name="bonus_status"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
@@ -255,13 +271,12 @@ function EmployeeDetails() {
             <div>Incentives : </div>
             <TextField
               onChange={inputHandler}
-              name="dob"
+              name="incentives"
               id="outlined-basic"
               label="Outlined"
               variant="outlined"
             />
           </Grid>
-         
         </Grid>
         <Button
           onClick={handleSubmit}
@@ -274,6 +289,7 @@ function EmployeeDetails() {
         </Button>
 
         <Button
+          onClick={resetForm}
           variant="contained"
           color="error"
           sx={{ margin: "5% auto", width: "20%" }}
@@ -287,4 +303,4 @@ function EmployeeDetails() {
   );
 }
 
-export default EmployeeDetails;
+export default SalesAnalytics;

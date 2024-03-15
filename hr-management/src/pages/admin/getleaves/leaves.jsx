@@ -3,11 +3,12 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "./leaves.css";
 import { Link } from "react-router-dom";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../../components/Sidebar";
 import Box from "@mui/material/Box";
 import { Button, IconButton } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import UserSideBar from "../../../components/UserSideBar";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Leave = () => {
@@ -18,9 +19,13 @@ const Leave = () => {
   };
   const [users, setUsers] = useState([]);
 
+  const Id = JSON.parse(localStorage.getItem("Id-data"));
+
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/getallleave`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/getallleave`
+      );
       setUsers(response.data);
     };
 
@@ -34,7 +39,9 @@ const Leave = () => {
         setUsers((prevUser) =>
           prevUser.filter((leave) => leave._id !== leaveId)
         );
-        toast.success("Leave Request Deleted Successfully !", { position: "top-right" });
+        toast.success("Leave Request Deleted Successfully !", {
+          position: "top-right",
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -46,11 +53,13 @@ const Leave = () => {
       .get(`${process.env.REACT_APP_BASE_URL}/leaves/update/${leaveId}`)
       .then((response) => {
         setUsers((prevUser) =>
-        prevUser.filter((leave) => leave._id !== leaveId)
-      );
+          prevUser.filter((leave) => leave._id !== leaveId)
+        );
         console.log(response);
         // setClicked(true);
-        toast.success("Leave Approved Successfully !", { position: "top-right" });
+        toast.success("Leave Approved Successfully !", {
+          position: "top-right",
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -64,10 +73,11 @@ const Leave = () => {
 
   return (
     <Box container sx={{ display: "flex" }}>
-      <Sidebar
-        openSidebarToggle={openSidebarToggle}
-        OpenSidebar={OpenSidebar}
-      />
+      {window.localStorage.getItem("user-type")=='user' ? <UserSideBar openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}/> : <Sidebar
+          openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}
+        />}
       <div className="userTable">
         <Link to={"/leave-management"} className="addButton">
           Add Leave
@@ -119,11 +129,12 @@ const Leave = () => {
                     <Button onClick={() => deleteUser(user._id)}>
                       <i class="fa fa-trash" aria-hidden="true"></i>
                     </Button>
-                    <IconButton onClick={() =>{approveUser(user._id) }}>
-                      
-                        <CheckCircleOutlineIcon />
-                     
-                    
+                    <IconButton
+                      onClick={() => {
+                        approveUser(user._id);
+                      }}
+                    >
+                      <CheckCircleOutlineIcon />
                     </IconButton>
                   </td>
                 </tr>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../../components/Sidebar";
 import { Box, ThemeProvider } from "@mui/system";
 import toast from "react-hot-toast";
 import { Button, Grid, IconButton, TextField } from "@mui/material";
@@ -11,7 +11,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import axios from "axios";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { UserContext } from "../../screens/contexts/userContext";
+import UserSideBar from "../../../components/UserSideBar";
+// import { UserContext } from "../../screens/contexts/userContext";
 
 function EmployeeLeave() {
   const [name, setName] = useState("");
@@ -170,13 +171,15 @@ function EmployeeLeave() {
     hasPageBeenRendered.current = true;
   }, [type]);
 
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box container sx={{ display: "flex" }}>
-        <Sidebar
+        {window.localStorage.getItem("user-type")=='user' ? <UserSideBar openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}/> : <Sidebar
           openSidebarToggle={openSidebarToggle}
           OpenSidebar={OpenSidebar}
-        />
+        />}
         <Box
           //   component="form"
           sx={{

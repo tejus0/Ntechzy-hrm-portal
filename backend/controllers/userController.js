@@ -3,6 +3,7 @@ import Registeration from "../models/registerModel.js";
 import Leave from "../models/leavesModel.js";
 import Todo from "../models/adminToDoModel.js";
 import Event from "../models/events.js";
+import Sales from "../models/salesModel.js";
 import moment from "moment";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -184,7 +185,11 @@ export const verifyLogin = async (req, res) => {
           );
           console.log(token, "token in verify");
           if (res.status(201)) {
-            return res.json({ status: "ok", data: token });
+            if (userData.is_admin === 1) {
+              return res.json({ status: "ok",data:token, type: "admin" });
+            } else {
+              return res.json({ status: "ok",data:token, type: "user" });
+            }
           } else {
             return res.json({ error: "error" });
           }
@@ -203,7 +208,8 @@ export const verifyLogin = async (req, res) => {
 };
 
 export const loadHome = async (req, res) => {
-  const { token, id } = req.body;
+  const { token, data } = req.body;
+  console.log(data, "id is here");
 
   try {
     const user = jwt.verify(
@@ -291,23 +297,35 @@ export const sendResetPassMail = async (name, email, token) => {
 export const resetPassVerify = async (req, res) => {
   try {
     const email = req.body.email;
-    const userData = await User.findOne({ email: email });
+    console.log(email, "email from backend");
+    const userData = await Registeration.findOne({ email: email });
+    console.log(userData, "data");
     if (userData) {
       if (userData.is_verified === 0) {
-        res.render("forget", { message: "Please verify your mail first ." });
+        return res.json({ status: "Please verify your mail first !" });
       } else {
-        const randomString = randomstring.generate();
-        const updatedData = await User.updateOne(
-          { email: email },
-          { $set: { token: randomString } }
+        const secret = process.env.SECRET_KEY + userData.password;
+        const token = jwt.sign(
+          { email: userData.email, employee_id: userData.employee_id },
+          secret,
+          {
+            expiresIn: "5m",
+          }
         );
-        sendResetPassMail(userData.name, email, randomString);
-        res.render("forget", {
-          message: "Please check your mail to reset your password .",
-        });
+        const link = `http://localhost:7000/api/reset-password/${userData.employee_id}/${token}`;
+        console.log(link);
+        //     const randomString = randomstring.generate();
+        //     const updatedData = await User.updateOne(
+        //       { email: email },
+        //       { $set: { token: randomString } }
+        //     );
+        //     sendResetPassMail(userData.name, email, randomString);
+        //     res.render("forget", {
+        //       message: "Please check your mail to reset your password .",
+        //     });
       }
     } else {
-      res.render("forget", { message: "User email is incorrect ." });
+      return res.json({ status: "User email is incorrect ." });
     }
   } catch (error) {
     console.log(error.message);
@@ -315,34 +333,68 @@ export const resetPassVerify = async (req, res) => {
 };
 
 export const forgetPassLoad = async (req, res) => {
-  try {
-    const token = req.query.token;
-    const tokenData = await User.findOne({ token: token });
-    if (tokenData) {
-      res.render("forget-password", { user_id: tokenData._id });
-    } else {
-      res.render("404", { message: "Page not FOUND !!" });
-    }
-  } catch (error) {
-    console.log(error.message);
+  const { id, token } = req.params;
+  console.log(req.params);
+  const userData = await Registeration.findOne({ employee_id: id });
+  if (!userData) {
+    return res.json({ status: "User not exisis !" });
   }
+  const secret = process.env.SECRET_KEY + userData.password;
+  try {
+    const verify = jwt.verify(token, secret);
+    res.render("forget-password", {
+      email: verify.email,
+      status: "Not verified",
+    });
+  } catch (error) {
+    res.send("Not verified !");
+  }
+  // try {
+  //   const token = req.query.token;
+  //   const tokenData = await User.findOne({ token: token });
+  //   if (tokenData) {
+  //     res.render("forget-password", { user_id: tokenData._id });
+  //   } else {
+  //     res.render("404", { message: "Page not FOUND !!" });
+  //   }
+  // } catch (error) {
+  //   console.log(error.message);
+  // }
 };
 
 export const resetPassword = async (req, res) => {
+  const { id, token } = req.params;
+  const newPass = req.body.password;
+  // const user_id = req.body.user_id;
+  // console.log(req.params);
+  const userData = await Registeration.findOne({ employee_id: id });
+  if (!userData) {
+    return res.json({ status: "User not exisis !" });
+  }
+  const secret = process.env.SECRET_KEY + userData.password;
   try {
-    const newPass = req.body.password;
-    const user_id = req.body.user_id;
-
+    const verify = jwt.verify(token, secret);
     const securedPass = await securePassword(newPass);
-
-    const updatedPass = await User.findByIdAndUpdate(
-      { _id: user_id },
+    const updatedPass = await Registeration.updateOne(
+      { employee_id: id },
       { $set: { password: securedPass, token: "" } }
     );
-    res.redirect("/");
+    res.json({ status: "Password Updated !" });
+    // res.send("Verified")
+    res.render("forget-password", {
+      email: verify.email,
+      status: "verified",
+    });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
+    res.json("Something went wrong ");
   }
+  // try {
+
+  //   res.redirect("/");
+  // } catch (error) {
+  //   console.log(error.message);
+  // }
 };
 
 export const create = async (req, res) => {
@@ -566,5 +618,20 @@ export const remainingLeaves = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: "error" });
+  }
+};
+
+export const createSales = async (req, res) => {
+  try {
+    const salesData = new Sales(req.body);
+
+    if (!salesData) {
+      return res.status(404).json({ msg: "Sales data not found" });
+    }
+
+    await salesData.save();
+    res.status(200).json({ msg: "Sales created successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error });
   }
 };
