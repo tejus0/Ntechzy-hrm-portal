@@ -87,9 +87,11 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 import { Grid } from "@mui/material";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Tooltip from "@mui/material/Tooltip";
+import { useEffect } from "react";
+import Popover from "@mui/material/Popover";
 
 const drawerWidth = 250;
 
@@ -163,6 +165,11 @@ export default function EmployeeAttend() {
   const [open, setOpen] = React.useState(false);
   const [isCollapse, setIsCollapse] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
+  const [userId, setuserId] = useState("");
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const openId = Boolean(anchorEl);
 
   const handleMouseOver = () => {
     setIsHovering(true);
@@ -184,10 +191,26 @@ export default function EmployeeAttend() {
     setIsCollapse(!isCollapse);
   };
 
-  const handleLogout=()=>{
+  const handleLogout = () => {
     window.localStorage.clear();
-    window.location.href= "./"
-  }
+    window.location.href = "./";
+  };
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  useEffect(() => {
+    const Id = JSON.parse(localStorage.getItem("Id-data"));
+    if (Id) {
+      setuserId(Id);
+    }
+  }, []);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -205,14 +228,46 @@ export default function EmployeeAttend() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            ADMIN
-          </Typography>
+          
           <Grid container sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <div >
+            <Typography variant="h6" component="div">
+             {window.localStorage.getItem("user-type")}
+          </Typography>
+            </div>
             <div>
-              <Tooltip title="Profile">
+              <Tooltip
+              // title={userId}
+              >
                 <IconButton>
-                  <AccountBoxIcon />
+                  <AccountBoxIcon
+                    aria-owns={openId ? "mouse-over-popover" : undefined}
+                    aria-haspopup="true"
+                    onMouseEnter={handlePopoverOpen}
+                    onMouseLeave={handlePopoverClose}
+                  />
+                  <Popover
+                    id="mouse-over-popover"
+                    sx={{
+                      pointerEvents: "none",
+                    }}
+                    open={openId}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "left",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    onClose={handlePopoverClose}
+                    disableRestoreFocus
+                  >
+                    <Typography sx={{ p: 1 }}>
+                      Welcome UserId - {userId}
+                    </Typography>
+                  </Popover>
                 </IconButton>
               </Tooltip>
             </div>
@@ -246,7 +301,7 @@ export default function EmployeeAttend() {
             <img src={Logo}></img>
             
           </ListItem>
-          <ListItem
+          {/* <ListItem
             disablePadding
             sx={{ display: "block" }}
             component={Link}
@@ -271,7 +326,7 @@ export default function EmployeeAttend() {
               </ListItemIcon>
               <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
           <ListItem
             disablePadding
             sx={{ display: "block" }}
@@ -515,7 +570,7 @@ export default function EmployeeAttend() {
               <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem> */}
-        </List> 
+        </List>
       </Drawer>
     </Box>
   );

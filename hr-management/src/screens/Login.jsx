@@ -2,8 +2,8 @@ import React from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import bg from "../pages/bg/signin.svg";
-import bgimg from "../pages/bg/backimg.jpg";
+import bg from "../assets/bg/signin.svg";
+import bgimg from "../assets/bg/backimg.jpg";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
@@ -15,6 +15,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import {
   TextField,
@@ -33,6 +34,7 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoginIcon from "@mui/icons-material/Login";
+import { loginUser } from "../Store/UserSlice";
 
 // Email Validation
 const isEmail = (email) =>
@@ -89,6 +91,8 @@ function Login() {
   const vertical = "top";
   const horizontal = "right";
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   // // Handles Display and Hide Password
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -148,19 +152,28 @@ function Login() {
     // Proceed to use the information passed
     // console.log("axios");
     await axios
-      .post(`${process.env.REACT_APP_BASE_URL}/login`, {
+      .post(`http://localhost:7000/api/login`, {
         employee_id: employee_id,
         email: emailInput,
         password: password,
       })
       .then((response) => {
         // response.json()
-        console.log(response.data, "userData");
+        console.log(response, "AdminData");
         if (response.data.status == "ok") {
           alert("login successfull !");
+          let userCredentials= {employee_id}
+          dispatch(loginUser(userCredentials))
           window.localStorage.setItem("token", response.data.data);
           window.localStorage.setItem("loggedIn", true);
+          window.localStorage.setItem("Id-data", JSON.stringify(employee_id));
+          window.localStorage.setItem("user-type", response.data.type);
+          if(response.data.type=="user"){
+            window.location.href = "./user-page";
+          }
+          else{
           window.location.href = "./admin-page";
+          }
         }
         else{
           alert(response.data.error)
@@ -307,7 +320,7 @@ function Login() {
                               variant="body1"
                               component="span"
                               onClick={() => {
-                                navigate("/reset-password");
+                                navigate("/forget-pass");
                               }}
                               style={{ marginTop: "10px", cursor: "pointer" }}
                             >

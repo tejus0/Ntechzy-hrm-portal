@@ -20,15 +20,16 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import {Link} from "react-router-dom";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
-import search from "../assets/Search.png"
-import setting from "../assets/setting.png"
-import user from "../assets/user-rectangle-solid-24.png"
-import logout from "../assets/log-out-regular-24.png"
+import LogoutIcon from "@mui/icons-material/Logout";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import Tooltip from "@mui/material/Tooltip";
+import Popover from "@mui/material/Popover";
+
 import { Grid } from '@mui/material';
 const drawerWidth = 250;
 
@@ -98,10 +99,15 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function EmployeeAttend() {
+export default function UserSideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [isCollapse, setIsCollapse] = useState(true)
+  const [userId, setuserId] = useState("");
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const openId = Boolean(anchorEl);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -114,6 +120,26 @@ export default function EmployeeAttend() {
   const handleIsCollapse = () => {
     setIsCollapse(!isCollapse);
   };
+
+  const handleLogout = () => {
+    window.localStorage.clear();
+    window.location.href = "./";
+  };
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  useEffect(() => {
+    const Id = JSON.parse(localStorage.getItem("Id-data"));
+    if (Id) {
+      setuserId(Id);
+    }
+  }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -133,22 +159,57 @@ export default function EmployeeAttend() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div"  >
-      ADMIN
-          </Typography>
+
           <Grid container sx={{display:"flex",justifyContent:"flex-end"}}>
+            <div >
+            <Typography variant="h6" component="div">
+             {window.localStorage.getItem("user-type")}
+          </Typography>
+            </div>
             <div>
-          <img src={search}></img>
-          </div>
-          <div>
-          <img src={setting}></img>
-          </div>
-          <div>
-          <img src={user}></img>
-          </div>
-          <div>
-          <img src={logout}></img>
-          </div>
+              <Tooltip
+              // title={userId}
+              >
+                <IconButton>
+                  <AccountBoxIcon
+                    aria-owns={openId ? "mouse-over-popover" : undefined}
+                    aria-haspopup="true"
+                    onMouseEnter={handlePopoverOpen}
+                    onMouseLeave={handlePopoverClose}
+                  />
+                  <Popover
+                    id="mouse-over-popover"
+                    sx={{
+                      pointerEvents: "none",
+                    }}
+                    open={openId}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "left",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    onClose={handlePopoverClose}
+                    disableRestoreFocus
+                  >
+                    <Typography sx={{ p: 1 }}>
+                      Welcome UserId - {userId}
+                    </Typography>
+                  </Popover>
+                </IconButton>
+              </Tooltip>
+            </div>
+            <div>
+              <Tooltip title="Delete">
+                <IconButton onClick={handleLogout}>
+                  <LogoutIcon />
+                </IconButton>
+              </Tooltip>
+              {/* <img src={logout}></img> */}
+            </div>
           </Grid>
         </Toolbar>
       </AppBar>
@@ -163,14 +224,14 @@ export default function EmployeeAttend() {
         <List>
             <ListItem disablePadding sx={{ display: 'block' }} >
             <img src={Logo}></img>
-              <ListItemButton
+              {/* <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
-              >
-                <ListItemIcon
+              > */}
+                {/* <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
@@ -178,11 +239,11 @@ export default function EmployeeAttend() {
                   }}
                 >
                    <MailIcon />
-                </ListItemIcon>
-                <ListItemText primary="PAYROLL" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
+                </ListItemIcon> */}
+                {/* <ListItemText primary="PAYROLL" sx={{ opacity: open ? 1 : 0 }} /> */}
+              {/* </ListItemButton> */}
             </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/userleave" onClick={handleIsCollapse}>
+            {/* <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/userleave" onClick={handleIsCollapse}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -201,8 +262,9 @@ export default function EmployeeAttend() {
                 </ListItemIcon>
                 <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/userdashboard" onClick={handleIsCollapse}>
+            </ListItem> */}
+            <ListItem disablePadding sx={{ display: 'block' }}>
+
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -245,7 +307,7 @@ export default function EmployeeAttend() {
         </List>
         <Divider />
         <List>
-        <ListItem disablePadding sx={{ display: 'block' }}>
+        {/* <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -264,8 +326,8 @@ export default function EmployeeAttend() {
                 </ListItemIcon>
                 <ListItemText primary="DEPARTMENTS" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}  >
+            </ListItem> */}
+            <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/calendar"  >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -285,7 +347,7 @@ export default function EmployeeAttend() {
                 <ListItemText primary="CALENDAR" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}>
+            {/* <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -304,10 +366,10 @@ export default function EmployeeAttend() {
                 </ListItemIcon>
                 <ListItemText primary="TRAINING SESSIONS" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
 
             {/* Dropdown sub- menu */}
-            <ListItemButton onClick={handleIsCollapse}>
+            {/* <ListItemButton onClick={handleIsCollapse}>
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
@@ -334,39 +396,47 @@ export default function EmployeeAttend() {
             <ListItemText primary="All Employee" />
           </ListItemButton>
         </List>
-      </Collapse>
-      <Divider />
-      <Collapse in={isCollapse} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="" />
-          </ListItemButton>
-        </List>
-      </Collapse>
+      </Collapse> */}
+      
                 
-      <ListItem disablePadding sx={{ display: 'block' }}  onClick={handleIsCollapse}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                   <MailIcon />
+      <ListItemButton onClick={handleIsCollapse}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Leaves" />
+            {isCollapse ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/leave-management"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
                 </ListItemIcon>
-                <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="New Leave" />
               </ListItemButton>
-            </ListItem>
+            </List>
+          </Collapse>
+          <Divider />
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/leaves-list"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Applied" />
+              </ListItemButton>
+            </List>
+          </Collapse>
 
         </List>
       </Drawer>

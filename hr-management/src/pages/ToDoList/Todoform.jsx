@@ -1,31 +1,53 @@
-import React, {useState} from "react";
-import { FormControl , Container , TextField, Button } from "@mui/material";
+import React, { useState,useEffect } from "react";
+import { FormControl, Container, TextField, Button } from "@mui/material";
 import axios from "axios";
 import toast from "react-hot-toast";
- 
-const TodoForm=({ addTodo  })=>{
-    const [text,setText]= useState("")
-    const handleSubmit = async (e) =>{
-        e.preventDefault();
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/createTodos`, text)
-    .then((response)=>{
-       toast.success("task added successfully !", {position:"top-right"})
-      
-    })
-    .catch(error => console.log(error))
+
+const TodoForm = ({ addTodo }) => {
+
+const [userId, setUserId] = useState("")
+
+useEffect(() => {
+    const Id = JSON.parse(localStorage.getItem("Id-data"));
+    if (Id) {
+      setUserId(Id);
+    }
+  }, []);
+  const [text, setText] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(text, "text is here");
+    await axios
+      .post(`http://localhost:7000/api/createTodos`, {employee_id:userId, name: text })
+      .then((response) => {
+        toast.success("task added successfully !", { position: "top-right" });
         addTodo(text);
         setText("");
-    };
-    return(
-        <Container maxWidth="sm">
-        <form onSubmit={handleSubmit}>
+      })
+      .catch((error) => console.log(error));
+  };
+return (
+    <Container maxWidth="sm">
+      <form>
         <FormControl fullWidth={true}>
-        <TextField label="I will do this*" required={true} value={text} onChange={(e)=>setText(e.target.value)}/>
-        <Button variant="contained" color="primary" style={{marginTop: 5}}>ADD</Button>
+          <TextField
+            label="I will do this*"
+            required={true}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            variant="contained"
+            color="primary"
+            style={{ marginTop: 5 }}
+          >
+            ADD
+          </Button>
         </FormControl>
-        </form>
-        </Container>
-    
-    )
-}
+      </form>
+    </Container>
+  );
+};
 export default TodoForm;
