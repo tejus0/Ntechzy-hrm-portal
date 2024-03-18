@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import UserSideBar from "../../components/UserSideBar";
 import moment from "moment";
 
 function UserLeave() {
@@ -51,7 +52,7 @@ function UserLeave() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box container sx={{ display: "flex" }}>
-        <Usersidebar
+        <UserSideBar
           openSidebarToggle={openSidebarToggle}
           OpenSidebar={OpenSidebar}
         />
