@@ -10,7 +10,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import moment from "moment";
 
-function EmployeeLeave() {
+function UserLeave() {
   const [disable, setDisable] = useState(true);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -204,4 +204,4 @@ function EmployeeLeave() {
   );
 }
 
-export default EmployeeLeave;
+export default UserLeave;

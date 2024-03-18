@@ -294,32 +294,6 @@ export default function EmployeeAttend() {
         </DrawerHeader>
         <Divider />
         <List>
-          <ListItem
-            disablePadding
-            sx={{ display: "block" }}
-            component={Link}
-            to="/todo"
-          >
-            <img src={Logo}></img>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary="ToDo" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
           {/* <ListItem
             disablePadding
             sx={{ display: "block" }}
@@ -374,7 +348,46 @@ export default function EmployeeAttend() {
               />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: "block" }}>
+          {/* Dropdown sub- menu */}
+          <ListItemButton onClick={handleIsCollapse}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Sales Report" />
+            {isCollapse ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/adminsales"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="New Sales" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+          <Divider />
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/leaves-list"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="All Sales" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+          {/* <ListItem disablePadding sx={{ display: "block" }} component={Link} to="/adminsales">
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -396,33 +409,10 @@ export default function EmployeeAttend() {
                 sx={{ opacity: open ? 1 : 0 }}
               />
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
         <Divider />
         <List>
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="DEPARTMENTS"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
           <ListItem
             disablePadding
             sx={{ display: "block" }}
@@ -446,29 +436,6 @@ export default function EmployeeAttend() {
                 <MailIcon />
               </ListItemIcon>
               <ListItemText primary="CALENDAR" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="TRAINING SESSIONS"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
             </ListItemButton>
           </ListItem>
 

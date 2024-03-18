@@ -1,5 +1,5 @@
 import Dropdown from "../../components/Dropdown";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Header from "../../components/Header";
 import Usersidebar from "../../components/UserSideBar";
 import Box from "@mui/material/Box";
@@ -49,8 +49,28 @@ function EmployeeDetails() {
     email: "",
     password: "",
   };
+  const Id = JSON.parse(localStorage.getItem("Id-data"));
+
   const [user, setUser] = useState(users);
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        const response = await axios.get(
+          `http://localhost:7000/api/getOne/${Id}`
+        );
+        console.log(response);
+        setUser(response.data);
+  
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+    fetchData();
+  }, []);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
