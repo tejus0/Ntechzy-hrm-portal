@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
-import Usersidebar from "../../components/UserSideBar";
 import { Box, ThemeProvider } from "@mui/system";
 import { Button, Grid, IconButton, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";

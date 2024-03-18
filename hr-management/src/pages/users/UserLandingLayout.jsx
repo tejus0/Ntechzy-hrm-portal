@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Sidebar from "../../components/Sidebar";
 import Home from "../admin/Home";
 import Box from "@mui/material/Box";
 import axios from "axios";
