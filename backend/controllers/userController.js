@@ -326,7 +326,7 @@ export const resetPassVerify = async (req, res) => {
             expiresIn: "5m",
           }
         );
-        const link = `${process.env.REACT_APP_BASE_URL}/reset-password/${userData.employee_id}/${token}`;
+        const link = `${process.env.FRONTEND_BASE_URL}/reset-password/${userData.employee_id}/${token}`;
         console.log(link);
         //     const randomString = randomstring.generate();
         //     const updatedData = await User.updateOne(
