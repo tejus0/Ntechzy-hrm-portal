@@ -17,7 +17,7 @@ function LandingLayout() {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .post(`http://localhost:7000/api/admin-page`, {
+        .post(`${process.env.REACT_APP_BASE_URL}/admin-page`, {
           token: window.localStorage.getItem("token"),
           data: window.localStorage.getItem("Id-data"),
         })

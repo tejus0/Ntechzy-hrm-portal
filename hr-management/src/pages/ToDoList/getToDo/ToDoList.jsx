@@ -14,7 +14,7 @@ export default function ToDoList() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `http://localhost:7000/api/getTodos/${user_id}`
+        `${process.env.REACT_APP_BASE_URL}/getTodos/${user_id}`
       );
       console.log(response.data);
       setTodos(response.data);
@@ -36,7 +36,7 @@ export default function ToDoList() {
   };
   const deleteTodo = async (id) => {
     await axios
-      .delete(`http://localhost:7000/api/deleteTodos/${id}`)
+      .delete(`${process.env.REACT_APP_BASE_URL}/deleteTodos/${id}`)
       .then((response) => {
         toast.success("task deleted successfully !", { position: "top-right" });
       })

@@ -1,6 +1,5 @@
 import Dropdown from "./Dropdown";
 import { useState,useEffect } from "react";
-import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -13,6 +12,7 @@ import toast from "react-hot-toast";
 // import FileBase64 from "react-file-base64";
 // import { ThreeDots } from "react-loader-spinner";
 import { LinearProgress } from "@mui/material";
+import UserSideBar from "./UserSideBar";
 function EmployeeDetails() {
   const [img, setImg] = useState();
   const [video, setVideo] = useState(null);
@@ -60,7 +60,7 @@ function EmployeeDetails() {
       try {
         
         const response = await axios.get(
-          `http://localhost:7000/api/getOne/${Id}`
+          `${process.env.REACT_APP_BASE_URL}/getOne/${Id}`
         );
         console.log(response);
         setUser(response.data[0]);
@@ -121,10 +121,11 @@ function EmployeeDetails() {
   };
   return (
     <Box container sx={{ display: "flex" }}>
-      <Sidebar
-        openSidebarToggle={openSidebarToggle}
-        OpenSidebar={OpenSidebar}
-      />
+      {window.localStorage.getItem("user-type")=='user' ? <UserSideBar openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}/> : <Sidebar
+          openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}
+        />}
 
       <Box
         component="form"

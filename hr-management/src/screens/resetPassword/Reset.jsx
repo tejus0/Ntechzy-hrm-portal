@@ -23,7 +23,7 @@ const isEmail = (emailInput) =>
     e.preventDefault();
     // console.log(emailInput);
     axios
-      .post("http://localhost:7000/api/forgot-password", { email:emailInput })
+      .post(`${process.env.REACT_APP_BASE_URL}/forgot-password`, { email:emailInput })
       .then((data) => {
         console.log(data, "userReset");
         alert(data.data.status)

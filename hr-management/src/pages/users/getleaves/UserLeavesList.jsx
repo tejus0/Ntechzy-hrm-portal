@@ -26,7 +26,7 @@ const UserLeaveList = () => {
       try {
         
         const response = await axios.get(
-          `http://localhost:7000/api/getLeaves/${Id}`
+          `${process.env.REACT_APP_BASE_URL}/getLeaves/${Id}`
         );
         console.log(response);
         setUsers(response.data);
@@ -40,7 +40,7 @@ const UserLeaveList = () => {
 
   const deleteLeave = async (leaveId) => {
     await axios
-      .delete(`http://localhost:7000/api/user-leaves/delete/${leaveId}`)
+      .delete(`${process.env.REACT_APP_BASE_URL}/user-leaves/delete/${leaveId}`)
       .then((respones) => {
         setUsers((prevUser) =>
           prevUser.filter((leave) => leave._id !== leaveId)

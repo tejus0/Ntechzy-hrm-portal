@@ -60,7 +60,7 @@ function EmployeeDetails() {
       try {
         
         const response = await axios.get(
-          `http://localhost:7000/api/getOne/${Id}`
+          `${process.env.REACT_APP_BASE_URL}/getOne/${Id}`
         );
         console.log(response);
         setUser(response.data);
@@ -104,7 +104,7 @@ function EmployeeDetails() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:7000/api/create", user)
+      .post(`${process.env.REACT_APP_BASE_URL}/create`, user)
       .then((response) => {
         console.log(response);
         toast.success(response.data.msg, { position: "top-right" });

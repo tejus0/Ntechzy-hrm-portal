@@ -67,7 +67,7 @@ function AdminSalesForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:7000/api/create-sales", user)
+      .post(`${process.env.REACT_APP_BASE_URL}/create-sales`, user)
       .then((response) => {
         console.log(response);
         toast.success(response.data.msg, { position: "top-right" });
