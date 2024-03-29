@@ -31,7 +31,11 @@ import {
   getTodos,
   createTodos,
   remainingLeaves,
-  createSales
+  createSales,
+  deleteTodos,
+  getLeaves,
+  userDeleteLeave,
+  // salesReport
 } from "../controllers/userController.js";
 
 const route = express.Router();
@@ -77,18 +81,23 @@ route.get("/calendar/get-events", get_events);
 route.get("/getUserCount", getUserCount);
 
 route.get("/getallleave", getAllLeaves);
+route.get("/getLeaves/:id", getLeaves);
 route.delete("/leaves/reject/:id", rejectLeave);
+route.delete("/user-leaves/delete/:id", userDeleteLeave);
 route.get("/leaves/update/:id", updateLeave);
 
 route.get("/getLeaveCount", getLeaveCount);
 
-route.get("/getTodos", getTodos);
+route.get("/getTodos/:id", getTodos);
 
 route.post("/createTodos", createTodos);
+route.delete("/deleteTodos/:id", deleteTodos);
 
 route.get("/remainingLeaves", remainingLeaves);
 
-route.post("/create-sales",createSales);
+route.post("/create-sales", createSales);
+
+// route.get("/sales-report",salesReport);
 
 // route.get("/getUserName",getUserName)
 export default route;

@@ -5,7 +5,7 @@ import LandingLayout from "./pages/admin/LandingLayout.jsx";
 import EmployeeLeave from "./pages/admin/addleaves/AddLeave.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import EmployeeAttend from "./pages/admin/EmployeeAttend.jsx";
-import EmployeeDetails from "./pages/admin/EmployeeDetails.jsx";
+import EmployeeDetails from "./components/EmployeeDetails.jsx";
 import Users from "./pages/admin/getusers/Users.jsx";
 import UpdateEmployee from "./pages/admin/updateEmployees/UpdateEmployee.jsx";
 import Calendar from "./pages/admin/Calendar.jsx";
@@ -22,6 +22,9 @@ import Userdetails from "./pages/users/UserDetails.jsx";
 import UserLandingLayout from "./pages/users/UserLandingLayout.jsx";
 import Usersales from "./pages/users/UserSalesAnalytics.jsx";
 import Attendance from "./screens/Attendance.jsx";
+import UserLeaveList from "./pages/users/getleaves/UserLeavesList.jsx";
+import AdminSalesForm from "./pages/admin/AdminSalesForm.jsx";
+
 Modal.setAppElement("#root");
 
 function App() {
@@ -54,9 +57,13 @@ function App() {
           <Route exact path="/userleave" element={<Userleave />} />
           <Route exact path="/userdetails" element={<Userdetails />} />
           <Route exact path="/usersales" element={<Usersales />} />
+
           <Route exact path="/attendance" element={<Attendance />} />
+          <Route exact path="/adminsales" element={<AdminSalesForm />} />
+
           <Route exact path="/forget-pass" element={<Reset />} />
           <Route exact path="/leaves-list" element={<Leave />} />
+          <Route exact path="/user-leaves-list" element={<UserLeaveList />} />
           {/* <Route exact path="/todo" element={<ToDoList />} /> */}
         </Routes>
       </UserContext.Provider>

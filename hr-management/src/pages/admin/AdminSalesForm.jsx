@@ -1,7 +1,5 @@
-import Dropdown from "../../components/Dropdown";
+
 import { useState, useEffect } from "react";
-import Header from "../../components/Header";
-import UserSideBar from "../../components/UserSideBar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -13,7 +11,8 @@ import toast from "react-hot-toast";
 // import FileBase64 from "react-file-base64";
 // import { ThreeDots } from "react-loader-spinner";
 import { LinearProgress } from "@mui/material";
-function SalesAnalytics() {
+import Sidebar from "../../components/Sidebar";
+function AdminSalesForm() {
   const [img, setImg] = useState();
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -98,7 +97,7 @@ function SalesAnalytics() {
 
   return (
     <Box container sx={{ display: "flex" }}>
-      <UserSideBar
+      <Sidebar
         openSidebarToggle={openSidebarToggle}
         OpenSidebar={OpenSidebar}
       />
@@ -303,4 +302,4 @@ function SalesAnalytics() {
   );
 }
 
-export default SalesAnalytics;
+export default AdminSalesForm;

@@ -7,10 +7,11 @@ import Sidebar from "../../../components/Sidebar";
 import Box from "@mui/material/Box";
 import { Button, IconButton } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import UserSideBar from "../../../components/UserSideBar";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Leave = () => {
+const UserLeaveList = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
   const OpenSidebar = () => {
@@ -22,18 +23,24 @@ const Leave = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/getallleave`
-      );
-      setUsers(response.data);
-    };
-
+      try {
+        
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/getLeaves/${Id}`
+        );
+        console.log(response);
+        setUsers(response.data);
+  
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
     fetchData();
   }, []);
 
-  const deleteUser = async (leaveId) => {
+  const deleteLeave = async (leaveId) => {
     await axios
-      .delete(`${process.env.REACT_APP_BASE_URL}/leaves/reject/${leaveId}`)
+      .delete(`${process.env.REACT_APP_BASE_URL}/user-leaves/delete/${leaveId}`)
       .then((respones) => {
         setUsers((prevUser) =>
           prevUser.filter((leave) => leave._id !== leaveId)
@@ -47,23 +54,23 @@ const Leave = () => {
       });
   };
 
-  const approveUser = async (leaveId) => {
-    await axios
-      .get(`${process.env.REACT_APP_BASE_URL}/leaves/update/${leaveId}`)
-      .then((response) => {
-        setUsers((prevUser) =>
-          prevUser.filter((leave) => leave._id !== leaveId)
-        );
-        console.log(response);
-        // setClicked(true);
-        toast.success("Leave Approved Successfully !", {
-          position: "top-right",
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const approveUser = async (leaveId) => {
+  //   await axios
+  //     .get(`${process.env.REACT_APP_BASE_URL}/leaves/update/${leaveId}`)
+  //     .then((response) => {
+  //       setUsers((prevUser) =>
+  //         prevUser.filter((leave) => leave._id !== leaveId)
+  //       );
+  //       console.log(response);
+  //       // setClicked(true);
+  //       toast.success("Leave Approved Successfully !", {
+  //         position: "top-right",
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   // 👇️ create copy and reverse
   const reversed = [...users].reverse();
@@ -125,16 +132,9 @@ const Leave = () => {
                   </td>
                   <td>{user.is_approved}</td>
                   <td className="actionButtons">
-                    <Button onClick={() => deleteUser(user._id)}>
+                    <Button onClick={() => deleteLeave(user._id)}>
                       <i class="fa fa-trash" aria-hidden="true"></i>
                     </Button>
-                    <IconButton
-                      onClick={() => {
-                        approveUser(user._id);
-                      }}
-                    >
-                      <CheckCircleOutlineIcon />
-                    </IconButton>
                   </td>
                 </tr>
               );
@@ -146,4 +146,4 @@ const Leave = () => {
   );
 };
 
-export default Leave;
+export default UserLeaveList;

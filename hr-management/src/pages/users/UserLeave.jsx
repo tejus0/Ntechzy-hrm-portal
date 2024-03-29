@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
-import Usersidebar from "../../components/UserSideBar";
 import { Box, ThemeProvider } from "@mui/system";
 import { Button, Grid, IconButton, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -8,9 +7,10 @@ import MenuItem from "@mui/material/MenuItem";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import UserSideBar from "../../components/UserSideBar";
 import moment from "moment";
 
-function EmployeeLeave() {
+function UserLeave() {
   const [disable, setDisable] = useState(true);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -52,7 +52,7 @@ function EmployeeLeave() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box container sx={{ display: "flex" }}>
-        <Usersidebar
+        <UserSideBar
           openSidebarToggle={openSidebarToggle}
           OpenSidebar={OpenSidebar}
         />
@@ -204,4 +204,4 @@ function EmployeeLeave() {
   );
 }
 
-export default EmployeeLeave;
+export default UserLeave;

@@ -152,7 +152,7 @@ function Login() {
     // Proceed to use the information passed
     // console.log("axios");
     await axios
-      .post(`http://localhost:7000/api/login`, {
+      .post(`${process.env.REACT_APP_BASE_URL}/login`, {
         employee_id: employee_id,
         email: emailInput,
         password: password,

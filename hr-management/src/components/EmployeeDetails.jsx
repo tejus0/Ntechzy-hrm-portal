@@ -1,7 +1,6 @@
-import Dropdown from "../../components/Dropdown";
-import { useState } from "react";
-import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
+import Dropdown from "./Dropdown";
+import { useState,useEffect } from "react";
+import Sidebar from "./Sidebar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -13,6 +12,7 @@ import toast from "react-hot-toast";
 // import FileBase64 from "react-file-base64";
 // import { ThreeDots } from "react-loader-spinner";
 import { LinearProgress } from "@mui/material";
+import UserSideBar from "./UserSideBar";
 function EmployeeDetails() {
   const [img, setImg] = useState();
   const [video, setVideo] = useState(null);
@@ -49,8 +49,29 @@ function EmployeeDetails() {
     email: "",
     password: "",
   };
+
+  const Id = JSON.parse(localStorage.getItem("Id-data"));
+
   const [user, setUser] = useState(users);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/getOne/${Id}`
+        );
+        console.log(response);
+        setUser(response.data[0]);
+        console.log(user,"user data");
+  
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+    fetchData();
+  }, []);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -100,10 +121,11 @@ function EmployeeDetails() {
   };
   return (
     <Box container sx={{ display: "flex" }}>
-      <Sidebar
-        openSidebarToggle={openSidebarToggle}
-        OpenSidebar={OpenSidebar}
-      />
+      {window.localStorage.getItem("user-type")=='user' ? <UserSideBar openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}/> : <Sidebar
+          openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}
+        />}
 
       <Box
         component="form"
@@ -145,6 +167,7 @@ function EmployeeDetails() {
           <Grid container item xs={4} direction="column">
             <div>Employee Name : </div>
             <TextField
+            // defaultValue={user.name}
               onChange={inputHandler}
               fullWidth
               required

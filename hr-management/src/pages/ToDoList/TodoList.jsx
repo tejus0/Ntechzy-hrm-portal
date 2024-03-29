@@ -1,13 +1,16 @@
 import React from "react";
 import Todo from "./Todo";
 
+
+
 const todolist=({todos,checkTodo, deleteTodo})=>{
+    // console.log(user_id);
     return(
         <div>
             {
-            todos.map((todo) =>
+            todos.map((todo,index) =>
             (
-            <Todo key={todo.id}  title={todo.title} checkTodo={checkTodo} id={todo.id} isCompleted={todo.isCompleted} deleteTodo={deleteTodo}/>
+            <Todo key={index+1}  title={todo.name} checkTodo={checkTodo} id={todo._id} isCompleted={todo.isCompleted} deleteTodo={deleteTodo}/>
             ))
             }
         {/* <Todo /> */}

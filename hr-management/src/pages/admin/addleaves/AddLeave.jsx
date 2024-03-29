@@ -152,7 +152,7 @@ function EmployeeLeave() {
       const fetchData = async () => {
         await axios
           .get(
-            `http://localhost:7000/api/remainingLeaves?employeeNo=${user_id}&leaveType=${type}`
+            `${process.env.REACT_APP_BASE_URL}/remainingLeaves?employeeNo=${user_id}&leaveType=${type}`
           )
           .then((response) => {
             if (!response) {

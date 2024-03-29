@@ -1,7 +1,7 @@
 import Dropdown from "../../components/Dropdown";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Header from "../../components/Header";
-import Usersidebar from "../../components/UserSideBar";
+import UserSideBar from "../../components/UserSideBar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -49,8 +49,28 @@ function EmployeeDetails() {
     email: "",
     password: "",
   };
+  const Id = JSON.parse(localStorage.getItem("Id-data"));
+
   const [user, setUser] = useState(users);
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/getOne/${Id}`
+        );
+        console.log(response);
+        setUser(response.data);
+  
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+    fetchData();
+  }, []);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -84,7 +104,7 @@ function EmployeeDetails() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:7000/api/create", user)
+      .post(`${process.env.REACT_APP_BASE_URL}/create`, user)
       .then((response) => {
         console.log(response);
         toast.success(response.data.msg, { position: "top-right" });
@@ -100,7 +120,7 @@ function EmployeeDetails() {
   };
   return (
     <Box container sx={{ display: "flex" }}>
-      <Usersidebar
+      <UserSideBar
         openSidebarToggle={openSidebarToggle}
         OpenSidebar={OpenSidebar}
       />

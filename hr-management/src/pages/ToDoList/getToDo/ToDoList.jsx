@@ -2,11 +2,28 @@ import { v4 } from "uuid";
 import Todolist from "../TodoList";
 import Todoform from "../Todoform";
 import Modal from "react-modal";
-import { useState } from "react";
+import toast from "react-hot-toast";
+import { useState, useEffect } from "react";
+import axios from "axios";
 Modal.setAppElement("#root");
 
 export default function ToDoList() {
   const [todos, setTodos] = useState([]);
+  const user_id = JSON.parse(localStorage.getItem("Id-data"));
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/getTodos/${user_id}`
+      );
+      console.log(response.data);
+      setTodos(response.data);
+      console.log(todos, "list");
+    };
+
+    fetchData();
+  }, []);
+
   const checkTodo = (id) => {
     console.log(id);
     setTodos(
@@ -17,13 +34,19 @@ export default function ToDoList() {
       })
     );
   };
-  const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id != id));
+  const deleteTodo = async (id) => {
+    await axios
+      .delete(`${process.env.REACT_APP_BASE_URL}/deleteTodos/${id}`)
+      .then((response) => {
+        toast.success("task deleted successfully !", { position: "top-right" });
+      })
+      .catch((error) => console.log(error.message));
+    setTodos(todos.filter((todo) => todo._id != id));
   };
+
   const addTodo = (text) => {
     const newTodo = {
-      id: v4(),
-      title: text,
+      name: text,
       isCompleted: false,
     };
     setTodos([...todos, newTodo]);

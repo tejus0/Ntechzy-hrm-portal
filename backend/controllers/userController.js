@@ -128,6 +128,20 @@ export const insertUser = async (req, res) => {
   }
 };
 
+export const deleteUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userExist = await User.findById(id);
+    if (!userExist) {
+      return res.status(404).json({ msg: "User not exist" });
+    }
+    await User.findByIdAndDelete(id);
+    res.status(200).json({ msg: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
 export const verifyMail = async (req, res) => {
   try {
     const updatedInfo = await Registeration.updateOne(
@@ -186,9 +200,9 @@ export const verifyLogin = async (req, res) => {
           console.log(token, "token in verify");
           if (res.status(201)) {
             if (userData.is_admin === 1) {
-              return res.json({ status: "ok",data:token, type: "admin" });
+              return res.json({ status: "ok", data: token, type: "admin" });
             } else {
-              return res.json({ status: "ok",data:token, type: "user" });
+              return res.json({ status: "ok", data: token, type: "user" });
             }
           } else {
             return res.json({ error: "error" });
@@ -312,7 +326,7 @@ export const resetPassVerify = async (req, res) => {
             expiresIn: "5m",
           }
         );
-        const link = `http://localhost:7000/api/reset-password/${userData.employee_id}/${token}`;
+        const link = `${process.env.FRONTEND_BASE_URL}/reset-password/${userData.employee_id}/${token}`;
         console.log(link);
         //     const randomString = randomstring.generate();
         //     const updatedData = await User.updateOne(
@@ -427,7 +441,7 @@ export const getAll = async (req, res) => {
 export const getOne = async (req, res) => {
   try {
     const id = req.params.id;
-    const userExist = await User.findById(id);
+    const userExist = await User.find({ employeeNo: id });
     if (!userExist) {
       return res.status(404).json({ msg: "User not found" });
     }
@@ -449,20 +463,6 @@ export const update = async (req, res) => {
       new: true,
     });
     res.status(200).json({ msg: "User updated successfully" });
-  } catch (error) {
-    res.status(500).json({ error: error });
-  }
-};
-
-export const deleteUser = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const userExist = await User.findById(id);
-    if (!userExist) {
-      return res.status(404).json({ msg: "User not exist" });
-    }
-    await User.findByIdAndDelete(id);
-    res.status(200).json({ msg: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -570,8 +570,9 @@ export const getLeaveCount = async (req, res) => {
 
 export const getTodos = async (req, res) => {
   //    const todos = await Todo.find();
+  const id = req.params.id;
   try {
-    const todos = await Todo.find();
+    const todos = await Todo.find({ employee_id: id });
     if (!todos) {
       return res.status(404).json({ msg: "User data not found" });
     }
@@ -584,6 +585,20 @@ export const getTodos = async (req, res) => {
 export const createTodos = async (req, res) => {
   const todo = await Todo.create(req.body);
   res.json(todo);
+};
+
+export const deleteTodos = async (req, res) => {
+  const id = req.params.id;
+  try {
+    console.log(id, "id in cpntroller");
+    // Todo.deleteOne({_id:id}).then(console.log("listaddedsuccess"))
+    // const userExist = await Todo.findById(id);
+    const findTodo = await Todo.findByIdAndDelete(id);
+    res.status(200).json({ msg: "ToDo deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "servererror" });
+  }
 };
 
 export const getUserName = async (req, res) => {
@@ -634,4 +649,36 @@ export const createSales = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error });
   }
+};
+
+export const getLeaves = async (req, res) => {
+  const id = req.params.id;
+  console.log(id, "in leaveslist");
+  try {
+    const leaves = await Leave.find({ employeeNo: id });
+    if (!leaves) {
+      return res.status(404).json({ msg: "User data not found" });
+    }
+    res.status(200).json(leaves);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const userDeleteLeave = async (req, res) => {
+  const id = req.params.id;
+  try {
+    // console.log(id, "id in cpntroller");
+    // Todo.deleteOne({_id:id}).then(console.log("listaddedsuccess"))
+    // const userExist = await Todo.findById(id);
+    const findTodo = await Leave.findByIdAndDelete(id);
+    res.status(200).json({ msg: "Leave deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "servererror" });
+  }
+
+  // export salesReport = async (req,res)=>{
+
+  // }
 };

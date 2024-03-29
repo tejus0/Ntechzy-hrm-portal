@@ -14,17 +14,24 @@ useEffect(() => {
     }
   }, []);
   const [text, setText] = useState("");
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(text==""){
+      toast.error("Enter text first !");
+    }
+    else{
     console.log(text, "text is here");
     await axios
-      .post(`http://localhost:7000/api/createTodos`, {employee_id:userId, name: text })
+      .post(`${process.env.REACT_APP_BASE_URL}/createTodos`, {employee_id:userId, name: text })
       .then((response) => {
         toast.success("task added successfully !", { position: "top-right" });
         addTodo(text);
         setText("");
       })
       .catch((error) => console.log(error));
+    }
   };
 return (
     <Container maxWidth="sm">

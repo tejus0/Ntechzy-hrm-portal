@@ -109,27 +109,12 @@ function Home() {
         setleaveCount(response.data)
       }) .catch((error) => console.log(error.message));
 
+      
+
     };
 
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-        
-  //        axios.get(`${process.env.REACT_APP_BASE_URL}/getUserCount`).then(users=> setuserCount(users.data)).catch(err=> console.log(err));
-  //       // axios
-  //       //   .get("http://localhost:7000/api/getLeaveCount")
-  //       //   .then((leaves) => setleaveCount(leaves.data))
-  //       //   .catch((err) => console.log(err));
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   return (
     <div style={{ width: "90%" }}>

@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Check, Delete } from "@mui/icons-material";
 import { green } from "@mui/material/colors";
-const todo = ({ title, checkTodo, id, isCompleted, deleteTodo }) => {
+const todo = ({ key, title, checkTodo, id, isCompleted, deleteTodo }) => {
   const markComplete = () => checkTodo(id);
   const delTodo = () => deleteTodo(id);
   const todoStyle = isCompleted
@@ -27,6 +27,7 @@ const todo = ({ title, checkTodo, id, isCompleted, deleteTodo }) => {
               <IconButton onClick={markComplete}>
                 <Check style={{ color: "green" }} />
               </IconButton>
+              {key}
               {title}
               <IconButton style={{ float: "right" }} onClick={delTodo}>
                 <Delete style={{ color: "red" }} />
