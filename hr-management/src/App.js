@@ -21,7 +21,7 @@ import Userleave from "./pages/users/UserLeave.jsx";
 import Userdetails from "./pages/users/UserDetails.jsx";
 import UserLandingLayout from "./pages/users/UserLandingLayout.jsx";
 import Usersales from "./pages/users/UserSalesAnalytics.jsx";
-
+import Attendance from "./screens/Attendance.jsx";
 Modal.setAppElement("#root");
 
 function App() {
@@ -54,7 +54,7 @@ function App() {
           <Route exact path="/userleave" element={<Userleave />} />
           <Route exact path="/userdetails" element={<Userdetails />} />
           <Route exact path="/usersales" element={<Usersales />} />
-
+          <Route exact path="/attendance" element={<Attendance />} />
           <Route exact path="/forget-pass" element={<Reset />} />
           <Route exact path="/leaves-list" element={<Leave />} />
           {/* <Route exact path="/todo" element={<ToDoList />} /> */}

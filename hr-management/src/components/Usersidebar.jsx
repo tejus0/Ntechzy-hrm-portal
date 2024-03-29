@@ -284,6 +284,27 @@ export default function UserSideBar() {
                 <ListItemText primary="DASHBOARD" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/attendance">
+
+        <ListItemButton
+         sx={{
+            minHeight: 48,
+         justifyContent: open ? 'initial' : 'center',
+       px: 2.5,
+           }}
+>
+          <ListItemIcon
+           sx={{
+           minWidth: 0,
+         mr: open ? 3 : 'auto',
+          justifyContent: 'center',
+            }}
+  >
+     <MailIcon />
+  </ListItemIcon>
+  <ListItemText primary="ATTENDANCE" sx={{ opacity: open ? 1 : 0 }} />
+</ListItemButton>
+</ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}component={Link} to="/usersales">
               <ListItemButton
                 sx={{
