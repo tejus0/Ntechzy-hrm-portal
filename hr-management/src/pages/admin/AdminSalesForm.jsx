@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -20,12 +19,17 @@ function AdminSalesForm() {
   const [isDisabled, setIsDisabled] = useState(false);
 
   const [uploadProgress, setUploadProgress] = useState(0);
-
-  const [user_id, setUser_id] = useState(0);
+  
+  const [user_id, setUser_id] = useState("");
+  
+  const Id = JSON.parse(localStorage.getItem("Id-data"), function (k, v) {
+    return v;
+  });
 
   const users = {
-    employee_id: user_id,
+    employee_id: Id,
     client_name: "",
+    client_father_name:"",
     client_no: "",
     client_state: "",
     course: "",
@@ -42,14 +46,62 @@ function AdminSalesForm() {
   const [user, setUser] = useState(users);
   const navigate = useNavigate();
 
+  const [nameError, setNameError] = useState(false);
+  const [FatherNameError, setFatherNameError] = useState(false);
+  const [ClientNoError, setClientNoError] = useState(false);
+  const [ClientStateError, setClientStateError] = useState(false);
+  const [CourseError, setCourseError] = useState(false);
+  const [PaidFeeError, setPaidFeeError] = useState(false);
+  const [remFeeError, setRemFeeError] = useState(false);
+  const [CollegeError, setCollegeError] = useState(false);
+  const [regAmountError, setRegAmountError] = useState(false);
+  const [srvcAmountError, setSrvcAmountError] = useState(false);
+  const [enrollDateError, setEnrollDateError] = useState(false);
+  const [statusError, setStatusError] = useState(false);
+  const [bonusStatusError, setBonusStatusError] = useState(false);
+  const [incentivesError, setIncentivesError] = useState(false);
+  
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
+    if (e.target.validity.valid) {
+      setNameError(false);
+      setFatherNameError(false);
+      setClientNoError(false);
+      setClientStateError(false);
+      setCourseError(false);
+      setPaidFeeError(false);
+      setRemFeeError(false);
+      setCollegeError(false);
+      setRegAmountError(false);
+      setSrvcAmountError(false);
+      setEnrollDateError(false);
+      setStatusError(false);
+      setBonusStatusError(false);
+      setIncentivesError(false);
+    } else {
+      setNameError(true);
+      setFatherNameError(true);
+      setClientNoError(true);
+      setClientStateError(true);
+      setCourseError(true);
+      setPaidFeeError(true);
+      setRemFeeError(true);
+      setCollegeError(true);
+      setRegAmountError(true);
+      setSrvcAmountError(true);
+      setEnrollDateError(true);
+      setStatusError(true);
+      setBonusStatusError(true);
+      setIncentivesError(true);
+    }
   };
+
 
   const resetForm = () => {
     setUser({
       client_no: "",
+      client_name: "",
       client_state: "",
       course: "",
       paid_fee: "",
@@ -65,16 +117,30 @@ function AdminSalesForm() {
   };
 
   const handleSubmit = async (e) => {
+    console.log(user_id);
     e.preventDefault();
-    await axios
-      .post(`${process.env.REACT_APP_BASE_URL}/create-sales`, user)
-      .then((response) => {
-        console.log(response);
-        toast.success(response.data.msg, { position: "top-right" });
-        // navigate("/");
-        resetForm();
-      })
-      .catch((error) => console.log(error.response.data));
+    if (nameError || user.client_no.trim() == "" || user.client_father_name.trim() == "" || user.assoc_college.trim() == "" || user.bonus_status.trim() == "" || user.client_name.trim() == "" || user.client_state.trim() == "" || user.course.trim() == "" || user.enroll_date.trim() == "" || user.incentives.trim() == "" || user.paid_fee.trim() == "" || user.registration_amount.trim() == "" || user.rem_fee.trim() == "" || user.services_amount.trim() == "" || user.status.trim() == "") {
+      console.log(user, "user");
+      toast.error("Please fill the details first", { position: "top-right" });
+    } else {
+      console.log(user, "form");
+      await axios
+        .post(`http://localhost:7000/api/create-sales`, user)
+        .then((response) => {
+          console.log(response);
+          if(response.status===200){
+          toast.success(response.data.msg, { position: "top-right" });
+          // navigate("/");
+          resetForm();
+          }
+          else if(response.status===201){
+            toast.error(response.data.msg, { position: "top-right" });
+          }
+        })
+        .catch((error) => console.log(error.response.data));
+    }
+
+    // navigate("/")
   };
 
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -84,16 +150,14 @@ function AdminSalesForm() {
   };
 
   useEffect(() => {
-    const Id = JSON.parse(localStorage.getItem("Id-data"), function (k, v) {
-      return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
-    });
+
     console.log(Id, typeof Id);
     if (Id) {
       console.log("id not setting");
       setUser_id(Id);
       console.log(user_id, "this is not working");
     }
-  }, []);
+  }, [user_id]);
 
   return (
     <Box container sx={{ display: "flex" }}>
@@ -148,7 +212,7 @@ function AdminSalesForm() {
           >
             <div>Employee Id </div>
             <TextField
-              defaultValue
+              defaultValue={user_id}
               // onChange={(e) => {
               //   setName(e.target.value);
               // }}
@@ -161,17 +225,35 @@ function AdminSalesForm() {
               fullWidth
             />
             <div>Client's Name : </div>
+            {/* <ValidatedTextField  label="Required" onChange={inputHandler}/> */}
             <TextField
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter Client name" : ""}
               fullWidth
               required
               name="client_name"
               id="outlined-required"
               label="Required"
             />
-            <div>Contact Number: </div>
+             <div>Client's Father Name : </div>
+            {/* <ValidatedTextField  label="Required" onChange={inputHandler}/> */}
             <TextField
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter Client Father's name" : ""}
+              fullWidth
+              required
+              name="client_father_name"
+              id="outlined-required"
+              label="Required"
+            />
+            <div>Contact Number: </div>
+            <TextField
+              required
+              onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter client number" : ""}
               name="client_no"
               id="outlined-basic"
               label="Outlined"
@@ -180,6 +262,8 @@ function AdminSalesForm() {
             <div>Home State : </div>
             <TextField
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter client state" : ""}
               fullWidth
               required
               name="client_state"
@@ -189,6 +273,9 @@ function AdminSalesForm() {
             <div>Course Enrolled For : </div>
             <TextField
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter course" : ""}
+              required
               name="course"
               id="outlined-basic"
               label="Outlined"
@@ -196,7 +283,10 @@ function AdminSalesForm() {
             />
             <div>Paid Fee : </div>
             <TextField
+              required
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter paid fee" : ""}
               name="paid_fee"
               id="outlined-basic"
               label="Outlined"
@@ -204,7 +294,10 @@ function AdminSalesForm() {
             />
             <div>Remaining Fee: </div>
             <TextField
+              required
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter remaining fee" : ""}
               name="rem_fee"
               id="outlined-basic"
               label="Outlined"
@@ -220,7 +313,10 @@ function AdminSalesForm() {
           >
             <div>Enrolled For Associate College: </div>
             <TextField
+              required
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter associated college" : ""}
               name="assoc_college"
               id="outlined-basic"
               label="Outlined"
@@ -228,7 +324,10 @@ function AdminSalesForm() {
             />
             <div>Registration Amount : </div>
             <TextField
+              required
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter registration amounte" : ""}
               name="registration_amount"
               id="outlined-basic"
               label="Outlined"
@@ -236,7 +335,10 @@ function AdminSalesForm() {
             />
             <div>Amount For Services : </div>
             <TextField
+              required
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter services amount" : ""}
               name="services_amount"
               id="outlined-basic"
               label="Outlined"
@@ -244,8 +346,11 @@ function AdminSalesForm() {
             />
             <div>Date Of Enrollment : </div>
             <TextField
+              required
               onChange={inputHandler}
-              value={users.enroll_date}
+              error={nameError}
+              helperText={nameError ? "Please enter enroll date" : ""}
+              // value={users.enroll_date}
               name="enroll_date"
               id="outlined-basic"
               label="Outlined"
@@ -253,7 +358,10 @@ function AdminSalesForm() {
             />
             <div>Admission Status : </div>
             <TextField
+              required
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter status" : ""}
               name="status"
               id="outlined-basic"
               label="Outlined"
@@ -261,7 +369,10 @@ function AdminSalesForm() {
             />
             <div>Bonus Status : </div>
             <TextField
+              required
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter bonus status" : ""}
               name="bonus_status"
               id="outlined-basic"
               label="Outlined"
@@ -269,7 +380,10 @@ function AdminSalesForm() {
             />
             <div>Incentives : </div>
             <TextField
+              required
               onChange={inputHandler}
+              error={nameError}
+              helperText={nameError ? "Please enter incentives" : ""}
               name="incentives"
               id="outlined-basic"
               label="Outlined"

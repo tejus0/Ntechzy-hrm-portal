@@ -35,6 +35,10 @@ import {
   deleteTodos,
   getLeaves,
   userDeleteLeave,
+  getAllSales,
+  getUserSales,
+  getModalLeave,
+  getRejectedLeaves
   // salesReport
 } from "../controllers/userController.js";
 
@@ -67,12 +71,11 @@ route.get("/reset-password/:id/:token", forgetPassLoad);
 
 route.post("/reset-password/:id/:token", resetPassword);
 
-route.post("/generate-leave", generateLeave);
 
 route.post("/create", create);
 route.get("/getall", getAll);
 route.get("/getone/:id", getOne);
-route.put("/update/:id", update);
+route.get("/update/:id", update);
 route.delete("/delete/:id", deleteUser);
 route.post("/calendar/create-event", create_event);
 
@@ -80,11 +83,14 @@ route.get("/calendar/get-events", get_events);
 
 route.get("/getUserCount", getUserCount);
 
+route.post("/generate-leave", generateLeave);
 route.get("/getallleave", getAllLeaves);
 route.get("/getLeaves/:id", getLeaves);
-route.delete("/leaves/reject/:id", rejectLeave);
+route.get("/getRejectedLeaves/:id", getRejectedLeaves);
+route.get("/leaves/reject/:id/:cancelReason", rejectLeave);
 route.delete("/user-leaves/delete/:id", userDeleteLeave);
 route.get("/leaves/update/:id", updateLeave);
+route.get("/leaves/getModalLeave/:id", getModalLeave);
 
 route.get("/getLeaveCount", getLeaveCount);
 
@@ -96,6 +102,8 @@ route.delete("/deleteTodos/:id", deleteTodos);
 route.get("/remainingLeaves", remainingLeaves);
 
 route.post("/create-sales", createSales);
+route.get("/getallSales", getAllSales);
+route.get("/getUserSales/:id", getUserSales);
 
 // route.get("/sales-report",salesReport);
 

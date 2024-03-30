@@ -376,7 +376,7 @@ export default function EmployeeAttend() {
             <List
               disablePadding
               component={Link}
-              to="/leaves-list"
+              to="/admin-sales-list"
               onClick={handleIsCollapse}
             >
               <ListItemButton sx={{ pl: 4 }}>
@@ -387,29 +387,44 @@ export default function EmployeeAttend() {
               </ListItemButton>
             </List>
           </Collapse>
-          {/* <ListItem disablePadding sx={{ display: "block" }} component={Link} to="/adminsales">
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
+          <ListItemButton onClick={handleIsCollapse}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Tasks" />
+            {isCollapse ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/admin-tasks"
+              onClick={handleIsCollapse}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="SALES ANALYTICS"
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem> */}
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="New Task" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+          <Divider />
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/admin-sales-list"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="All Tasks" />
+              </ListItemButton>
+            </List>
+          </Collapse>
         </List>
         <Divider />
         <List>

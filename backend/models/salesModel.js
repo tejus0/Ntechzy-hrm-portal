@@ -8,6 +8,9 @@ const salesSchema = new mongoose.Schema({
     client_name: {
         type:String
     },
+    client_father_name:{
+        type:String
+    },
     client_no: {
         type:String
     },

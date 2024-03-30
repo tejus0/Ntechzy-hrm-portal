@@ -34,6 +34,10 @@ const leaveSchema= new mongoose.Schema({
         type:String,
         // required:true,
       },
+      CancelReason:{
+        type:String,
+        default:""
+      },
       is_approved:{
         type:Number,
         default:0

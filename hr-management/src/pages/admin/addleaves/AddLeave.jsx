@@ -12,6 +12,7 @@ import axios from "axios";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import UserSideBar from "../../../components/UserSideBar";
+
 // import { UserContext } from "../../screens/contexts/userContext";
 
 function EmployeeLeave() {
@@ -19,8 +20,8 @@ function EmployeeLeave() {
   const [empId, setEmpId] = useState("");
   const [type, setType] = useState("");
   const [day, setDay] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
   const [daycount, setdaycount] = useState(0);
   const [remLeaves, setremLeaves] = useState(0);
   const [desc, setDesc] = useState("");
@@ -30,7 +31,7 @@ function EmployeeLeave() {
   const [endDate, setEndDate] = useState(null);
   const [BeforeRemLeaves, setBeforeRemLeaves] = useState(0);
   const [AfterRemLeaves, setAfterRemLeaves] = useState(BeforeRemLeaves);
-  const [dayDiff, setDayDiff] = useState(0)
+  const [dayDiff, setDayDiff] = useState(0);
 
   // const emp_id = useContext(UserContext)
 
@@ -72,8 +73,13 @@ function EmployeeLeave() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (BeforeRemLeaves < daycount || BeforeRemLeaves <= 0) {
+      setBeforeRemLeaves(0);
+      toast.error("Leaves are remaining less");
+      return;
+    }
     await axios
-      .post(`${process.env.REACT_APP_BASE_URL}/generate-leave`, {
+      .post("http://localhost:7000/api/generate-leave", {
         name: name,
         employeeNo: user_id,
         leaveType: type,
@@ -83,6 +89,7 @@ function EmployeeLeave() {
         Days: daycount,
         RemLeaves: remLeaves,
         Description: desc,
+        CancelReason: "",
       })
       .then((response) => {
         console.log(response);
@@ -92,7 +99,7 @@ function EmployeeLeave() {
 
         // navigate("/");
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => console.log(error.response));
   };
 
   const resetForm = (e) => {
@@ -116,21 +123,6 @@ function EmployeeLeave() {
     }
   };
 
-  const timeCalc = (newValue) => {
-    console.log(newValue);
-    const format = "YYYY-MM-DD";
-    var start = moment(startDate,format);
-    var end = moment(endDate,format);
-    let duration = moment(end, format).diff(moment(start, format));
-    // console.log(start.days()-end.days());
-    // console.log(start, end);
-    // console.log(duration);
-    // var dayDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-    // // console.log(dayDiff);
-    // console.log(moment.duration(end.diff(start,true)));
-    console.log(end.diff(start, "days", true) + ' hours');
-  };
-
   const totalCasual = 10;
 
   useEffect(() => {
@@ -152,13 +144,14 @@ function EmployeeLeave() {
       const fetchData = async () => {
         await axios
           .get(
-            `${process.env.REACT_APP_BASE_URL}/remainingLeaves?employeeNo=${user_id}&leaveType=${type}`
+            `http://localhost:7000/api/remainingLeaves?employeeNo=${user_id}&leaveType=${type}`
           )
           .then((response) => {
-            if (!response) {
+            if (response.data.length == 0) {
               setBeforeRemLeaves(totalCasual);
-            } else setBeforeRemLeaves(totalCasual - response.data);
-            console.log(response);
+              // toast.error("Error in fetching remaining leaves, Reload again ");
+            } else setBeforeRemLeaves(totalCasual - response.data[0].total);
+            console.log(response.data[0].total, "response");
             // toast.success(response, {position:"top-right"})
           })
           .catch((error) => console.log(error));
@@ -171,15 +164,26 @@ function EmployeeLeave() {
     hasPageBeenRendered.current = true;
   }, [type]);
 
+  const isWeekend = (date) => {
+    const day = date.day();
+
+    return day === 0 || day === 6;
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box container sx={{ display: "flex" }}>
-        {window.localStorage.getItem("user-type")=='user' ? <UserSideBar openSidebarToggle={openSidebarToggle}
-          OpenSidebar={OpenSidebar}/> : <Sidebar
-          openSidebarToggle={openSidebarToggle}
-          OpenSidebar={OpenSidebar}
-        />}
+        {window.localStorage.getItem("user-type") == "user" ? (
+          <UserSideBar
+            openSidebarToggle={openSidebarToggle}
+            OpenSidebar={OpenSidebar}
+          />
+        ) : (
+          <Sidebar
+            openSidebarToggle={openSidebarToggle}
+            OpenSidebar={OpenSidebar}
+          />
+        )}
         <Box
           //   component="form"
           sx={{
@@ -238,7 +242,6 @@ function EmployeeLeave() {
                   }}
                   select
                   label="Select"
-                  helperText="half Day"
                   fullWidth
                 >
                   {leaveType.map((option) => (
@@ -257,12 +260,17 @@ function EmployeeLeave() {
                     <div>From</div>
                     <DatePicker
                       disablePast
+                      // shouldDisableDate={isWeekend}
                       label="Start Date"
-                      format="YYYY-MM-DD"
-                      value={startDate}
-                      onChange={(newValue) => {
-                        setFrom(newValue);
-                        setStartDate(newValue);
+                      // format="YYYY-MM-DD"
+                      // value={startDate}
+                      value={startDate} // Set the value prop to display the selected start date
+                      onChange={(date) => {
+                        const d = new Date(date).toLocaleDateString("fr-FR");
+                        const fromDate = moment(d, "DD/MM/YYYY");
+                        console.log(d);
+                        setFrom(fromDate);
+                        setStartDate(date);
                       }}
                     />
                   </>
@@ -303,19 +311,43 @@ function EmployeeLeave() {
                   <>
                     <div>To *</div>
                     <DatePicker
+                      // shouldDisableDate={isWeekend}
                       label="End Date"
-                      format="YYYY-MM-DD"
+                      // format="YYYY-MM-DD"
                       value={endDate}
                       minDate={startDate}
-                      onChange={(newValue) => {
-                        setTo(newValue);
-                        setEndDate(newValue);
-                        timeCalc(newValue);
+                      onChange={(date) => {
+                        const d = new Date(date).toLocaleDateString("fr-FR");
+                        console.log(d);
+                        setTo(d);
+                        setEndDate(to);
+                        const toDate = moment(d, "DD/MM/YYYY"); // Convert selected date to a Moment.js object
+                        const daysDiff = toDate.diff(from, "days"); // Calculate difference in days
+                        setdaycount(daysDiff);
                       }}
                     />
                   </>
                 ) : null}
               </Grid>
+
+              {inputBox ? (
+                <>
+                  <div>Days of Leave</div>
+                  <TextField
+                    value={daycount}
+                    onChange={(e) => {
+                      setdaycount(e.target.value);
+                    }}
+                    disabled
+                    // value={AfterRemLeaves}
+                    id="filled-disabled"
+                    // defaultValue=""
+                    variant="filled"
+                    fullWidth
+                  />
+                </>
+              ) : null}
+
               <Grid
                 container
                 item

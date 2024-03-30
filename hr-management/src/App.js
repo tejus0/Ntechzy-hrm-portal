@@ -23,6 +23,10 @@ import UserLandingLayout from "./pages/users/UserLandingLayout.jsx";
 import Usersales from "./pages/users/UserSalesAnalytics.jsx";
 import UserLeaveList from "./pages/users/getleaves/UserLeavesList.jsx";
 import AdminSalesForm from "./pages/admin/AdminSalesForm.jsx";
+import Getallsales from "./pages/admin/getSales/GetAllSales.jsx";
+import UserSalesList from "./pages/users/getSales/UserSalesList.jsx";
+import ToDoTask from "./pages/admin/ToDoTask/ToDoTask.jsx";
+import UserRejectedLeaves from "./pages/users/getRejectedLeaves/UserRejectedLeaves.jsx";
 
 Modal.setAppElement("#root");
 
@@ -61,6 +65,10 @@ function App() {
           <Route exact path="/forget-pass" element={<Reset />} />
           <Route exact path="/leaves-list" element={<Leave />} />
           <Route exact path="/user-leaves-list" element={<UserLeaveList />} />
+          <Route exact path="/user-rejected-leaves-list" element={<UserRejectedLeaves />} />
+          <Route exact path="/admin-sales-list" element={<Getallsales />} />
+          <Route exact path="/user-sales-list" element={<UserSalesList />} />
+          <Route exact path="/admin-tasks" element={<ToDoTask />} />
           {/* <Route exact path="/todo" element={<ToDoList />} /> */}
         </Routes>
       </UserContext.Provider>

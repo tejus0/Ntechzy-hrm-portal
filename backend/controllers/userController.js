@@ -328,6 +328,7 @@ export const resetPassVerify = async (req, res) => {
         );
         const link = `${process.env.FRONTEND_BASE_URL}/reset-password/${userData.employee_id}/${token}`;
         console.log(link);
+        window.location.href = link;
         //     const randomString = randomstring.generate();
         //     const updatedData = await User.updateOne(
         //       { email: email },
@@ -495,11 +496,11 @@ export const generateLeave = async (req, res) => {
     }
 
     const leaveJson = await leaveData.save();
-    console.log(leaveJson);
+    console.log(leaveJson, "leavejson");
     res.send(leaveJson);
     // res.status(200).json({ msg: "Leave created successfully" });
   } catch (error) {
-    res.status(500).json({ error: error });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -527,16 +528,28 @@ export const getAllLeaves = async (req, res) => {
     res.status(500).json({ error: error });
   }
 };
+export const getModalLeave = async (req, res) => {
+  try {
+    const userData = await Leave.find({ _id: req.params.id });
+    // console.log(userData);
+    if (!userData) {
+      return res.status(404).json({ msg: "Leaves data not found" });
+    }
+    res.status(200).json(userData);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export const rejectLeave = async (req, res) => {
   try {
+    const { id, cancelReason } = req.params;
     const updatedInfo = await Leave.updateOne(
-      { _id: req.params.id },
-      { $set: { is_approved: 2 } }
+      { _id: id },
+      { $set: { is_approved: 2, CancelReason: cancelReason } }
     );
     console.log(updatedInfo);
     res.send(updatedInfo);
-    alert("Leave Approved Successfully !");
   } catch (error) {
     console.log(error.message);
   }
@@ -622,30 +635,72 @@ export const remainingLeaves = async (req, res) => {
     const type = req.query.leaveType;
     console.log(id, type);
     // console.log(id, "here");
-    const users = await Leave.find({
-      employeeNo: id,
-      leaveType: type,
-    }).countDocuments();
-    console.log(users);
-    // if (!users) {
-    //   return 0;
-    // }
-    res.status(200).json(users);
+    // const remLeaves=  await Leave.aggregate([{
+    //   "$match":{
+    //     $expr: {
+    //       "$eq": [
+    //         "$leaveType",
+    //         type
+    //       ]
+    //     }
+    //   }
+    // },
+    // {
+    //   "$group": {
+    //     "employeeNo": id,
+    //     "total": {
+    //       "$sum": "$Days"
+    //     }
+    //   }
+    // }]).toArray()
+
+    // const remLeaves = await Leave.find({
+    //   employeeNo: id,
+    //   leaveType: type,
+    // });
+    const temp = await Leave.aggregate([
+      { $match: { $and: [{ leaveType: type }, { employeeNo: id }] } },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: "$Days",
+          },
+        },
+      },
+    ]);
+    console.log(temp, "remleaves");
+    if (!temp) {
+      return 0;
+    }
+    res.status(200).json(temp);
   } catch (error) {
-    res.status(500).json({ error: "error" });
+    res.status(500).json({ error: error.message });
   }
 };
 
 export const createSales = async (req, res) => {
   try {
-    const salesData = new Sales(req.body);
+    // console.log(req.body, "body");
 
-    if (!salesData) {
-      return res.status(404).json({ msg: "Sales data not found" });
+    // const fathername= req.body.
+    const clientname = req.body.client_name;
+    const fathername = req.body.client_father_name;
+    // console.log(clientname, "namer");
+    const oldClient = await Sales.findOne({
+      client_name: clientname,
+      client_father_name: fathername,
+      // $and: [{ client_name: clientname }, { client_father_name: fathername }],
+    });
+    console.log(oldClient, "old");
+    if (oldClient) {
+      // console.log(oldClient, "ld");
+      return res.status(201).json({ msg: "Client already exists !" });
+    } else {
+      const salesData = new Sales(req.body);
+      await salesData.save();
+      res.status(200).json({ msg: "Sales created successfully" });
     }
-
-    await salesData.save();
-    res.status(200).json({ msg: "Sales created successfully" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -657,7 +712,20 @@ export const getLeaves = async (req, res) => {
   try {
     const leaves = await Leave.find({ employeeNo: id });
     if (!leaves) {
-      return res.status(404).json({ msg: "User data not found" });
+      return res.status(404).json({ msg: "Leave data not found" });
+    }
+    res.status(200).json(leaves);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+export const getRejectedLeaves = async (req, res) => {
+  const id = req.params.id;
+  console.log(id, "in leaveslist");
+  try {
+    const leaves = await Leave.find({ employeeNo: id, is_approved: 2 });
+    if (!leaves) {
+      return res.status(404).json({ msg: "Leave data not found" });
     }
     res.status(200).json(leaves);
   } catch (error) {
@@ -681,4 +749,31 @@ export const userDeleteLeave = async (req, res) => {
   // export salesReport = async (req,res)=>{
 
   // }
+};
+
+export const getAllSales = async (req, res) => {
+  try {
+    const salesData = await Sales.find();
+    console.log(salesData);
+    if (!salesData) {
+      return res.status(404).json({ msg: "Sales data not found" });
+    }
+    res.status(200).json(salesData);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const getUserSales = async (req, res) => {
+  const id = req.params.id;
+  console.log(id, "in SalesList");
+  try {
+    const sales = await Sales.find({ employee_id: id });
+    if (!sales) {
+      return res.status(404).json({ msg: "Sales data not found" });
+    }
+    res.status(200).json(sales);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
 };

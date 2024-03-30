@@ -5,13 +5,13 @@ import "./leaves.css";
 import { Link } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar";
 import Box from "@mui/material/Box";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import UserSideBar from "../../../components/UserSideBar";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const UserLeaveList = () => {
+const UserRejectedLeaves = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
   const OpenSidebar = () => {
@@ -24,17 +24,15 @@ const UserLeaveList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        
         const response = await axios.get(
-          `http://localhost:7000/api/getLeaves/${Id}`
+          `http://localhost:7000/api/getRejectedLeaves/${Id}`
         );
         console.log(response);
         setUsers(response.data);
-  
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
     fetchData();
   }, []);
 
@@ -79,11 +77,17 @@ const UserLeaveList = () => {
 
   return (
     <Box container sx={{ display: "flex" }}>
-      {window.localStorage.getItem("user-type")=='user' ? <UserSideBar openSidebarToggle={openSidebarToggle}
-          OpenSidebar={OpenSidebar}/> : <Sidebar
+      {window.localStorage.getItem("user-type") == "user" ? (
+        <UserSideBar
           openSidebarToggle={openSidebarToggle}
           OpenSidebar={OpenSidebar}
-        />}
+        />
+      ) : (
+        <Sidebar
+          openSidebarToggle={openSidebarToggle}
+          OpenSidebar={OpenSidebar}
+        />
+      )}
       <div className="userTable">
         <Link to={"/leave-management"} className="addButton">
           Add Leave
@@ -99,48 +103,33 @@ const UserLeaveList = () => {
               <th>From</th>
               <th>To</th>
               <th>Days</th>
-              <th>Description</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th>Reason for Leave</th>
             </tr>
           </thead>
           <tbody>
             {reversed.map((user, index) => {
               return (
-                <tr key={user._id}>
-                  <td>{index + 1}</td>
-                  <td>{user.name}</td>
-                  <td>{user.employeeNo}</td>
-                  <td>{user.leaveType}</td>
-                  <td>{user.Day}</td>
-                  <td>{user.From}</td>
-                  <td>{user.To}</td>
-                  <td>{user.Days}</td>
-                  <td>
-                    <Box
-                      container
-                      sx={{
-                        overflow: "auto",
-                        // my: 2,
-                        // p: 1,
-                        height: "80px",
-                        width: "100px",
-                      }}
-                    >
-                      {user.Description}
-                    </Box>
-                  </td>
-                  <td> {user.is_approved === 1
-                        ? "Approved"
-                        : user.is_approved === 0
-                        ? "New Leave"
-                        : "Rejected"}</td>
-                  <td className="actionButtons">
-                    <Button onClick={() => deleteLeave(user._id)}>
-                      <i class="fa fa-trash" aria-hidden="true"></i>
-                    </Button>
-                  </td>
-                </tr>
+                <>
+                      <tr key={user._id}>
+                        <td>{index + 1}</td>
+                        <td>{user.name}</td>
+                        <td>{user.employeeNo}</td>
+                        <td>{user.leaveType}</td>
+                        <td>{user.Day}</td>
+                        <td>{user.From}</td>
+                        <td>{user.To}</td>
+                        <td>{user.Days}</td>
+
+                        <td> {user.is_approved}</td>
+
+                      <td>
+                        {/* <TextField multiline rows={3}> */}
+                          {user.CancelReason}
+                        {/* </TextField> */}
+</td>
+                      </tr>
+                </>
               );
             })}
           </tbody>
@@ -150,4 +139,4 @@ const UserLeaveList = () => {
   );
 };
 
-export default UserLeaveList;
+export default UserRejectedLeaves;

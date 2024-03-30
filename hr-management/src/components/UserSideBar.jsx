@@ -283,7 +283,45 @@ export default function UserSideBar() {
                 <ListItemText primary="DASHBOARD" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }}component={Link} to="/usersales">
+            <ListItemButton onClick={handleIsCollapse}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Sales Report" />
+            {isCollapse ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/usersales"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="New Sales" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+          <Divider />
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/user-sales-list"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="All Sales" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+            {/* <ListItem disablePadding sx={{ display: 'block' }}component={Link} to="/usersales">
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -302,7 +340,7 @@ export default function UserSideBar() {
                 </ListItemIcon>
                 <ListItemText primary="SALES ANALYTICS" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <ListItem disablePadding sx={{ display: 'block' }}component={Link} to="/employee-details">
               <ListItemButton
                 sx={{
@@ -326,96 +364,7 @@ export default function UserSideBar() {
         </List>
         <Divider />
         <List>
-        {/* <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                   <MailIcon />
-                </ListItemIcon>
-                <ListItemText primary="DEPARTMENTS" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem> */}
-            <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/calendar"  >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                   <MailIcon />
-                </ListItemIcon>
-                <ListItemText primary="CALENDAR" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-            {/* <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                   <MailIcon />
-                </ListItemIcon>
-                <ListItemText primary="TRAINING SESSIONS" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem> */}
 
-            {/* Dropdown sub- menu */}
-            {/* <ListItemButton onClick={handleIsCollapse}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText primary="EMPLOYEES" />
-        {isCollapse ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={isCollapse} timeout="auto" unmountOnExit>
-        <List  disablePadding component={Link} to="/userdetails" onClick={handleIsCollapse}>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="DETAILS" />
-          </ListItemButton>
-        </List>
-      </Collapse>
-      <Divider />
-      <Collapse in={isCollapse} timeout="auto" unmountOnExit>
-        <List disablePadding onClick={handleIsCollapse}>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="All Employee" />
-          </ListItemButton>
-        </List>
-      </Collapse> */}
       
                 
       <ListItemButton onClick={handleIsCollapse}>
@@ -429,7 +378,7 @@ export default function UserSideBar() {
             <List
               disablePadding
               component={Link}
-              to="/leave-management"
+              to="/userleave"
               onClick={handleIsCollapse}
             >
               <ListItemButton sx={{ pl: 4 }}>
@@ -453,6 +402,22 @@ export default function UserSideBar() {
                   <StarBorder />
                 </ListItemIcon>
                 <ListItemText primary="Applied" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+          <Divider />
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/user-rejected-leaves-list"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Rejected" />
               </ListItemButton>
             </List>
           </Collapse>
