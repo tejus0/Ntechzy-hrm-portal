@@ -1,108 +1,107 @@
-import * as React from 'react';
+import * as React from "react";
 import Logo from "../assets/careerkick_logo.png";
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import {Link} from "react-router-dom";
-import { useState,useEffect } from 'react';
-import Collapse from '@mui/material/Collapse';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Collapse from "@mui/material/Collapse";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import StarBorder from "@mui/icons-material/StarBorder";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Tooltip from "@mui/material/Tooltip";
 import Popover from "@mui/material/Popover";
 
-import { Grid } from '@mui/material';
+import { Grid } from "@mui/material";
 const drawerWidth = 250;
-
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
   }),
-);
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
 
 export default function UserSideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [isCollapse, setIsCollapse] = useState(true)
+  const [isCollapse, setIsCollapse] = useState(true);
   const [userId, setuserId] = useState("");
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -142,9 +141,9 @@ export default function UserSideBar() {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} >
+      <AppBar position="fixed" open={open}>
         <Toolbar sx={{ bgcolor: "green" }}>
           <IconButton
             color="inherit"
@@ -153,18 +152,17 @@ export default function UserSideBar() {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: 'none' }),
-              
+              ...(open && { display: "none" }),
             }}
           >
             <MenuIcon />
           </IconButton>
 
-          <Grid container sx={{display:"flex",justifyContent:"flex-end"}}>
-            <div >
-            <Typography variant="h6" component="div">
-             {window.localStorage.getItem("user-type")}
-          </Typography>
+          <Grid container sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <div>
+              <Typography variant="h6" component="div">
+                {window.localStorage.getItem("user-type")}
+              </Typography>
             </div>
             <div>
               <Tooltip
@@ -213,25 +211,28 @@ export default function UserSideBar() {
           </Grid>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open} >
+      <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose} >
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
-         
         </DrawerHeader>
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: 'block' }} >
+          <ListItem disablePadding sx={{ display: "block" }}>
             <img src={Logo}></img>
-              {/* <ListItemButton
+            {/* <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
               > */}
-                {/* <ListItemIcon
+            {/* <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
@@ -240,10 +241,10 @@ export default function UserSideBar() {
                 >
                    <MailIcon />
                 </ListItemIcon> */}
-                {/* <ListItemText primary="PAYROLL" sx={{ opacity: open ? 1 : 0 }} /> */}
-              {/* </ListItemButton> */}
-            </ListItem>
-            {/* <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/userleave" onClick={handleIsCollapse}>
+            {/* <ListItemText primary="PAYROLL" sx={{ opacity: open ? 1 : 0 }} /> */}
+            {/* </ListItemButton> */}
+          </ListItem>
+          {/* <ListItem disablePadding sx={{ display: 'block' }} component={Link} to="/userleave" onClick={handleIsCollapse}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -263,27 +264,30 @@ export default function UserSideBar() {
                 <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem> */}
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
+          <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                   <MailIcon />
-                </ListItemIcon>
-                <ListItemText primary="DASHBOARD" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-            <ListItemButton onClick={handleIsCollapse}>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="DASHBOARD"
+                sx={{ opacity: open ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItemButton onClick={handleIsCollapse}>
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
@@ -321,7 +325,36 @@ export default function UserSideBar() {
               </ListItemButton>
             </List>
           </Collapse>
-            {/* <ListItem disablePadding sx={{ display: 'block' }}component={Link} to="/usersales">
+
+          <ListItem
+            disablePadding
+            sx={{ display: "block" }}
+            component={Link}
+            to="/attendance"
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="ATTENDANCE"
+                sx={{ opacity: open ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </ListItem>
+          {/* <ListItem disablePadding sx={{ display: 'block' }}component={Link} to="/usersales">
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -341,33 +374,35 @@ export default function UserSideBar() {
                 <ListItemText primary="SALES ANALYTICS" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem> */}
-            <ListItem disablePadding sx={{ display: 'block' }}component={Link} to="/employee-details">
-              <ListItemButton
+          <ListItem
+            disablePadding
+            sx={{ display: "block" }}
+            component={Link}
+            to="/employee-details"
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                   <MailIcon />
-                </ListItemIcon>
-                <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
         <List>
-
-      
-                
-      <ListItemButton onClick={handleIsCollapse}>
+          <ListItemButton onClick={handleIsCollapse}>
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
@@ -421,10 +456,8 @@ export default function UserSideBar() {
               </ListItemButton>
             </List>
           </Collapse>
-
         </List>
       </Drawer>
-      
     </Box>
   );
 }

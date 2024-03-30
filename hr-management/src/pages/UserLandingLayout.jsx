@@ -1,14 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
-// import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
-import Home from "./Home";
+import Header from "../components/Header";
+import Usersidebar from "../components/Usersidebar";
+import Home from "./Admindashboard";
 import Box from "@mui/material/Box";
 import axios from "axios";
-import UserSideBar from "../../components/UserSideBar";
 
 function LandingLayout() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
+
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
   };
@@ -38,11 +38,10 @@ function LandingLayout() {
   }, []);
   return (
     <Box container sx={{ display: "flex" }}>
-      {window.localStorage.getItem("user-type")=='user' ? <UserSideBar openSidebarToggle={openSidebarToggle}
-          OpenSidebar={OpenSidebar}/> : <Sidebar
-          openSidebarToggle={openSidebarToggle}
-          OpenSidebar={OpenSidebar}
-        />}
+      <Usersidebar
+        openSidebarToggle={openSidebarToggle}
+        OpenSidebar={OpenSidebar}
+      />
 
       {/* <div className='grid-container'> */}
 
