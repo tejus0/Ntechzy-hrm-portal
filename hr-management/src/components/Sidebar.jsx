@@ -1,64 +1,3 @@
-// import React from 'react'
-// import
-// {BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill,
-//   BsListCheck, BsMenuButtonWideFill, BsFillGearFill}
-//  from 'react-icons/bs'
-//  import { useNavigate } from 'react-router-dom'
-
-// function Sidebar({openSidebarToggle, OpenSidebar}) {
-//     const navigate= useNavigate();
-//   return (
-//     <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive": ""}>
-//         <div className='sidebar-title'>
-//             <div className='sidebar-brand'>
-//                 <BsCart3  className='icon_header'/> SHOP
-//             </div>
-//             <span className='icon close_icon' onClick={OpenSidebar}>X</span>
-//         </div>
-
-//         <ul className='sidebar-list'>
-//             <li className='sidebar-list-item' onClick={()=>{navigate('/')}}>
-//                 <div href="/">
-//                     <BsGrid1X2Fill className='icon'/> Dashboard
-//                 </div>
-//             </li>
-//             <li className='sidebar-list-item' onClick={()=>{navigate('/payroll')}}>
-//                 <div href="/payroll">
-//                     <BsFillArchiveFill className='icon'/> Products
-//                 </div>
-//             </li>
-//             <li className='sidebar-list-item' onClick={()=>{navigate('/login')}}>
-//                 <div href="">
-//        git             <BsFillGrid3X3GapFill className='icon'/> Categories
-//                 </div>
-//             </li>
-//             <li className='sidebar-list-item' onClick={()=>{navigate('/leave-management')}}>
-//                 <a href="/leave-management">
-//                     <BsPeopleFill className='icon'/> Customers
-//                 </a>
-//             </li>
-//             <li className='sidebar-list-item' onClick={()=>{navigate('/attendance-management')}}>
-//                 <div href="/attendance-management">
-//                     <BsListCheck className='icon'/> Inventory
-//                 </div>
-//             </li>
-//             <li className='sidebar-list-item'>
-//                 <a href="">
-//                     <BsMenuButtonWideFill className='icon'/> Reports
-//                 </a>
-//             </li>
-//             <li className='sidebar-list-item'>
-//                 <a href="">
-//                     <BsFillGearFill className='icon'/> Setting
-//                 </a>
-//             </li>
-//         </ul>
-//     </aside>
-//   )
-// }
-
-// export default Sidebar
-
 import * as React from "react";
 import Logo from "../assets/careerkick_logo.png";
 import { styled, useTheme } from "@mui/material/styles";
@@ -92,6 +31,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Tooltip from "@mui/material/Tooltip";
 import { useEffect } from "react";
 import Popover from "@mui/material/Popover";
+import toast from "react-hot-toast";
 
 const drawerWidth = 250;
 
@@ -193,6 +133,7 @@ export default function EmployeeAttend() {
 
   const handleLogout = () => {
     window.localStorage.clear();
+    toast.success(" Logged out successfully",{"position":"top-right"});
     window.location.href = "./";
   };
 
@@ -228,12 +169,12 @@ export default function EmployeeAttend() {
           >
             <MenuIcon />
           </IconButton>
-          
+
           <Grid container sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <div >
-            <Typography variant="h6" component="div">
-             {window.localStorage.getItem("user-type")}
-          </Typography>
+            <div>
+              <Typography variant="h6" component="div">
+                {window.localStorage.getItem("user-type")}
+              </Typography>
             </div>
             <div>
               <Tooltip
@@ -298,7 +239,7 @@ export default function EmployeeAttend() {
             disablePadding
             sx={{ display: "block" }}
             component={Link}
-            to="/todo"
+            to="/testdashboard"
           >
             <img src={Logo}></img>
             <ListItemButton
@@ -317,7 +258,7 @@ export default function EmployeeAttend() {
               >
                 <MailIcon />
               </ListItemIcon>
-              <ListItemText primary="ToDo" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="TestDashboard" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
           {/* <ListItem
@@ -440,7 +381,7 @@ export default function EmployeeAttend() {
             <List
               disablePadding
               component={Link}
-              to="/admin-sales-list"
+              to="/admin-tasks-list"
               onClick={handleIsCollapse}
             >
               <ListItemButton sx={{ pl: 4 }}>

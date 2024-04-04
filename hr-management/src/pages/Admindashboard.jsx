@@ -25,6 +25,8 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import ToDoList from "./ToDoList/getToDo/ToDoList.jsx"
 import Typography from "@mui/material/Typography";
+import ReceiptIcon from '@mui/icons-material/Receipt';
+
 function Home() {
   const data = [
     {
@@ -112,7 +114,7 @@ function Home() {
         <div className="card">
           <div className="card-inner">
             <h3>PRODUCTS</h3>
-            <BsFillArchiveFill className="card_icon" />
+            <ReceiptIcon className="card_icon" />
           </div>
           <h1>300</h1>
         </div>

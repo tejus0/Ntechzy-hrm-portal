@@ -1,8 +1,8 @@
 import React from "react";
-import UserSideBar from "../components/UserSideBar";
+import UserSideBar from "../../components/UserSideBar";
 import { useState , useRef } from "react";
 import Box from "@mui/material/Box";
-import Modal from "../components/Modal";
+import Modal from "../../components/Modal";
 import {Switch} from "antd";
 export default function ()
  {

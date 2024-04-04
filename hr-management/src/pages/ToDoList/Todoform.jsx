@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { FormControl, Container, TextField, Button } from "@mui/material";
+import { FormControl, Container, TextField, Button, Paper } from "@mui/material";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -34,7 +34,7 @@ useEffect(() => {
     }
   };
 return (
-    <Container maxWidth="sm">
+    <Paper >
       <form>
         <FormControl fullWidth={true}>
           <TextField
@@ -48,13 +48,13 @@ return (
             onClick={handleSubmit}
             variant="contained"
             color="primary"
-            style={{ marginTop: 5 }}
+            style={{ margin: 5 }}
           >
             ADD
           </Button>
         </FormControl>
       </form>
-    </Container>
+    </Paper>
   );
 };
 export default TodoForm;

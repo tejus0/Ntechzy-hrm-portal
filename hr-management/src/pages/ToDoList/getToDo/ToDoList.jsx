@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Box, Paper } from "@mui/material";
 Modal.setAppElement("#root");
 
 export default function ToDoList() {
@@ -52,9 +53,9 @@ export default function ToDoList() {
     setTodos([...todos, newTodo]);
   };
   return (
-    <div>
+    <Paper elevation={20}>
       <Todoform addTodo={addTodo} />
       <Todolist todos={todos} checkTodo={checkTodo} deleteTodo={deleteTodo} />
-    </div>
+    </Paper>
   );
 }

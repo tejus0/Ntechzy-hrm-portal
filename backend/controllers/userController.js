@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import Registeration from "../models/registerModel.js";
 import Leave from "../models/leavesModel.js";
 import Todo from "../models/adminToDoModel.js";
+import Task from "../models/adminTaskModel.js";
 import Event from "../models/events.js";
 import Sales from "../models/salesModel.js";
 import moment from "moment";
@@ -10,6 +11,7 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import randomstring from "randomstring";
 import { sessionSecret, emailUser, emailPass } from "../config/config.js";
+
 
 // for configuring and sending mail
 export const sendVerifyMail = async (name, email, user_id) => {
@@ -515,6 +517,17 @@ export const getUserCount = async (req, res) => {
     res.status(500).json({ error: error });
   }
 };
+export const getSalesCount = async (req, res) => {
+  try {
+    const sales = await Sales.find().countDocuments();
+    if (!sales) {
+      return res.status(404).json({ msg: "Sales data not found" });
+    }
+    res.status(200).json(sales);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
 
 export const getAllLeaves = async (req, res) => {
   try {
@@ -534,6 +547,18 @@ export const getModalLeave = async (req, res) => {
     // console.log(userData);
     if (!userData) {
       return res.status(404).json({ msg: "Leaves data not found" });
+    }
+    res.status(200).json(userData);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getModalTask = async (req, res) => {
+  try {
+    const userData = await Task.find({ _id: req.params.id });
+    console.log(userData,"taskdata");
+    if (!userData) {
+      return res.status(404).json({ msg: "Tasks data not found" });
     }
     res.status(200).json(userData);
   } catch (error) {
@@ -599,6 +624,10 @@ export const createTodos = async (req, res) => {
   const todo = await Todo.create(req.body);
   res.json(todo);
 };
+export const createTask = async (req, res) => {
+  const task = await Task.create(req.body);
+  return res.json(task);
+};
 
 export const deleteTodos = async (req, res) => {
   const id = req.params.id;
@@ -613,6 +642,8 @@ export const deleteTodos = async (req, res) => {
     res.status(500).json({ message: "servererror" });
   }
 };
+
+
 
 export const getUserName = async (req, res) => {
   try {
@@ -736,9 +767,6 @@ export const getRejectedLeaves = async (req, res) => {
 export const userDeleteLeave = async (req, res) => {
   const id = req.params.id;
   try {
-    // console.log(id, "id in cpntroller");
-    // Todo.deleteOne({_id:id}).then(console.log("listaddedsuccess"))
-    // const userExist = await Todo.findById(id);
     const findTodo = await Leave.findByIdAndDelete(id);
     res.status(200).json({ msg: "Leave deleted successfully" });
   } catch (error) {
@@ -746,9 +774,18 @@ export const userDeleteLeave = async (req, res) => {
     res.status(500).json({ message: "servererror" });
   }
 
-  // export salesReport = async (req,res)=>{
+};
+export const userDeleteTask = async (req, res) => {
+  const id = req.params.id;
+  console.log(id,"id in task delete");
+  try {
+    const findTask = await Task.findByIdAndDelete(id);
+    res.status(200).json({ msg: "Task deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "servererror" });
+  }
 
-  // }
 };
 
 export const getAllSales = async (req, res) => {
@@ -759,6 +796,18 @@ export const getAllSales = async (req, res) => {
       return res.status(404).json({ msg: "Sales data not found" });
     }
     res.status(200).json(salesData);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+export const getAllTasks = async (req, res) => {
+  try {
+    const tasksData = await Task.find();
+    console.log(tasksData);
+    if (!tasksData) {
+      return res.status(404).json({ msg: "Tasks data not found" });
+    }
+    res.status(200).json(tasksData);
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -775,5 +824,60 @@ export const getUserSales = async (req, res) => {
     res.status(200).json(sales);
   } catch (error) {
     res.status(500).json({ error: error });
+  }
+};
+export const getUserTasks = async (req, res) => {
+  const id = req.params.id;
+  console.log(id, "in TasksList");
+  try {
+    const tasks = await Task.find({ Employee_id: id });
+    if (!tasks) {
+      return res.status(404).json({ msg: "Tasks data not found" });
+    }
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const getleavesReport = async(req,res)=>{
+  try{
+    const temp = await Leave.aggregate([
+      {
+        $group: {
+          _id: "$employeeNo",
+          total: {
+            $sum: "$Days",
+          },
+        },
+      },
+    ]);
+    console.log(temp, "leavesreport");
+    if (!temp) {
+      return 0;
+    }
+    res.status(200).json(temp); 
+  }catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getSalesReport = async(req,res)=>{
+  try{
+    const temp = await Sales.aggregate([
+      {
+        $group: {
+          _id: "$employee_id",
+            count: {$sum: 1} 
+          
+        },
+      },
+    ]);
+    console.log(temp, "salesreport");
+    if (!temp) {
+      return 0;
+    }
+    res.status(200).json(temp); 
+  }catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

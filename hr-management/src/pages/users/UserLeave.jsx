@@ -270,7 +270,7 @@ function EmployeeLeave() {
                         const fromDate = moment(d, "DD/MM/YYYY");
                         console.log(d);
                         setFrom(fromDate);
-                        setStartDate(date);
+                        setStartDate(fromDate);
                       }}
                     />
                   </>

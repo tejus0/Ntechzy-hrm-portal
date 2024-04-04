@@ -19,17 +19,39 @@ import { useEffect, useRef } from "react";
             setTimein(Time.toLocaleTimeString());
         }
     }
+    const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setLocation({ latitude, longitude });
+            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+        fetch(url).then(res=>res.json()).then((data)=>{setAdd(data.address); console.log(data.address)});
+          },
+          (error) => {
+            console.error('Error getting location:', error);
+          },{
+            enableHighAccuracy: true,
+  timeout: 10000,
+  maximumAge: 2000,
+          }
+        );
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+      }
+    };
+    setInterval(()=>setTime(new Date()),10000)
+    // Check if location is already fetched
+    if (!location) {
+      getLocation();
+    }
+  }, [location]);
 
     useEffect(()=>{
-       setInterval(()=>setTime(new Date()),1000)
-    },[])
-    useEffect(()=>{
-       navigator.geolocation.getCurrentPosition(pos=>{
-        const {latitude,longitude}=pos.coords;
-        console.log(latitude,longitude);
-        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
-        fetch(url).then(res=>res.json()).then(data=>setAdd(data.address));
-       })
+       
     },[])
     return(
         <div ref={ModalRef} onClick={closeModal} className="fixed inset-0  bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
@@ -78,6 +100,16 @@ import { useEffect, useRef } from "react";
                     className="w-full px-4 py-3 text-black border-gray-300 rounded-md"
                     />
                     </div>
+                    <div>
+      {location ? (
+        <div  className="mt-2">
+          <p>Latitude: {location.latitude}</p>
+          <p>Longitude: {location.longitude}</p>
+        </div>
+      ) : (
+        <p>Loading location...</p>
+      )}
+    </div>
                     <div className="mt-2">
                   <button className="mt-4  w-full flex items-center justify-center gap-2 px-5 py-3 font-medium rounded-md bg-black text-white">Submit</button>
                   </div>

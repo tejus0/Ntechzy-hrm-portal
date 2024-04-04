@@ -38,7 +38,15 @@ import {
   getAllSales,
   getUserSales,
   getModalLeave,
-  getRejectedLeaves
+  getRejectedLeaves,
+  createTask,
+  getAllTasks,
+  getModalTask,
+  userDeleteTask,
+  getUserTasks,
+  getSalesCount,
+  getleavesReport,
+  getSalesReport
   // salesReport
 } from "../controllers/userController.js";
 
@@ -82,6 +90,7 @@ route.post("/calendar/create-event", create_event);
 route.get("/calendar/get-events", get_events);
 
 route.get("/getUserCount", getUserCount);
+route.get("/getSalesCount", getSalesCount);
 
 route.post("/generate-leave", generateLeave);
 route.get("/getallleave", getAllLeaves);
@@ -105,6 +114,13 @@ route.post("/create-sales", createSales);
 route.get("/getallSales", getAllSales);
 route.get("/getUserSales/:id", getUserSales);
 
+route.post("/createTask", createTask);
+route.get("/getallTasks", getAllTasks);
+route.get("/leaves/getModalTask/:id", getModalTask);
+route.delete("/admin-tasks/delete/:id", userDeleteTask);
+route.get("/getUserTasks/:id", getUserTasks);
+route.get("/getLeavesReport", getleavesReport);
+route.get("/getSalesReport", getSalesReport);
 // route.get("/sales-report",salesReport);
 
 // route.get("/getUserName",getUserName)

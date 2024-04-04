@@ -12,7 +12,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useState, forwardRef } from "react";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import toast from "react-hot-toast";
 import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -40,9 +40,9 @@ import { loginUser } from "../Store/UserSlice";
 const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+// const Alert = forwardRef(function Alert(props, ref) {
+//   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+// });
 
 const darkTheme = createTheme({
   palette: {
@@ -161,7 +161,7 @@ function Login() {
         // response.json()
         console.log(response, "AdminData");
         if (response.data.status == "ok") {
-          alert("login successfull !");
+         toast.success("Login Successful",{"position":"top-right"})
           let userCredentials= {employee_id}
           dispatch(loginUser(userCredentials))
           window.localStorage.setItem("token", response.data.data);

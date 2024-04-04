@@ -19,11 +19,21 @@ import {
   Line,
 } from "recharts";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import { Grid } from "@mui/material";
-import PropTypes from "prop-types";
+import { Grid, Paper, Stack, ThemeProvider } from "@mui/material";
 import axios from "axios";
 import ToDoList from "../ToDoList/getToDo/ToDoList";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import { styled } from "@mui/material/styles";
+import Skeleton from "@mui/material/Skeleton";
+
+const BoxShadowDiv = styled("div")(
+  ({ theme }) => `
+  margin: ${theme.spacing(2)};
+  padding: ${theme.spacing(2)};
+  border: 1px solid black;
+  box-shadow: ${theme.shadows[12]};
+`
+);
 
 function Home() {
   const data = [
@@ -71,8 +81,9 @@ function Home() {
     },
   ];
 
-  const [userCount, setuserCount] = useState();
-  const [leaveCount, setleaveCount] = useState();
+  const [userCount, setuserCount] = useState(0);
+  const [leaveCount, setleaveCount] = useState(0);
+  const [salesCount, setsalesCount] = useState(0);
 
   // const fetchData = () => {
   //   const userAPI = axios.get("http://localhost:7000/api/getUserCount");
@@ -93,146 +104,175 @@ function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const usersCount = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/getUserCount`
-      ).then((response) => {
-        // response.json();
-        console.log(response, "token is sent");
-        setuserCount(response.data)
-      })
-      .catch((error) => console.log(error.message));
+      const usersCount = await axios
+        .get(`${process.env.REACT_APP_BASE_URL}/getUserCount`)
+        .then((response) => {
+          // response.json();
+          console.log(response, "token is sent");
+          setuserCount(response.data);
+        })
+        .catch((error) => console.log(error.message));
 
-      const leaveCount = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/getLeaveCount`
-      ).then((response)=>{
-        console.log(response,"leaves set");
-        setleaveCount(response.data)
-      }) .catch((error) => console.log(error.message));
+      const leaveCount = await axios
+        .get(`${process.env.REACT_APP_BASE_URL}/getLeaveCount`)
+        .then((response) => {
+          console.log(response, "leaves set");
+          setleaveCount(response.data);
+        })
+        .catch((error) => console.log(error.message));
 
-      
-
+      const salesCount = await axios
+        .get(`http://localhost:7000/api/getSalesCount`)
+        .then((response) => {
+          // response.json();
+          console.log(response, "SAles is sent");
+          setsalesCount(response.data);
+        })
+        .catch((error) => console.log(error.message));
     };
 
     fetchData();
   }, []);
 
   return (
-    <div style={{ width: "90%" }}>
-      <div className="main-cards">
-        <div className="card">
-          <div className="card-inner">
-            <h3>PRODUCTS</h3>
-            <BsFillArchiveFill className="card_icon" />
+    <>
+      {userCount > 0 && (
+        <div style={{ width: "90%" }}>
+          <div className="main-cards">
+            <div className="card">
+              <div className="card-inner">
+                <h3>Sales</h3>
+                <ReceiptIcon className="card_icon" />
+              </div>
+              <h1>{salesCount}</h1>
+            </div>
+            <div className="card">
+              <div className="card-inner">
+                <h3>Leaves Pending</h3>
+                <BsFillGrid3X3GapFill className="card_icon" />
+              </div>
+              <h1>{leaveCount}</h1>
+            </div>
+            <div className="card">
+              <div className="card-inner">
+                <h3>CUSTOMERS</h3>
+                <BsPeopleFill className="card_icon" />
+              </div>
+              <h1>{userCount}</h1>
+            </div>
+            <div className="card">
+              <div className="card-inner">
+                <h3>ALERTS</h3>
+                <BsFillBellFill className="card_icon" />
+              </div>
+              <h1>42</h1>
+            </div>
           </div>
-          <h1>300</h1>
-        </div>
-        <div className="card">
-          <div className="card-inner">
-            <h3>Leaves Pending</h3>
-            <BsFillGrid3X3GapFill className="card_icon" />
-          </div>
-          <h1>{leaveCount}</h1>
-        </div>
-        <div className="card">
-          <div className="card-inner">
-            <h3>CUSTOMERS</h3>
-            <BsPeopleFill className="card_icon" />
-          </div>
-          <h1>
-          {userCount}</h1>
-        </div>
-        <div className="card">
-          <div className="card-inner">
-            <h3>ALERTS</h3>
-            <BsFillBellFill className="card_icon" />
-          </div>
-          <h1>42</h1>
-        </div>
-      </div>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          flexGrow: 1,
-          p: 5,
-          // marginRight: "10px",
-          width: "85vw",
-          height: "90vh",
-          bgcolor: "blue",
-          borderRadius: 1,
-        }}
-      >
-        <Grid container spacing={3}>
-          <Grid xs={4}>
-            <ResponsiveContainer>
-              <BarChart
-                width={100}
-                height={20}
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 3,
-                  left: 2,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
-          </Grid>
-          <Grid xs={4}>
-            <ResponsiveContainer>
-              <LineChart
-                width={20}
-                height={20}
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 3,
-                  left: 2,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="pv"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
-                />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-              </LineChart>
-            </ResponsiveContainer>
-          </Grid>
-          <Grid sx={{}} xs={4}>
-            <Box>
-              <h3>To Do List</h3>
-            </Box>
-            <Box
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              flexGrow: 1,
+              p: 5,
+              // marginRight: "10px",
+              width: "85vw",
+              height: "90vh",
+              borderRadius: 1,
+            }}
+          >
+
+
+          <Grid  container spacing={3}>
+              <Grid xs={4}>
+                <ResponsiveContainer>
+                  <BarChart
+                    width={100}
+                    height={20}
+                    data={data}
+                    margin={{
+                      top: 5,
+                      right: 3,
+                      left: 2,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="pv" fill="#8884d8" />
+                    <Bar dataKey="uv" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </Grid>
+              <Grid xs={4}>
+                <ResponsiveContainer>
+                  <LineChart
+                    width={20}
+                    height={20}
+                    data={data}
+                    margin={{
+                      top: 5,
+                      right: 3,
+                      left: 2,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="pv"
+                      stroke="#8884d8"
+                      activeDot={{ r: 8 }}
+                    />
+                    <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Grid>
+              <Grid xs={4}>
+              <Box
               container
               sx={{
+                position:"absolute",
                 overflow: "auto",
                 my: 2,
+                mx:7,
                 p: 1,
                 height: "80%",
               }}
             >
               <ToDoList/>
             </Box>
-          </Grid>
-        </Grid>
-      </Box>
-    </div>
+              {/* <Paper elevation={20}  maxWidth="sm"  sx={{margin:2,padding:2,border:"1px solid"}}> */}
+                  {/* <ToDoList /> */}
+                {/* </Paper> */}
+              </Grid>
+            </Grid>
+          </Box>
+        </div>
+      )}
+      {userCount == 0 && (
+        <Stack spacing={1}>
+          {/* For variant="text", adjust the height via font-size */}
+          {/* <Skeleton variant="text" sx={{ fontSize: "1rem" }} /> */}
+          {/* For other variants, adjust the size with `width` and `height` */}
+          <div style={{ width: "90%" }}>
+            <div className="main-cards">
+              <Skeleton variant="rectangular" width={210} height={90} />
+              <Skeleton variant="rectangular" width={210} height={60} />
+              <Skeleton variant="rectangular" width={210} height={60} />
+              <Skeleton variant="rectangular" width={210} height={60} />
+              <Skeleton variant="rectangular" width={500} height={100} />
+            </div>
+          </div>
+        </Stack>
+      )}
+    </>
   );
 }
 
