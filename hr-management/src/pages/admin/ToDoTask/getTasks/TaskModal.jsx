@@ -4,10 +4,10 @@ import { useEffect, useRef } from "react";
 import { TextField } from "@mui/material";
 import axios from "axios";
 
-function Modal({onClose,empId,title,desc}) {
-    // const [empId, setEmpId] = useState("")
-	// const [title, setTitle] = useState("")
-	// const [desc, setDesc] = useState("")
+function Modal({ onClose, empId, title, desc, date }) {
+  // const [empId, setEmpId] = useState("")
+  // const [title, setTitle] = useState("")
+  // const [desc, setDesc] = useState("")
 
   const ModalRef = useRef();
   const closeModal = (e) => {
@@ -15,27 +15,6 @@ function Modal({onClose,empId,title,desc}) {
       onClose();
     }
   };
-
-//   useEffect(() => {
-//     console.log(id,"id is hre");
-//     axios
-//       .get(`http://localhost:7000/api/leaves/getModalTask/${id}`)
-//       .then((response) => {
-//         setModalData({
-//           Emp_id: response.data[0].Employee_id,
-//           Title: response.data[0].Title,
-//           Desc: response.data[0].Description,
-//         });
-//         console.log(response, "taskmodaldata");
-//         // setClicked(true);
-//         // toast.success("Leave Approved Successfully !", {
-//         //   position: "top-right",
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   }, [])
-  
 
   return (
     <div
@@ -49,14 +28,13 @@ function Modal({onClose,empId,title,desc}) {
         </button>
         <div className="bg-green-600 rounded-xl px-20 py-10 flex flex-col gap-5 items-center mx-4">
           <h1 className="text-2xl font-bold">
-            <u>TODAY'S ATTENDANCE</u>{" "}
+            <u>Task Details</u>{" "}
           </h1>
           <form>
             <div>Employee Id </div>
             <TextField
               value={empId}
-            
-             
+              disabled
               fullWidth
               required
               name="Employee-id"
@@ -66,7 +44,7 @@ function Modal({onClose,empId,title,desc}) {
             <div>Title : </div>
             <TextField
               value={title}
-             
+              disabled
               fullWidth
               required
               name="title"
@@ -75,11 +53,21 @@ function Modal({onClose,empId,title,desc}) {
             />
             <div>Description : </div>
             <TextField
+              disabled
               value={desc}
               required
               multiline
               rows={4}
               name="description"
+              id="outlined-required"
+              label="Required"
+            />
+            <div> Completion Date : </div>
+            <TextField
+              value={date}
+              disabled
+              fullWidth
+              name="title"
               id="outlined-required"
               label="Required"
             />

@@ -8,7 +8,15 @@ import {
 } from "@ant-design/icons";
 import { Card, Space, Statistic, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { getSalesReport, getSales, getOrders, getRevenue } from "./api/API";
+import {
+  getSalesReport,
+  getSales,
+  getOrders,
+  getRevenue,
+  getTasksDoneReport,
+  getTasksGivenReport,
+  getTasksReport,
+} from "./api/API";
 import ToDoList from "../../ToDoList/getToDo/ToDoList";
 import {
   Chart as ChartJS,
@@ -157,7 +165,7 @@ function Dashboard() {
               </Grid>
             </Grid>
             {/* </Space> */}
-            <Grid container justify="space-arbetweenound" spacing={2}>
+            <Grid container justify="space-between" spacing={2}>
               <Grid item>
                 <Space
                   style={{
@@ -177,28 +185,37 @@ function Dashboard() {
                   //   alignItems: "flex-start",
                   // }}
                 > */}
-                  <Box
-                    container
-                    sx={{
-                      position: "absolute",
-                      overflow: "auto",
-                      // my: 2,
-                      mx: 2,
-                      // p: 1,
-                      height: "40%",
-                      width: "40%",
-                    }}
-                  >
-                    <Card style={{width:500}}>
+                <Box
+                  container
+                  sx={{
+                    position: "absolute",
+                    overflow: "auto",
+                    // my: 2,
+                    mx: 2,
+                    // p: 1,
+                    height: "40%",
+                    width: "40%",
+                  }}
+                >
+                  <Card style={{ width: 500 }}>
                     <ToDoList />
                   </Card>
-                  </Box>
+                </Box>
                 {/* </Space> */}
               </Grid>
             </Grid>
-            <Space>
-              <DashboardSalesChart />
-            </Space>
+            <Grid container direction="row" justify="space-between" spacing={2}>
+              <Grid item xs={12} md={6} lg={6}>
+                <Space>
+                  <DashboardSalesChart />
+                </Space>
+              </Grid>
+              <Grid item xs={12} md={6} lg={6}>
+                <Space>
+                  <DashboardTasksChart />
+                </Space>
+              </Grid>
+            </Grid>
           </Space>
         </Box>
       </Container>
@@ -276,6 +293,12 @@ function DashboardChart() {
             label: "Leaves Applied",
             data: data,
             backgroundColor: "rgba(255, 0, 0, 1)",
+            // backgroundColor: randoColour(reportOneValue),
+            borderWidth: 1,
+            borderColor: "#ccc",
+            hoverBorderWidth: 3,
+            hoverBorderColor: "#333",
+            hoverOpacity: 1,
           },
         ],
       };
@@ -347,8 +370,68 @@ function DashboardSalesChart() {
   };
 
   return (
-    <Card style={{ marginTop:15 }}>
+    <Card style={{ marginTop: 15 }}>
       <Bar options={options} data={reveneuData} />
+    </Card>
+  );
+}
+function DashboardTasksChart() {
+  const [taskData, setTaskData] = useState({
+    labels: [],
+    datasets: [],
+  });
+
+  useEffect(() => {
+    getTasksReport().then((res) => {
+      console.log(res, "result");
+      const labels = res[0].map((cart) => {
+        return `User-${cart._id}`;
+      });
+      const data = res[0].map((cart) => {
+        return cart.count;
+      });
+      const data2 = res[1].map((cart) => {
+        return cart.count;
+      });
+
+
+      const dataSource = {
+        labels,
+        datasets: [
+          {
+            label: "Task Done",
+            data: data,
+            backgroundColor: "rgba(255, 0, 0, 1)",
+          },
+          {
+            label: "Task Given",
+            data: data2,
+            backgroundColor: "rgba(125, 0, 0, 1)",
+          },
+        ],
+      };
+
+      setTaskData(dataSource);
+    });
+  }, []);
+
+  const options = {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "bottom",
+      },
+      title: {
+        display: true,
+        text: "Tasks Report",
+      },
+    },
+  };
+
+  return (
+    <Card style={{ marginTop: 15 }}>
+      <Bar options={options} data={taskData} />
     </Card>
   );
 }
@@ -368,8 +451,9 @@ function RecentSales() {
   return (
     <>
       <Typography.Title>Recent Sales</Typography.Title>
-      <div >
-        <Table style={{width:650}}
+      <div>
+        <Table
+          style={{ width: 650 }}
           columns={[
             {
               title: "Employee Id",

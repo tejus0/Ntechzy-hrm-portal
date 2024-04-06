@@ -588,7 +588,18 @@ export const updateLeave = async (req, res) => {
     );
     console.log(updatedInfo);
     res.send(updatedInfo);
-    alert("Leave Approved Successfully !");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const updateTask = async (req, res) => {
+  try {
+    const updatedInfo = await Task.updateOne(
+      { _id: req.params.id },
+      { $set: { is_completed: 1 } }
+    );
+    console.log(updatedInfo);
+    res.send(updatedInfo);
   } catch (error) {
     console.log(error.message);
   }
@@ -712,7 +723,7 @@ export const remainingLeaves = async (req, res) => {
 
 export const createSales = async (req, res) => {
   try {
-    // console.log(req.body, "body");
+    console.log(req.body, "body");
 
     // const fathername= req.body.
     const clientname = req.body.client_name;
@@ -830,7 +841,8 @@ export const getUserTasks = async (req, res) => {
   const id = req.params.id;
   console.log(id, "in TasksList");
   try {
-    const tasks = await Task.find({ Employee_id: id });
+    const tasks = await Task.find({ Employee_id: id , is_completed:0 });
+    console.log(tasks);
     if (!tasks) {
       return res.status(404).json({ msg: "Tasks data not found" });
     }
@@ -877,6 +889,36 @@ export const getSalesReport = async(req,res)=>{
       return 0;
     }
     res.status(200).json(temp); 
+  }catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getTasksReport = async(req,res)=>{
+  try{
+    const temp = await Task.aggregate([
+      {
+        $group: {
+          _id: "$Employee_id",
+            count: {$sum: 1} 
+          
+        },
+      },
+    ]);
+    const taskDone = await Task.aggregate([
+      {$match:{is_completed:1}},
+      {
+        $group: {
+          _id: "$Employee_id",
+            count: {$sum: 1} 
+          
+        },
+      },
+    ]);
+    console.log([temp,taskDone], "tasksreport");
+    if (!temp) {
+      return 0;
+    }
+    res.status(200).json([temp,taskDone]); 
   }catch (error) {
     res.status(500).json({ error: error.message });
   }

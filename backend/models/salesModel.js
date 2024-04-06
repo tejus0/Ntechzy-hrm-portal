@@ -1,52 +1,56 @@
 import mongoose from "mongoose";
 
-
-const salesSchema = new mongoose.Schema({
-    employee_id:{
-        type:String
+const salesSchema = new mongoose.Schema(
+  {
+    employee_id: {
+      type: String,
     },
     client_name: {
-        type:String
+      type: String,
     },
-    client_father_name:{
-        type:String
+    client_father_name: {
+      type: String,
     },
     client_no: {
-        type:String
+      type: String,
     },
     client_state: {
-        type:String
+      type: String,
     },
     course: {
-        type:String
+      type: String,
     },
     paid_fee: {
-        type:String
+      type: String,
     },
     rem_fee: {
-        type:String
+      type: String,
     },
     assoc_college: {
-        type:String
+      type: String,
     },
     registration_amount: {
-        type:String
+      type: String,
     },
     services_amount: {
-        type:String
+      type: String,
     },
     enroll_date: {
-        type:String
+      type: String,
     },
     status: {
-        type:String
+      type: String,
     },
     bonus_status: {
-        type:String
+      type: String,
     },
     incentives: {
-        type:String
-    }
-});
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 export default mongoose.model("Sale", salesSchema);

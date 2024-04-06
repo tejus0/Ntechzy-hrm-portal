@@ -60,6 +60,8 @@ function AdminSalesForm() {
   const [statusError, setStatusError] = useState(false);
   const [bonusStatusError, setBonusStatusError] = useState(false);
   const [incentivesError, setIncentivesError] = useState(false);
+
+  const [enroll_date, setEnroll_date] = useState(Date)
   
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -75,7 +77,7 @@ function AdminSalesForm() {
       setCollegeError(false);
       setRegAmountError(false);
       setSrvcAmountError(false);
-      setEnrollDateError(false);
+      // setEnrollDateError(false);
       setStatusError(false);
       setBonusStatusError(false);
       setIncentivesError(false);
@@ -90,7 +92,7 @@ function AdminSalesForm() {
       setCollegeError(true);
       setRegAmountError(true);
       setSrvcAmountError(true);
-      setEnrollDateError(true);
+      // setEnrollDateError(true);
       setStatusError(true);
       setBonusStatusError(true);
       setIncentivesError(true);
@@ -109,7 +111,7 @@ function AdminSalesForm() {
       assoc_college: "",
       registration_amount: "",
       services_amount: "",
-      enroll_date: "",
+      // enroll_date: "",
       status: "",
       bonus_status: "",
       incentives: "",
@@ -119,7 +121,7 @@ function AdminSalesForm() {
   const handleSubmit = async (e) => {
     console.log(user_id);
     e.preventDefault();
-    if (nameError || user.client_no.trim() == "" || user.client_father_name.trim() == "" || user.assoc_college.trim() == "" || user.bonus_status.trim() == "" || user.client_name.trim() == "" || user.client_state.trim() == "" || user.course.trim() == "" || user.enroll_date.trim() == "" || user.incentives.trim() == "" || user.paid_fee.trim() == "" || user.registration_amount.trim() == "" || user.rem_fee.trim() == "" || user.services_amount.trim() == "" || user.status.trim() == "") {
+    if (nameError || user.client_no.trim() == "" || user.client_father_name.trim() == "" || user.assoc_college.trim() == "" || user.bonus_status.trim() == "" || user.client_name.trim() == "" || user.client_state.trim() == "" || user.course.trim() == ""  || user.incentives.trim() == "" || user.paid_fee.trim() == "" || user.registration_amount.trim() == "" || user.rem_fee.trim() == "" || user.services_amount.trim() == "" || user.status.trim() == "") {
       console.log(user, "user");
       toast.error("Please fill the details first", { position: "top-right" });
     } else {
@@ -157,7 +159,13 @@ function AdminSalesForm() {
       setUser_id(Id);
       console.log(user_id, "this is not working");
     }
-  }, [user_id]);
+    const showDate= new Date();
+    const displayDate= showDate.getDate()+'/'+(showDate.getMonth()+1)+'/'+showDate.getFullYear();
+    // setEnroll_date(displayDate);
+    setUser({ ...user, [enroll_date]: displayDate });
+    console.log(user.enroll_date,"date");
+  }, []);
+
 
   return (
     <Box container sx={{ display: "flex" }}>
@@ -347,9 +355,12 @@ function AdminSalesForm() {
             <div>Date Of Enrollment : </div>
             <TextField
               required
-              onChange={inputHandler}
-              error={nameError}
-              helperText={nameError ? "Please enter enroll date" : ""}
+              disabled
+              defaultValue={enroll_date}
+              value={enroll_date}
+              // onChange={inputHandler}
+              // error={nameError}
+              // helperText={nameError ? "Please enter enroll date" : ""}
               // value={users.enroll_date}
               name="enroll_date"
               id="outlined-basic"

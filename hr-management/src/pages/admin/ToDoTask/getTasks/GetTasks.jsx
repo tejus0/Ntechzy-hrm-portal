@@ -21,6 +21,7 @@ export default function GetallTasks() {
     employeeid: "",
     title: "",
     desc: "",
+    last_date: "",
   });
 
   // const [RejectId, setRejectId] = useState("");
@@ -47,7 +48,7 @@ export default function GetallTasks() {
         setTasks((prevUser) =>
           prevUser.filter((leave) => leave._id !== leaveId)
         );
-        toast.success("Leave Request Deleted Successfully !", {
+        toast.success("Task Deleted Successfully !", {
           position: "top-right",
         });
       })
@@ -89,6 +90,7 @@ export default function GetallTasks() {
           employeeid: response.data[0].Employee_id,
           title: response.data[0].Title,
           desc: response.data[0].Description,
+          last_date: response.data[0].Completion_Date,
           // setClicked(true);
           // toast.success("Leave Approved Successfully !", {
           //   position: "top-right",
@@ -142,6 +144,8 @@ export default function GetallTasks() {
                 <th>Employee Id</th>
                 <th>Title</th>
                 <th>Details</th>
+                <th>Last Date</th>
+                <th>Status</th>
                 <th>Delete</th>
               </tr>
             </thead>
@@ -164,32 +168,43 @@ export default function GetallTasks() {
                       <td>
                         <Button
                           variant="contained"
-                          onClick={()=>
-                            handleClickOpenModal(task._id)
-                            // (e) => 
+                          onClick={
+                            () => handleClickOpenModal(task._id)
+                            // (e) =>
                           }
                         >
                           Get Details
                         </Button>
-                      {showModal && <Modal empId={ModalData.employeeid} title = {ModalData.title} desc={ModalData.desc} onClose={()=> setshowModal(false)}/>} 
+                        {showModal && (
+                          <Modal
+                            empId={ModalData.employeeid}
+                            title={ModalData.title}
+                            desc={ModalData.desc}
+                            date={ModalData.last_date}
+                            onClose={() => setshowModal(false)}
+                          />
+                        )}
                       </td>
+                      <td>{task.Completion_Date}</td>
+                      <td>
+                    <h5>
+                      {task.is_completed === 1
+                        ? "Completed"
+                        :  "Pending"}
+                    </h5>
+                  </td>
                       <td className="actionButtons">
-                    <Button
-                      onClick={
-                        (e) => 
-                        deleteUser(task._id)
-                      }
-                    >
-                      <i class="fa fa-trash" aria-hidden="true"></i>
-                    </Button>
-                    {/* <IconButton
+                        <Button onClick={(e) => deleteUser(task._id)}>
+                          <i class="fa fa-trash" aria-hidden="true"></i>
+                        </Button>
+                        {/* <IconButton
                       onClick={() => {
                         approveUser(user._id);
                       }}
                     >
                       <CheckCircleOutlineIcon />
                     </IconButton> */}
-                  </td>
+                      </td>
                     </tr>
                   );
                 })}

@@ -46,7 +46,9 @@ import {
   getUserTasks,
   getSalesCount,
   getleavesReport,
-  getSalesReport
+  getSalesReport,
+  updateTask,
+  getTasksReport
   // salesReport
 } from "../controllers/userController.js";
 
@@ -99,6 +101,7 @@ route.get("/getRejectedLeaves/:id", getRejectedLeaves);
 route.get("/leaves/reject/:id/:cancelReason", rejectLeave);
 route.delete("/user-leaves/delete/:id", userDeleteLeave);
 route.get("/leaves/update/:id", updateLeave);
+route.get("/tasks/update/:id", updateTask);
 route.get("/leaves/getModalLeave/:id", getModalLeave);
 
 route.get("/getLeaveCount", getLeaveCount);
@@ -121,6 +124,7 @@ route.delete("/admin-tasks/delete/:id", userDeleteTask);
 route.get("/getUserTasks/:id", getUserTasks);
 route.get("/getLeavesReport", getleavesReport);
 route.get("/getSalesReport", getSalesReport);
+route.get("/getTasksReport", getTasksReport);
 // route.get("/sales-report",salesReport);
 
 // route.get("/getUserName",getUserName)

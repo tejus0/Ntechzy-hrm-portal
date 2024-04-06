@@ -95,6 +95,11 @@ export default function Getallsales () {
     onAfterPrint: ()=>alert("Data saved in PDF")
   });
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric"}
+    return new Date(dateString).toLocaleDateString(undefined, options)
+  }
+
   return (
     <Box container sx={{ display: "flex" }}>
       {window.localStorage.getItem("user-type") == "user" ? (
@@ -145,7 +150,7 @@ export default function Getallsales () {
                   <td>{index + 1}</td>
                   <td>{user.employee_id}</td>
                   <td>{user.client_name}</td>
-                  <td>{user.enroll_date}</td>
+                  <td>{formatDate(user.createdAt)}</td>
                   <td>{user.status}</td>
                   {/* <td>{user.From}</td>
                   <td>{user.To}</td>
