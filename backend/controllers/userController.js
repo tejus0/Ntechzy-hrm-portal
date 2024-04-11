@@ -11,6 +11,8 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import randomstring from "randomstring";
 import { sessionSecret, emailUser, emailPass } from "../config/config.js";
+import Grievance from "../models/grievanceModel.js";
+
 
 
 // for configuring and sending mail
@@ -640,6 +642,7 @@ export const createTask = async (req, res) => {
   return res.json(task);
 };
 
+
 export const deleteTodos = async (req, res) => {
   const id = req.params.id;
   try {
@@ -851,6 +854,20 @@ export const getUserTasks = async (req, res) => {
     res.status(500).json({ error: error });
   }
 };
+export const getUserGrievances = async (req, res) => {
+  const id = req.params.id;
+  console.log(id, "in TasksList");
+  try {
+    const tasks = await Grievance.find({ Employee_id: id });
+    console.log(tasks);
+    if (!tasks) {
+      return res.status(404).json({ msg: "Tasks data not found" });
+    }
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
 
 export const getleavesReport = async(req,res)=>{
   try{
@@ -920,6 +937,37 @@ export const getTasksReport = async(req,res)=>{
     }
     res.status(200).json([temp,taskDone]); 
   }catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const createGrievance = async (req, res) => {
+  const data = await Grievance.create(req.body);
+  return res.json(data);
+};
+
+export const getAllGrievance = async (req, res) => {
+  try {
+    const grievanceData = await Grievance.find();
+    console.log(grievanceData);
+    if (!grievanceData) {
+      return res.status(404).json({ msg: "Tasks data not found" });
+    }
+    res.status(200).json(grievanceData);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const getModalData = async (req, res) => {
+  try {
+    const userData = await Grievance.find({ _id: req.params.id });
+    console.log(userData,"data");
+    if (!userData) {
+      return res.status(404).json({ msg: " data not found" });
+    }
+    res.status(200).json(userData);
+  } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };

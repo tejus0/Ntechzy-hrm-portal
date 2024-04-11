@@ -31,6 +31,9 @@ import UserRejectedLeaves from "./pages/users/getRejectedLeaves/UserRejectedLeav
 import GetallTasks from "./pages/admin/ToDoTask/getTasks/GetTasks.jsx";
 import GetUserTasks from "./pages/users/getTasks/GetUserTasks.jsx";
 import Dashboard from "./pages/admin/dashboard/Dashboard.jsx";
+import GrievanceForm from "./pages/users/GrievanceForm.jsx";
+import UserGrievancesList from "./pages/users/getGrievances/UserGrievanceList.jsx";
+import GetAdminGrievances from "./pages/admin/getGrievance/GetAdminGrievances.jsx";
 
 Modal.setAppElement("#root");
 
@@ -78,6 +81,9 @@ function App() {
           <Route exact path="/admin-tasks" element={<ToDoTask />} />
           <Route exact path="/user-tasks" element={<GetUserTasks />} />
           <Route exact path="/testdashboard" element={<Dashboard />} />
+          <Route exact path="/grievance-form" element={<GrievanceForm />} />
+          <Route exact path="/user-grievance-list" element={<UserGrievancesList />} />
+          <Route exact path="/admin-grievance-list" element={<GetAdminGrievances />} />
           {/* <Route exact path="/todo" element={<ToDoList />} /> */}
         </Routes>
       </UserContext.Provider>

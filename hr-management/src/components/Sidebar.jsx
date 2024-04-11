@@ -103,7 +103,7 @@ const Drawer = styled(MuiDrawer, {
 export default function EmployeeAttend() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [isCollapse, setIsCollapse] = useState(true);
+  const [isCollapse, setIsCollapse] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [userId, setuserId] = useState("");
 
@@ -125,6 +125,7 @@ export default function EmployeeAttend() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+    setIsCollapse(false);
   };
 
   const handleIsCollapse = () => {
@@ -133,7 +134,7 @@ export default function EmployeeAttend() {
 
   const handleLogout = () => {
     window.localStorage.clear();
-    toast.success(" Logged out successfully",{"position":"top-right"});
+    toast.success(" Logged out successfully", { position: "top-right" });
     window.location.href = "./";
   };
 
@@ -258,7 +259,10 @@ export default function EmployeeAttend() {
               >
                 <MailIcon />
               </ListItemIcon>
-              <ListItemText primary="TestDashboard" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText
+                primary="TestDashboard"
+                sx={{ opacity: open ? 1 : 0 }}
+              />
             </ListItemButton>
           </ListItem>
           {/* <ListItem
@@ -510,13 +514,13 @@ export default function EmployeeAttend() {
                 <ListItemText primary="" />
               </ListItemButton>
             </List>
-          </Collapse>
+          </Collapse>  */}
 
           <ListItem
             disablePadding
             sx={{ display: "block" }}
             component={Link}
-            to="/leave-management"
+            to="/admin-grievance-list"
             onClick={handleIsCollapse}
           >
             <ListItemButton
@@ -535,9 +539,12 @@ export default function EmployeeAttend() {
               >
                 <MailIcon />
               </ListItemIcon>
-              <ListItemText primary="LEAVES" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText
+                primary="Grievances"
+                sx={{ opacity: open ? 1 : 0 }}
+              />
             </ListItemButton>
-          </ListItem> */}
+          </ListItem>
         </List>
       </Drawer>
     </Box>

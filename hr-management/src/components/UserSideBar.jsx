@@ -101,7 +101,7 @@ const Drawer = styled(MuiDrawer, {
 export default function UserSideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [isCollapse, setIsCollapse] = useState(true);
+  const [isCollapse, setIsCollapse] = useState(false);
   const [userId, setuserId] = useState("");
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -114,6 +114,7 @@ export default function UserSideBar() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+    setIsCollapse(false);
   };
 
   const handleIsCollapse = () => {
@@ -309,7 +310,7 @@ export default function UserSideBar() {
               </ListItemButton>
             </List>
           </Collapse>
-          <Divider />
+          {/* <Divider /> */}
           <Collapse in={isCollapse} timeout="auto" unmountOnExit>
             <List
               disablePadding
@@ -449,7 +450,7 @@ export default function UserSideBar() {
               </ListItemButton>
             </List>
           </Collapse>
-          <Divider />
+          {/* <Divider /> */}
           <Collapse in={isCollapse} timeout="auto" unmountOnExit>
             <List
               disablePadding
@@ -465,7 +466,7 @@ export default function UserSideBar() {
               </ListItemButton>
             </List>
           </Collapse>
-          <Divider />
+          {/* <Divider /> */}
           <Collapse in={isCollapse} timeout="auto" unmountOnExit>
             <List
               disablePadding
@@ -482,6 +483,72 @@ export default function UserSideBar() {
             </List>
           </Collapse>
         </List>
+        {/* <ListItem
+            disablePadding
+            sx={{ display: "block" }}
+            component={Link}
+            to="/grievance-form"
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary="Grievance " sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem> */}
+          <Divider/>
+          <List>
+          <ListItemButton onClick={handleIsCollapse}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Grievances" />
+            {isCollapse ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/grievance-form"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="New Grievance" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+          {/* <Divider /> */}
+          <Collapse in={isCollapse} timeout="auto" unmountOnExit>
+            <List
+              disablePadding
+              component={Link}
+              to="/user-grievance-list"
+              onClick={handleIsCollapse}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Applied" />
+              </ListItemButton>
+          </List>
+          </Collapse>
+          </List>
       </Drawer>
     </Box>
   );

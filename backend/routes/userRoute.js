@@ -48,7 +48,11 @@ import {
   getleavesReport,
   getSalesReport,
   updateTask,
-  getTasksReport
+  getTasksReport,
+  createGrievance,
+  getAllGrievance,
+  getUserGrievances,
+  getModalData
   // salesReport
 } from "../controllers/userController.js";
 
@@ -125,6 +129,10 @@ route.get("/getUserTasks/:id", getUserTasks);
 route.get("/getLeavesReport", getleavesReport);
 route.get("/getSalesReport", getSalesReport);
 route.get("/getTasksReport", getTasksReport);
+route.post("/createGrievance", createGrievance);
+route.get("/getallGrievance", getAllGrievance);
+route.get("/getUserGrievances/:id", getUserGrievances);
+route.get("/grievances/getModalData/:id", getModalData);
 // route.get("/sales-report",salesReport);
 
 // route.get("/getUserName",getUserName)
